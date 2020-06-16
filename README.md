@@ -1,8 +1,6 @@
-### Boilerplate python project - data analysis/scraping
+### Covid alerts
 
-This is a simple boilerplate python project for data analysis or scraping.
-
-It includes logging, pipenv and pandas.
+An app that sends out emails to subscribers with updates on COVID-19 cases, deaths and other data in their county.
 
 #### Install
 
