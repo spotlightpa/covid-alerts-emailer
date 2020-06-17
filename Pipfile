@@ -10,6 +10,13 @@ pyyaml = "*"
 python-dotenv = "*"
 pandas = "*"
 iso8601 = "*"
+jinja2 = "*"
+altair = "*"
+vega-datasets = "*"
+altair-viewer = "*"
+altair-saver = "*"
+selenium = "*"
+requests = "*"
 
 [requires]
 python_version = "3.6"
