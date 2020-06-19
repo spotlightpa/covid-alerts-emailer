@@ -1,0 +1,270 @@
+{
+  "42001": {
+    "id": "7f4f10c4-da18-44d1-981f-03d7014947fb",
+    "name": "Adams County"
+  },
+  "42003": {
+    "id": "69bc4f62-f4be-4429-b923-004ca9a9cfdf",
+    "name": "Allegheny County"
+  },
+  "42005": {
+    "id": "b53aee02-ac91-4e37-8819-9cd37c45e7e8",
+    "name": "Armstrong County"
+  },
+  "42007": {
+    "id": "3bd8378c-3183-445e-bffb-278e4af2c09c",
+    "name": "Beaver County"
+  },
+  "42009": {
+    "id": "5245c06f-b834-4ec8-9acd-aab29a752008",
+    "name": "Bedford County"
+  },
+  "42011": {
+    "id": "1201c0e7-45ac-4238-a783-9945f039c3ca",
+    "name": "Berks County"
+  },
+  "42013": {
+    "id": "cf10fb56-92ab-4b0a-baff-62ffc37b1b64",
+    "name": "Blair County"
+  },
+  "42015": {
+    "id": "af6a14b9-e8c7-4529-ade5-c9755ccf382d",
+    "name": "Bradford County"
+  },
+  "42017": {
+    "id": "8984cce1-64e6-452f-b6bc-823d003ecc3d",
+    "name": "Bucks County"
+  },
+  "42019": {
+    "id": "162e51c6-2da0-4f86-8401-1a92894e6fde",
+    "name": "Butler County"
+  },
+  "42021": {
+    "id": "4798d94e-3311-498d-a9f8-3907717536a9",
+    "name": "Cambria County"
+  },
+  "42023": {
+    "id": "6adc719b-c0df-47d6-8b95-250294ecef4a",
+    "name": "Cameron County"
+  },
+  "42025": {
+    "id": "68bedb98-5832-4e4a-aa5e-27ac9d3cb0e5",
+    "name": "Carbon County"
+  },
+  "42027": {
+    "id": "d3e3e826-e1e7-4533-b671-e9fdeb6b306a",
+    "name": "Centre County"
+  },
+  "42029": {
+    "id": "c058d286-5f31-4ebc-8a68-6e9cf287520f",
+    "name": "Chester County"
+  },
+  "42031": {
+    "id": "7c0d3888-a5c2-4df7-aca3-715104624d86",
+    "name": "Clarion County"
+  },
+  "42033": {
+    "id": "e3601eee-92dd-491f-a507-8ff2e4e6049f",
+    "name": "Clearfield County"
+  },
+  "42035": {
+    "id": "8cceec9c-5dca-408c-9f0a-cd4e92a1c970",
+    "name": "Clinton County"
+  },
+  "42037": {
+    "id": "98ce97e5-7fc3-4c50-9eaf-a31abe8d0185",
+    "name": "Columbia County"
+  },
+  "42039": {
+    "id": "04dd53a4-ba9a-41de-b1b7-e9c2471376fd",
+    "name": "Crawford County"
+  },
+  "42041": {
+    "id": "da190a9a-8cbd-4a8c-896d-97a11e1508de",
+    "name": "Cumberland County"
+  },
+  "42043": {
+    "id": "0724edae-40a6-48e6-8330-cc06b3c67ede",
+    "name": "Dauphin County"
+  },
+  "42045": {
+    "id": "7a76a9de-f271-438f-949b-4452c123b05b",
+    "name": "Delaware County"
+  },
+  "42047": {
+    "id": "2750d1be-9633-4f75-9f96-f5ff8a3f7752",
+    "name": "Elk County"
+  },
+  "42049": {
+    "id": "9ef9cf61-394e-4968-8ebd-18dc270b0e77",
+    "name": "Erie County"
+  },
+  "42051": {
+    "id": "86362cce-3781-4461-833d-7afbc24f1d86",
+    "name": "Fayette County"
+  },
+  "42053": {
+    "id": "84912f53-a7c7-46ed-ba80-10d4a07e9d48",
+    "name": "Forest County"
+  },
+  "42055": {
+    "id": "043de534-deeb-4cdb-acdf-57997603a721",
+    "name": "Franklin County"
+  },
+  "42057": {
+    "id": "77bd41f7-7611-4895-8233-3ad3f500ca41",
+    "name": "Fulton County"
+  },
+  "42059": {
+    "id": "c1dd107d-809d-4aa2-95d9-f47653debaa5",
+    "name": "Greene County"
+  },
+  "42061": {
+    "id": "290994fd-db99-44c5-af79-f840dfd19492",
+    "name": "Huntingdon County"
+  },
+  "42063": {
+    "id": "476a2cf4-b127-474b-a7b8-8bfb50e5b572",
+    "name": "Indiana County"
+  },
+  "42065": {
+    "id": "5b4861cb-534a-4987-a52e-2b680a3fd067",
+    "name": "Jefferson County"
+  },
+  "42067": {
+    "id": "dbcac5ab-cda4-4971-a196-0381e8e97950",
+    "name": "Juniata County"
+  },
+  "42069": {
+    "id": "0334629e-463c-4d89-a931-5bb90c46e34f",
+    "name": "Lackawanna County"
+  },
+  "42071": {
+    "id": "56e027b6-a042-47c8-8149-98586769f406",
+    "name": "Lancaster County"
+  },
+  "42073": {
+    "id": "1cda971d-3cf2-4789-a241-efae3539d76d",
+    "name": "Lawrence County"
+  },
+  "42075": {
+    "id": "1e18ff8c-0130-409a-b6c0-a3e7d2f01156",
+    "name": "Lebanon County"
+  },
+  "42077": {
+    "id": "18fa8f93-1c67-4552-8c2d-34a6586d8386",
+    "name": "Lehigh County"
+  },
+  "42079": {
+    "id": "1fd8301c-a8f4-46c4-84e1-eac856ce3c19",
+    "name": "Luzerne County"
+  },
+  "42081": {
+    "id": "1efef736-0c1e-403b-85bd-cd5578e70b8c",
+    "name": "Lycoming County"
+  },
+  "42083": {
+    "id": "f1de11db-8aa9-4ff1-a6f9-d03ed5595dd1",
+    "name": "McKean County"
+  },
+  "42085": {
+    "id": "31692660-3991-40cd-935e-23b9afdcdeaa",
+    "name": "Mercer County"
+  },
+  "42087": {
+    "id": "572c0f9a-0af3-47b2-bf0e-0a39d5cebdc3",
+    "name": "Mifflin County"
+  },
+  "42089": {
+    "id": "b9799cf2-35e5-401e-a810-e6ffe7ff913b",
+    "name": "Monroe County"
+  },
+  "42091": {
+    "id": "39c3617b-209a-4f12-ac24-b431e77b4135",
+    "name": "Montgomery County"
+  },
+  "42093": {
+    "id": "7c51156b-520a-495e-83db-87c0881b160e",
+    "name": "Montour County"
+  },
+  "42095": {
+    "id": "bf55eff0-8e9c-4444-97db-3eb0ff28ac2a",
+    "name": "Northampton County"
+  },
+  "42097": {
+    "id": "be687656-7946-49ef-8eb0-546fb96a7507",
+    "name": "Northumberland County"
+  },
+  "42099": {
+    "id": "a57f0d1a-eb18-425b-9171-370eb7a7da12",
+    "name": "Perry County"
+  },
+  "42101": {
+    "id": "ff7a408b-cf57-4725-9d12-26751a33ff5f",
+    "name": "Philadelphia County"
+  },
+  "42103": {
+    "id": "2245aae2-23f6-4bd7-b15a-2eb246221aa1",
+    "name": "Pike County"
+  },
+  "42105": {
+    "id": "855fe52a-00a5-458b-ad0e-b20eefcfba82",
+    "name": "Potter County"
+  },
+  "42107": {
+    "id": "ef1babe8-364b-4c94-995e-727f3d972d84",
+    "name": "Schuylkill County"
+  },
+  "42109": {
+    "id": "ac1b3dc2-a184-483a-b54b-bb5c09afdb13",
+    "name": "Snyder County"
+  },
+  "42111": {
+    "id": "a791a53f-c0ff-48d9-b2ea-36c505a923d3",
+    "name": "Somerset County"
+  },
+  "42113": {
+    "id": "896e8b59-b8b4-4c61-9760-17d2d3e75a3b",
+    "name": "Sullivan County"
+  },
+  "42115": {
+    "id": "998f134c-5448-4985-8a79-03bc42f545ef",
+    "name": "Susquehanna County"
+  },
+  "42117": {
+    "id": "6b9c503e-7bdb-4385-86b4-bbb31082fa38",
+    "name": "Tioga County"
+  },
+  "42119": {
+    "id": "d4fe8c5e-2a9f-4107-ac6e-2f20b5d64e19",
+    "name": "Union County"
+  },
+  "42121": {
+    "id": "1c761692-acb8-4727-b2bd-d31c203209fc",
+    "name": "Venango County"
+  },
+  "42123": {
+    "id": "e3b7bb87-6c3c-4004-9c7e-e3057df6ccc9",
+    "name": "Warren County"
+  },
+  "42125": {
+    "id": "3acee895-002c-4fb2-8bab-f0ea7ca19faa",
+    "name": "Washington County"
+  },
+  "42127": {
+    "id": "bfa9b775-4b31-469b-a3b1-a46daec39f5f",
+    "name": "Wayne County"
+  },
+  "42129": {
+    "id": "b6e2ceb1-ac69-4974-a3bc-ec3b0b78026b",
+    "name": "Westmoreland County"
+  },
+  "42131": {
+    "id": "237c0cb4-2d33-4b7d-9dfe-ac1c641db59f",
+    "name": "Wyoming County"
+  },
+  "42133": {
+    "id": "32e0acb1-9580-4622-b144-f37466185a76",
+    "name": "York County"
+  }
+}
