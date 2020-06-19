@@ -5,6 +5,7 @@ from src.gen_chart.gen_chart import gen_chart
 from src.gen_html.gen_html import gen_html
 from src.init.init_program import init_program
 from src.fetch.fetch import fetch_data
+from src.clean.clean import clean
 
 
 def main():
@@ -12,14 +13,29 @@ def main():
     # init
     init_program()
 
-    # data
+    # fetch
     dir = "http://interactives.data.spotlightpa.org/2020/coronavirus/data/inquirer"
-    dataIndex = [
-        {"name": "cases", "filename": "pa-cases.csv"},
-        {"name": "deaths", "filename": "pa-deaths.csv"},
-        {"name": "tests", "filename": "pa-tests.csv"},
-    ]
+    dataIndex = {
+        "cases": {
+            "name": "cases",
+            "filename": "pa-cases.csv",
+            "clean_rules": {"addedSincePrevDay": True},
+        },
+        "deaths": {
+            "name": "deaths",
+            "filename": "pa-deaths.csv",
+            "clean_rules": {"addedSincePrevDay": True},
+        },
+        "tests": {
+            "filename": "pa-tests.csv",
+            "clean_rules": {"addedSincePrevDay": True},
+        },
+    }
+
     data = fetch_data(dir, dataIndex)
+
+    # clean and filter
+    data = clean(data, dataIndex, "Dauphin")
     quit()
 
     # Create altair graphic

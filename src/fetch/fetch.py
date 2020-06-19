@@ -3,7 +3,7 @@ import requests
 import csv
 
 
-def fetch_data(url_dir: str, dataIndex: List[Dict]) -> Dict[str, Dict]:
+def fetch_data(url_dir: str, dataIndex: [Dict[str, Dict]]) -> Dict[str, Dict]:
     """
     Loops over a list of dictionaries and fetches CSV data.
 
@@ -17,12 +17,11 @@ def fetch_data(url_dir: str, dataIndex: List[Dict]) -> Dict[str, Dict]:
         A dictionary of ordered dictionaries with the fetched data.
     """
     data = {}
-    for item in dataIndex:
+    for key, item in dataIndex.items():
         csv_url = f"{url_dir}/{item['filename']}"
         with requests.get(csv_url, stream=True) as r:
             lines = (line.decode("utf-8") for line in r.iter_lines())
             reader = csv.DictReader(lines)
             csv_data = [x for x in reader]
-        data[item["name"]] = csv_data
-    print(data)
+        data[key] = csv_data
     return data
