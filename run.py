@@ -36,6 +36,7 @@ def main():
 
     # clean and filter
     data = clean(data, dataIndex, "Dauphin")
+    print(data)
     quit()
 
     # Create altair graphic

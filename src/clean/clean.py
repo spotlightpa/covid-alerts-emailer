@@ -3,7 +3,9 @@ from typing import Dict
 import numpy as np
 
 
-def clean(data: Dict[str, Dict], dataIndex: Dict[str, Dict], county: str):
+def clean(
+    data: Dict[str, Dict], dataIndex: Dict[str, Dict], county: str
+) -> Dict[str, pd.DataFrame]:
     """
     Converts an ordered dictionary into a Dict and cleans, parses and filters it based on rules supplied in dataIndex
 
@@ -11,7 +13,11 @@ def clean(data: Dict[str, Dict], dataIndex: Dict[str, Dict], county: str):
         data (dict): Dictionary of ordered dictionaries that contain data to clean/parse/filter
         dataIndex (dict): Dictionary of dictionaries that includes info about how to handle data.
         county (str): The county to filter the data for.
+
+    Return:
+        A dictionary of pandas dataframes with cleaned data.
     """
+    clean_data = {}
     county = county.lower()
     for key, item in data.items():
         clean_rules = dataIndex[key]["clean_rules"]
@@ -29,8 +35,6 @@ def clean(data: Dict[str, Dict], dataIndex: Dict[str, Dict], county: str):
         if clean_rules["addedSincePrevDay"]:
             df["addedSincePrevDay"] = df.total.diff()
             df.iloc[0, 2] = df.iloc[0, 1]  # default first val to same as total
-        print(df.dtypes)
-        print(key)
-        print(df)
+        clean_data[key] = df
 
-    return
+    return clean_data
