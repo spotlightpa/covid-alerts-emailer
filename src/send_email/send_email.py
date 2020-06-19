@@ -1,24 +1,18 @@
+import os
+
 import requests
 
 
-def send_email():
+def send_email(html_content: str, list_id: str, *, subject: str) -> None:
+    token = os.environ.get("SENDGRID_API_KEY")
     sender_id = 889752
-    list_id = "0334629e-463c-4d89-a931-5bb90c46e34f"
     headers = {"Authorization": f"Bearer {token}"}
-    n = 3
     data = {
-        "name": f"Test Message #{n}",
+        "name": subject,
         "send_to": {"list_ids": [list_id],},
         "email_config": {
-            "subject": f"Test Subject #{n}",
-            "html_content": """
-                <h1>Hello, World!</h1>
-                <p>this is a test message.</p>
-                <p>
-                    <a href="{{{unsubscribe}}}">Click here to unsubscribe.</a>
-                </p>
-                <p>lorem ipsum.</p>
-            """,
+            "subject": subject,
+            "html_content": html_content,
             "generate_plain_content": True,
             "suppression_group_id": 13641,
             "sender_id": sender_id,
