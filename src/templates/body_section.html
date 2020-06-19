@@ -1,0 +1,108 @@
+<table
+  border="0"
+  cellpadding="0"
+  cellspacing="0"
+  width="100%"
+  class="mcnTextBlock"
+  style="
+    min-width: 100%;
+    border-collapse: collapse;
+    mso-table-lspace: 0pt;
+    mso-table-rspace: 0pt;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+  "
+>
+  <tbody class="mcnTextBlockOuter">
+    <tr>
+      <td
+        valign="top"
+        class="mcnTextBlockInner"
+        style="
+          padding-top: 9px;
+          mso-line-height-rule: exactly;
+          -ms-text-size-adjust: 100%;
+          -webkit-text-size-adjust: 100%;
+        "
+      >
+        <!--[if mso]>
+      <table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+      <tr>
+      <![endif]-->
+
+        <!--[if mso]>
+      <td valign="top" width="600" style="width:600px;">
+      <![endif]-->
+        <table
+          align="left"
+          border="0"
+          cellpadding="0"
+          cellspacing="0"
+          style="
+            max-width: 100%;
+            min-width: 100%;
+            border-collapse: collapse;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+          "
+          width="100%"
+          class="mcnTextContentContainer"
+        >
+          <tbody>
+            <tr>
+              <td
+                valign="top"
+                class="mcnTextContent"
+                style="
+                  padding: 0px 18px 9px;
+                  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+                  line-height: 150%;
+                  mso-line-height-rule: exactly;
+                  -ms-text-size-adjust: 100%;
+                  -webkit-text-size-adjust: 100%;
+                  word-break: break-word;
+                  color: #444444;
+                  font-size: 16px;
+                  text-align: left;
+                "
+              >
+                <p
+                  style="
+                    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+                    line-height: 150%;
+                    margin: 10px 0;
+                    padding: 0;
+                    mso-line-height-rule: exactly;
+                    -ms-text-size-adjust: 100%;
+                    -webkit-text-size-adjust: 100%;
+                    color: #444444;
+                    font-size: 16px;
+                    text-align: left;
+                  "
+                >
+                  <!-- SECTION TEXT-->
+                  {{ section.title }}
+                  {% if section.image %}
+                    <img alt="My Image" src="data:image/svg+xml;base64,{{section.image}}"/>
+                  {% endif %}
+                  {{ section.content }}
+                  <!-- END SECTION TEXT-->
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!--[if mso]>
+      </td>
+      <![endif]-->
+
+        <!--[if mso]>
+      </tr>
+      </table>
+      <![endif]-->
+      </td>
+    </tr>
+  </tbody>
+</table>

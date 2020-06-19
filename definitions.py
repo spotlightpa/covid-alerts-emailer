@@ -16,3 +16,4 @@ DIR_DATA = ROOT_DIR / "data"
 # PATHS
 PATH_LOGS_CONFIG = DIR_LOGS_CONFIG / "logging.yaml"
 PATH_LOGS_CONFIG_TEST = DIR_LOGS_CONFIG / "logging_test.yaml"
+PATH_OUTPUT_HTML = DIR_DATA / "newsletter.html"
