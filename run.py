@@ -1,14 +1,10 @@
 import os
 
-from definitions import DIR_DATA, PATH_OUTPUT_HTML
+from definitions import PATH_OUTPUT_HTML, DIR_TEMPLATES
 from src.gen_chart.gen_chart import gen_chart
 from src.gen_html.gen_html import gen_html
-from src.helper.encode import encode_str_base64
 from src.init.init_program import init_program
-import altair as alt
-from vega_datasets import data
-from altair_saver import save
-import requests
+from src.fetch.fetch import fetch_data
 
 
 def main():
@@ -17,6 +13,14 @@ def main():
     init_program()
 
     # data
+    dir = "http://interactives.data.spotlightpa.org/2020/coronavirus/data/inquirer"
+    dataIndex = [
+        {"name": "cases", "filename": "pa-cases.csv"},
+        {"name": "deaths", "filename": "pa-deaths.csv"},
+        {"name": "tests", "filename": "pa-tests.csv"},
+    ]
+    data = fetch_data(dir, dataIndex)
+    quit()
 
     # Create altair graphic
     cars = data.cars()
@@ -41,7 +45,7 @@ def main():
         ],
     }
 
-    html = gen_html(templates_path="src/templates", template_vars=newsletter_vars)
+    html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
     with open(PATH_OUTPUT_HTML, "w") as fout:
         fout.writelines(html)
 

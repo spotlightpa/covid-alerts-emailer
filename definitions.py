@@ -12,6 +12,9 @@ DIR_LOGS = ROOT_DIR / "logs"  # main dir for log-related files
 DIR_LOGS_OUTPUT = DIR_LOGS / "output"
 DIR_LOGS_CONFIG = DIR_LOGS / "config"
 DIR_DATA = ROOT_DIR / "data"
+DIR_ASSETS = ROOT_DIR / "assets"
+DIR_SRC = ROOT_DIR / "src"
+DIR_TEMPLATES = DIR_SRC / "templates"
 
 # PATHS
 PATH_LOGS_CONFIG = DIR_LOGS_CONFIG / "logging.yaml"
