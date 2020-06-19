@@ -1,9 +1,8 @@
 import os
-
 import requests
 
 
-def send_email(html_content: str, list_id: str, *, subject: str) -> None:
+def send_email_list(html_content: str, list_id: str, *, subject: str) -> None:
     token = os.environ.get("SENDGRID_API_KEY")
     sender_id = 889752
     headers = {"Authorization": f"Bearer {token}"}

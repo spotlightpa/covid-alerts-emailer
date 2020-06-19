@@ -1,8 +1,10 @@
+import os
+
 from definitions import DIR_DATA, PATH_OUTPUT_HTML
+from src.gen_chart.gen_chart import gen_chart
 from src.gen_html.gen_html import gen_html
 from src.helper.encode import encode_str_base64
 from src.init.init_program import init_program
-
 import altair as alt
 from vega_datasets import data
 from altair_saver import save
@@ -14,22 +16,11 @@ def main():
     # init
     init_program()
 
-    # rget data
-
     # data
 
     # Create altair graphic
     cars = data.cars()
-    chart = (
-        alt.Chart(cars)
-        .mark_point()
-        .encode(x="Horsepower", y="Miles_per_Gallon", color="Origin",)
-    )
-    # chart.show()
-    path = DIR_DATA / "chart.svg"
-    # save(chart, str(path))
-    svg_str = save(chart, fmt="svg")
-    svg_encoded = encode_str_base64(svg_str)
+    svg_encoded = gen_chart(cars, y="Miles_per_Gallon", x="Horsepower")
 
     newsletter_vars = {
         "head": {"title": "The latest COVID-19 statistics from Spotlight PA"},
