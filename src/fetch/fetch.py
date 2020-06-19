@@ -23,5 +23,6 @@ def fetch_data(url_dir: str, dataIndex: List[Dict]) -> Dict[str, Dict]:
             lines = (line.decode("utf-8") for line in r.iter_lines())
             reader = csv.DictReader(lines)
             csv_data = [x for x in reader]
-        data[item.name] = csv_data
+        data[item["name"]] = csv_data
+    print(data)
     return data
