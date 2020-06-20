@@ -5,7 +5,8 @@ from src.gen_chart.gen_chart import gen_chart
 from src.gen_html.gen_html import gen_html
 from src.init.init_program import init_program
 from src.fetch.fetch import fetch_data
-from src.clean.clean import clean
+from src.process.process import process
+from vega_datasets import data as vega_data
 
 
 def main():
@@ -19,29 +20,32 @@ def main():
         "cases": {
             "name": "cases",
             "filename": "pa-cases.csv",
-            "clean_rules": {"addedSincePrevDay": True},
+            "clean_rules": {
+                "added_since_prev_day": True,
+                "moving_avg": "added_since_prev_day",
+            },
         },
         "deaths": {
             "name": "deaths",
             "filename": "pa-deaths.csv",
-            "clean_rules": {"addedSincePrevDay": True},
+            "clean_rules": {
+                "added_since_prev_day": True,
+                "moving_avg": "added_since_prev_day",
+            },
         },
-        "tests": {
-            "filename": "pa-tests.csv",
-            "clean_rules": {"addedSincePrevDay": True},
-        },
+        "tests": {"filename": "pa-tests.csv", "clean_rules": {"moving_avg": "total"},},
     }
 
     data = fetch_data(dir, dataIndex)
 
     # clean and filter
-    data = clean(data, dataIndex, "Dauphin")
-    print(data)
+    data = process(data, dataIndex, "Dauphin")
     quit()
 
     # Create altair graphic
-    cars = data.cars()
-    svg_encoded = gen_chart(cars, y="Miles_per_Gallon", x="Horsepower")
+    cars = vega_data.cars()
+
+    svg_encoded = gen_chart(data["cases"], y="added_since_prev_day", x="date")
 
     newsletter_vars = {
         "head": {"title": "The latest COVID-19 statistics from Spotlight PA"},
@@ -51,12 +55,12 @@ def main():
             "date": "July 24, 2020",
         },
         "section_list": [
+            {"title": "State overview", "content": "Map and stats for Pennsylvania",},
             {
-                "title": "State overview",
-                "content": "Map and stats for Pennsylvania",
+                "title": "Cases in Dauphin County",
+                "content": "Info about cases",
                 "image": svg_encoded,
             },
-            {"title": "Cases in Dauphin County", "content": "Info about cases"},
             {"title": "Deaths in Dauphin County", "content": "Info about deaths"},
             {"title": "Tests in Dauphin County", "content": "Info about tests"},
         ],

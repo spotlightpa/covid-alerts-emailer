@@ -20,7 +20,7 @@ def gen_chart(data, *, x: str, y: str, save_chart: bool = False) -> str:
         Str. Base 64 encoded string of SVG chart. For usage in HTML tags. Eg.
         <img alt="My Image" src="data:image/svg+xml;base64,<BASE64STRING>"/>
     """
-    chart = alt.Chart(data).mark_point().encode(x=x, y=y, color="Origin",)
+    chart = alt.Chart(data).mark_bar().encode(x=x, y=y,)
     # chart.show()
     if save_chart:
         export_path = str(DIR_DATA / "chart.svg")
