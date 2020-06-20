@@ -46,6 +46,7 @@ def process(
         if clean_rules.get("moving_avg", False):
             col_to_avg = clean_rules["moving_avg"]
             df["moving_avg"] = df[col_to_avg].rolling(window=7).mean()
+            df["moving_avg"] = df["moving_avg"].fillna(0).astype("int64")
 
         print(key)
         print(df)
