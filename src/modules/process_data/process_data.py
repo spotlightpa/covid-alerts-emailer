@@ -1,7 +1,6 @@
 import pandas as pd
 from typing import Dict
-import numpy as np
-
+import logging
 from definitions import DIR_DATA
 
 
@@ -27,6 +26,8 @@ def process_data(
     clean_data = {}
     county = county.lower()
     for key, item in data.items():
+        logging.info(f"Cleaning and processing '{key}' data...")
+
         clean_rules = dataIndex[key]["clean_rules"]
         df = pd.DataFrame(item)
         df.columns = map(str.lower, df.columns)  # set col names to lowercase
@@ -41,6 +42,9 @@ def process_data(
         # optional rules
         if clean_rules.get("added_since_prev_day", False):
             df["added_since_prev_day"] = df.total.diff()
+            df["added_since_prev_day"] = df["added_since_prev_day"].apply(
+                lambda x: x if x >= 0 else 0
+            )  # default value to 0 if its negative
             df.iloc[0, 2] = df.iloc[0, 1]  # default first val to same as total
 
         if clean_rules.get("moving_avg", False):
@@ -48,8 +52,6 @@ def process_data(
             df["moving_avg"] = df[col_to_avg].rolling(window=7).mean()
             df["moving_avg"] = df["moving_avg"].fillna(0).astype("int64")
 
-        print(key)
-        print(df)
         # optional save
         if save_pickle:
             export_path = DIR_DATA / f"{key}.pkl"
@@ -57,5 +59,6 @@ def process_data(
 
         # add to payload dict
         clean_data[key] = df
+        logging.info(f"...data processed")
 
     return clean_data
