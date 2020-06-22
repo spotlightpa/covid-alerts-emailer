@@ -1,11 +1,9 @@
-import os
-
 from definitions import PATH_OUTPUT_HTML, DIR_TEMPLATES
-from src.gen_chart.gen_chart import gen_chart
-from src.gen_html.gen_html import gen_html
-from src.init.init_program import init_program
-from src.fetch.fetch import fetch_data
-from src.process.process import process
+from src.modules.chart.gen_chart import gen_chart
+from src.modules.gen_html.gen_html import gen_html
+from src.modules.init.init_program import init_program
+from src.modules.fetch.fetch import fetch_data
+from src.modules.process.process import process
 from vega_datasets import data as vega_data
 
 
@@ -40,10 +38,6 @@ def main():
 
     # clean and filter
     data = process(data, dataIndex, "Dauphin")
-    quit()
-
-    # Create altair graphic
-    cars = vega_data.cars()
 
     svg_encoded = gen_chart(data["cases"], y="added_since_prev_day", x="date")
 

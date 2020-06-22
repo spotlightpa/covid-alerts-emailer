@@ -1,10 +1,6 @@
 from definitions import DIR_DATA
-import os
-from definitions import DIR_DATA, PATH_OUTPUT_HTML
-from src.helper.encode import encode_str_base64
-from src.init.init_program import init_program
+from src.modules.helper.encode import encode_str_base64
 import altair as alt
-from vega_datasets import data
 from altair_saver import save
 
 

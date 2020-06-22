@@ -2,9 +2,9 @@ import logging
 from dotenv import load_dotenv
 from definitions import DIR_DATA
 from logs.config.logging import logs_config
-from src.helper.misc import delete_dir_contents
-from src.helper.time import utc_now
-from src.init.pandas_opts import pandas_opts
+from src.modules.helper.misc import delete_dir_contents
+from src.modules.helper.time import utc_now
+from src.modules.init.pandas_opts import pandas_opts
 
 
 def init_program():
@@ -15,7 +15,7 @@ def init_program():
     program_start_time = utc_now()
     timezone = program_start_time.tzinfo
     logs_config()
-    logging.info(f'Begin program run: {program_start_time} ({timezone} time)')
+    logging.info(f"Begin program run: {program_start_time} ({timezone} time)")
 
     # create or clean download dir
     if DIR_DATA.is_dir():
