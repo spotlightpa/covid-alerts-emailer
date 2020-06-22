@@ -5,7 +5,7 @@ import numpy as np
 from definitions import DIR_DATA
 
 
-def process(
+def process_data(
     data: Dict[str, Dict],
     dataIndex: Dict[str, Dict],
     county: str,

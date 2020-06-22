@@ -1,10 +1,12 @@
 from definitions import PATH_OUTPUT_HTML, DIR_TEMPLATES
-from src.modules.chart.gen_chart import gen_chart
+from src.modules.gen_chart.daily_and_avg import daily_and_avg
+from src.modules.gen_chart.themes import spotlight
 from src.modules.gen_html.gen_html import gen_html
 from src.modules.init.init_program import init_program
 from src.modules.fetch.fetch import fetch_data
-from src.modules.process.process import process
+from src.modules.process_data.process_data import process_data
 from vega_datasets import data as vega_data
+import altair as alt
 
 
 def main():
@@ -37,9 +39,12 @@ def main():
     data = fetch_data(dir, dataIndex)
 
     # clean and filter
-    data = process(data, dataIndex, "Dauphin")
+    data = process_data(data, dataIndex, "Dauphin")
 
-    svg_encoded = gen_chart(data["cases"], y="added_since_prev_day", x="date")
+    # create chart
+    alt.themes.register("spotlight", spotlight)
+    alt.themes.enable("spotlight")
+    svg_encoded = daily_and_avg(data["cases"])
 
     newsletter_vars = {
         "head": {"title": "The latest COVID-19 statistics from Spotlight PA"},
