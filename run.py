@@ -1,12 +1,13 @@
-from definitions import PATH_OUTPUT_HTML, DIR_TEMPLATES
+from definitions import PATH_OUTPUT_HTML, DIR_TEMPLATES, PATH_DATA_INDEX
 from src.modules.gen_chart.daily_and_avg import daily_and_avg
 from src.modules.gen_chart.themes import spotlight
 from src.modules.gen_html.gen_html import gen_html
 from src.modules.init.init_program import init_program
 from src.modules.fetch.fetch import fetch_data
 from src.modules.process_data.process_data import process_data
-from vega_datasets import data as vega_data
 import altair as alt
+import json
+import logging
 
 
 def main():
@@ -15,36 +16,33 @@ def main():
     init_program()
 
     # fetch
+    with open(PATH_DATA_INDEX) as f:
+        data_index = json.load(f)
     dir = "http://interactives.data.spotlightpa.org/2020/coronavirus/data/inquirer"
-    dataIndex = {
-        "cases": {
-            "name": "cases",
-            "filename": "pa-cases.csv",
-            "clean_rules": {
-                "added_since_prev_day": True,
-                "moving_avg": "added_since_prev_day",
-            },
-        },
-        "deaths": {
-            "name": "deaths",
-            "filename": "pa-deaths.csv",
-            "clean_rules": {
-                "added_since_prev_day": True,
-                "moving_avg": "added_since_prev_day",
-            },
-        },
-        "tests": {"filename": "pa-tests.csv", "clean_rules": {"moving_avg": "total"},},
-    }
-
-    data = fetch_data(dir, dataIndex)
+    data = fetch_data(dir, data_index)
 
     # clean and filter
-    data = process_data(data, dataIndex, "Dauphin")
+    county = "dauphin"
+    data = process_data(data, data_index, county)
 
-    # create chart
-    alt.themes.register("spotlight", spotlight)
-    alt.themes.enable("spotlight")
-    svg_encoded = daily_and_avg(data["cases"])
+    # create email payload
+    county_info = []
+    for key, item in data_index.items():
+        logging.info(f"Creating payload for: {key}")
+
+        # create chart
+        alt.themes.register("spotlight", spotlight)
+        alt.themes.enable("spotlight")
+        svg_encoded = daily_and_avg(key, data[key], save_chart=True)
+
+        # add to email payload
+        county_info.append(
+            {
+                "title": f"{key.title()} in {county.title()} County",
+                "content": f"Info about {key.title()}",
+                "image": svg_encoded,
+            }
+        )
 
     newsletter_vars = {
         "head": {"title": "The latest COVID-19 statistics from Spotlight PA"},
@@ -53,16 +51,7 @@ def main():
             "tagline": "The latest coronavirus statistics on Dauphin County",
             "date": "July 24, 2020",
         },
-        "section_list": [
-            {"title": "State overview", "content": "Map and stats for Pennsylvania",},
-            {
-                "title": "Cases in Dauphin County",
-                "content": "Info about cases",
-                "image": svg_encoded,
-            },
-            {"title": "Deaths in Dauphin County", "content": "Info about deaths"},
-            {"title": "Tests in Dauphin County", "content": "Info about tests"},
-        ],
+        "section_list": county_info,
     }
 
     html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)

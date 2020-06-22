@@ -1,0 +1,24 @@
+{
+    "cases": {
+        "name": "cases",
+        "filename": "pa-cases.csv",
+        "clean_rules": {
+            "added_since_prev_day": true,
+            "moving_avg": "added_since_prev_day"
+        }
+    },
+    "deaths": {
+        "name": "deaths",
+        "filename": "pa-deaths.csv",
+        "clean_rules": {
+            "added_since_prev_day": true,
+            "moving_avg": "added_since_prev_day"
+        }
+    },
+    "tests":
+    {"filename": "pa-tests.csv",
+      "clean_rules": {
+        "added_since_prev_day": true,
+        "moving_avg": "added_since_prev_day"
+      }}
+}
