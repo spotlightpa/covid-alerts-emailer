@@ -3,11 +3,12 @@ from src.modules.helper.encode import encode_str_base64
 import altair as alt
 from altair_saver import save
 import logging
+import pandas as pd
 
 
 def daily_and_avg(
     data_type: str,
-    data,
+    df: pd.DataFrame,
     *,
     fmt: str = "svg",
     save_chart: bool = False,
@@ -18,9 +19,12 @@ def daily_and_avg(
     Creates a bar and line chart, returns a string of the chart encoded in base64. Default image format is svg.
 
     Args:
-        data (): Data for chart.
+        data_type (str): Data for chart.
+        df (pd.DataFrame): pandas dataframe for chart.
         fmt (str): File format to return encoded string in. Defaults to svg.
-        save_chart (bool): If true, file will be saved. Defaults to false.
+        save_chart (bool) OPTIONAL:  If true, file will be saved. Defaults to false.
+        line_color (str) OPTIONAL:  Color for chart line.
+        line_color (str) OPTIONAL:  Color for chart bars.
 
     Return:
         Str: Base 64 encoded string of SVG chart. For usage in HTML tags. Eg.
@@ -28,10 +32,10 @@ def daily_and_avg(
     """
     logging.info("Creating daily and moving avg chart...")
     legend_title_1 = f"New daily {data_type}"
-    data[legend_title_1] = ""
-    data["7 day average"] = ""
+    df[legend_title_1] = ""
+    df["7 day average"] = ""
     bars = (
-        alt.Chart(data)
+        alt.Chart(df)
         .mark_bar()
         .encode(
             x="date",
@@ -41,7 +45,7 @@ def daily_and_avg(
         )
     )
     lines = (
-        alt.Chart(data)
+        alt.Chart(df)
         .mark_line()
         .encode(
             shape="7 day average",
