@@ -13,7 +13,7 @@ from src.modules.process_data.process_data import process_data
 import altair as alt
 import json
 import logging
-
+from assets.data_index import data_index
 from src.modules.send_email.send_email_list import send_email_list
 
 
@@ -23,8 +23,6 @@ def main():
     init_program()
 
     # fetch
-    with open(PATH_DATA_INDEX) as f:
-        data_index = json.load(f)
     with open(PATH_DATA_COUNTY_LIST) as f:
         counties = json.load(f)
     dir = "http://interactives.data.spotlightpa.org/2020/coronavirus/data/inquirer"
@@ -40,24 +38,25 @@ def main():
     for key, item in data_index.items():
         logging.info(f"Creating payload for: {key}")
 
-        # create chart
+        # create charts
         alt.themes.register("spotlight", spotlight)
         alt.themes.enable("spotlight")
-        svg_encoded = daily_and_avg(
-            data_type=key,
-            df=data[key],
-            save_chart=True,
-            fmt="png",
-            line_color=item["theme"]["colors"]["primary"],
-            bar_color=item["theme"]["colors"]["secondary"],
-        )
+        for chart in item["charts"]:
+            encoded_chart = chart(
+                data_type=key,
+                df=data[key],
+                save_chart=True,
+                fmt="svg",
+                line_color=item["theme"]["colors"]["primary"],
+                bar_color=item["theme"]["colors"]["secondary"],
+            )
 
         # add to email payload
         county_info.append(
             {
                 "title": f"{key.title()} in {county.title()} County",
                 "content": f"Info about {key.title()}",
-                "image": svg_encoded,
+                "image": encoded_chart,
             }
         )
 
