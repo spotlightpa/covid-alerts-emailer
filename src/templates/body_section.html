@@ -84,8 +84,8 @@
                 >
                   <!-- SECTION TEXT-->
                   {{ section.title }}
-                  {% if section.image %}
-                    <img alt="My Image" src="data:image/png;base64,{{section.image}}"/>
+                  {% if section.image_path %}
+                    <img alt="chart image" src="{{section.image_path}}"/>
                   {% endif %}
                   {{ section.content }}
                   <!-- END SECTION TEXT-->

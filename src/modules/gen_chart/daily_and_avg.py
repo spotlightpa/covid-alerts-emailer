@@ -58,6 +58,8 @@ def daily_and_avg(
     chart = chart.configure_point(size=0)
     logging.info("...chart created")
 
+    return chart
+
     if save_chart:
         logging.info("Saving chart to file...")
         export_path = str(DIR_DATA / f"{data_type}.{fmt}")
