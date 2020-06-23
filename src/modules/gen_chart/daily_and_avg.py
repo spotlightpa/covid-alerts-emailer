@@ -27,7 +27,7 @@ def daily_and_avg(
         line_color (str) OPTIONAL:  Color for chart bars.
 
     Return:
-        Str: Base 64 encoded string of SVG chart. For usage in HTML tags. Eg.
+        Str: Base 64 encoded string of SVG chart or base 64 encoded bytes of PNG. For usage in HTML tags. Eg.
         <img alt="My Image" src="data:image/svg+xml;base64,<BASE64STRING>"/>
     """
     logging.info("Creating daily and moving avg chart...")
@@ -55,19 +55,21 @@ def daily_and_avg(
         )
     )
     chart = bars + lines
-    chart = chart.configure_point(size=0).properties(
-        # title=f"{data_type} per day"
-    )
-
+    chart = chart.configure_point(size=0)
     logging.info("...chart created")
+
     if save_chart:
+        logging.info("Saving chart to file...")
         export_path = str(DIR_DATA / f"{data_type}.{fmt}")
         logging.info(f"Saving file as: {export_path}")
         save(chart, export_path)
+        logging.info("...saved")
 
+    # Return encoded image file
     chart_saved = save(chart, fmt=fmt)
-    print(type(chart_saved))
-    print(chart_saved)
-    chart_encoded = encode_bytes_as_base64(chart_saved)
+    if "svg" in fmt:
+        chart_encoded = encode_str_base64(chart_saved)
+    else:
+        chart_encoded = encode_bytes_as_base64(chart_saved)
 
     return chart_encoded
