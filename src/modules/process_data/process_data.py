@@ -47,6 +47,16 @@ def process_data(
             )  # default value to 0 if its negative
             df.iloc[0, 2] = df.iloc[0, 1]  # default first val to same as total
 
+        if clean_rules.get("set_first_non_zero_val_to_zero", False):
+            # If the first value is extreme, we may want to remove it. This rule sets the first
+            # non-zero number as a zero.
+            target_col = clean_rules["set_first_non_zero_val_to_zero"]
+            series_list = df[target_col].to_list()
+            first_nonzero_row = next(
+                idx for idx, val in enumerate(series_list) if val > 0
+            )
+            df.loc[df.index[first_nonzero_row], target_col] = 0
+
         if clean_rules.get("moving_avg", False):
             col_to_avg = clean_rules["moving_avg"]
             df["moving_avg"] = df[col_to_avg].rolling(window=7).mean()
