@@ -47,6 +47,7 @@ def main():
             data_type=key,
             df=data[key],
             save_chart=True,
+            fmt="png",
             line_color=item["theme"]["colors"]["primary"],
             bar_color=item["theme"]["colors"]["secondary"],
         )

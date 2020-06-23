@@ -1,5 +1,5 @@
 from definitions import DIR_DATA
-from src.modules.helper.encode import encode_str_base64
+from src.modules.helper.encode import encode_str_base64, encode_bytes_as_base64
 import altair as alt
 from altair_saver import save
 import logging
@@ -65,6 +65,9 @@ def daily_and_avg(
         logging.info(f"Saving file as: {export_path}")
         save(chart, export_path)
 
-    svg_str = save(chart, fmt=fmt)
-    svg_encoded = encode_str_base64(svg_str)
-    return svg_encoded
+    chart_saved = save(chart, fmt=fmt)
+    print(type(chart_saved))
+    print(chart_saved)
+    chart_encoded = encode_bytes_as_base64(chart_saved)
+
+    return chart_encoded
