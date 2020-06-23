@@ -24,6 +24,7 @@ def main():
     # clean and filter
     county = "carbon"
     data = process_data(data, data_index, county)
+    print(data)
 
     # create email payload
     county_info = []
@@ -35,7 +36,7 @@ def main():
         alt.themes.enable("spotlight")
         svg_encoded = daily_and_avg(
             data_type=key,
-            data=data[key],
+            df=data[key],
             save_chart=True,
             line_color=item["theme"]["colors"]["primary"],
             bar_color=item["theme"]["colors"]["secondary"],
