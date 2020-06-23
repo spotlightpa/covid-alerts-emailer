@@ -6,7 +6,13 @@ import logging
 
 
 def daily_and_avg(
-    data_type: str, data, *, fmt: str = "svg", save_chart: bool = False
+    data_type: str,
+    data,
+    *,
+    fmt: str = "svg",
+    save_chart: bool = False,
+    line_color: str = "#CC0000",
+    bar_color: str = "#F4D2D2",
 ) -> str:
     """
     Creates a bar and line chart, returns a string of the chart encoded in base64. Default image format is svg.
@@ -31,7 +37,7 @@ def daily_and_avg(
             x="date",
             y="added_since_prev_day",
             opacity=legend_title_1,
-            color=alt.value("#F4D2D2"),
+            color=alt.value(bar_color),
         )
     )
     lines = (
@@ -39,14 +45,14 @@ def daily_and_avg(
         .mark_line()
         .encode(
             shape="7 day average",
-            color=alt.value("#CC0000"),
+            color=alt.value(line_color),
             x=alt.X("date", axis=alt.Axis(title=None)),
-            y=alt.Y("moving_avg", axis=alt.Axis(title=None,)),
+            y=alt.Y("moving_avg", axis=alt.Axis(title=None)),
         )
     )
     chart = bars + lines
-    chart = chart.configure_point(size=0, color="red", filled=True).properties(
-        title=f"{data_type} per day"
+    chart = chart.configure_point(size=0).properties(
+        # title=f"{data_type} per day"
     )
 
     logging.info("...chart created")

@@ -22,7 +22,7 @@ def main():
     data = fetch_data(dir, data_index)
 
     # clean and filter
-    county = "dauphin"
+    county = "carbon"
     data = process_data(data, data_index, county)
 
     # create email payload
@@ -33,7 +33,13 @@ def main():
         # create chart
         alt.themes.register("spotlight", spotlight)
         alt.themes.enable("spotlight")
-        svg_encoded = daily_and_avg(key, data[key], save_chart=True)
+        svg_encoded = daily_and_avg(
+            data_type=key,
+            data=data[key],
+            save_chart=True,
+            line_color=item["theme"]["colors"]["primary"],
+            bar_color=item["theme"]["colors"]["secondary"],
+        )
 
         # add to email payload
         county_info.append(
@@ -48,7 +54,7 @@ def main():
         "head": {"title": "The latest COVID-19 statistics from Spotlight PA"},
         "hero": {
             "title": "COVID-19 Report",
-            "tagline": "The latest coronavirus statistics on Dauphin County",
+            "tagline": f"The latest coronavirus statistics on {county.title()} County",
             "date": "July 24, 2020",
         },
         "section_list": county_info,
