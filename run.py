@@ -1,4 +1,9 @@
-from definitions import PATH_OUTPUT_HTML, DIR_TEMPLATES, PATH_DATA_INDEX
+from definitions import (
+    PATH_OUTPUT_HTML,
+    DIR_TEMPLATES,
+    PATH_DATA_INDEX,
+    PATH_DATA_COUNTY_LIST,
+)
 from src.modules.gen_chart.daily_and_avg import daily_and_avg
 from src.modules.gen_chart.themes import spotlight
 from src.modules.gen_html.gen_html import gen_html
@@ -9,6 +14,8 @@ import altair as alt
 import json
 import logging
 
+from src.modules.send_email.send_email_list import send_email_list
+
 
 def main():
 
@@ -18,6 +25,8 @@ def main():
     # fetch
     with open(PATH_DATA_INDEX) as f:
         data_index = json.load(f)
+    with open(PATH_DATA_COUNTY_LIST) as f:
+        counties = json.load(f)
     dir = "http://interactives.data.spotlightpa.org/2020/coronavirus/data/inquirer"
     data = fetch_data(dir, data_index)
 
@@ -51,6 +60,7 @@ def main():
             }
         )
 
+    # Generate HTML
     newsletter_vars = {
         "head": {"title": "The latest COVID-19 statistics from Spotlight PA"},
         "hero": {
@@ -60,10 +70,14 @@ def main():
         },
         "section_list": county_info,
     }
-
     html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
     with open(PATH_OUTPUT_HTML, "w") as fout:
         fout.writelines(html)
+
+    # Send email
+    logging.info("Sending email...")
+    send_email_list(html, counties["42043"]["id"], subject="Test alert!")
+    logging.info("...email sent")
 
 
 if __name__ == "__main__":
