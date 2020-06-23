@@ -17,6 +17,7 @@ altair-viewer = "*"
 altair-saver = "*"
 selenium = "*"
 requests = "*"
+boto3 = "*"
 
 [requires]
 python_version = "3.6"
