@@ -1,6 +1,4 @@
-from jinja2 import Template
 from jinja2 import Environment, FileSystemLoader
-from definitions import DIR_DATA
 
 
 def gen_html(templates_path, template_vars):
