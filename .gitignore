@@ -2,6 +2,7 @@
 data/
 .idea/
 logs/output/
+.vscode
 
 ### gitignore Python template
 # Byte-compiled / optimized / DLL files
