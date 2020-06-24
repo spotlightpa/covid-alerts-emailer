@@ -47,7 +47,8 @@ def main():
         county = county_dict["name"]
         email_list_id = county_dict["id"]
         logging.info(f"Creating newsletter payload for {county}")
-        data = process_data(data, data_index, county)
+        county_clean = county.lower().replace(" county", "")
+        data = process_data(data, data_index, county=county_clean)
 
         # create email payload
         county_payload = []
@@ -105,9 +106,7 @@ def main():
                         domain=["positive", "negative"],
                         range_=[primary_color, secondary_color],
                     )
-                image_filename = (
-                    f"{county.lower().replace(' county','')}_{key}_{chart_type}.{fmt}"
-                )
+                image_filename = f"{county_clean}_{key}_{chart_type}.{fmt}"
                 image_path = DIR_DATA / image_filename
                 save(chart, str(image_path))
                 logging.info("...saved")
