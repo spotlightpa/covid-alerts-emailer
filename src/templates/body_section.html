@@ -83,11 +83,10 @@
                   "
                 >
                   <!-- SECTION TEXT-->
-                  {{ section.title }}
-                  {% if section.image_path %}
-                    <img alt="chart image" src="{{section.image_path}}"/>
-                  {% endif %}
-                  {{ section.content }}
+                <h3>{{ section.title }}</h3>
+                  {% for chart in section.charts %}
+                    {% include 'section_chart.html' %}
+                  {% endfor %}
                   <!-- END SECTION TEXT-->
                 </p>
               </td>

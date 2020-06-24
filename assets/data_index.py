@@ -9,7 +9,7 @@ data_index = {
             "added_since_prev_day": True,
             "moving_avg": "added_since_prev_day",
         },
-        "charts": [daily_and_avg],
+        "charts": [{"type": "daily_and_avg", "title": "Daily"}],
     },
     "deaths": {
         "name": "deaths",
@@ -19,7 +19,7 @@ data_index = {
             "added_since_prev_day": True,
             "moving_avg": "added_since_prev_day",
         },
-        "charts": [daily_and_avg],
+        "charts": [{"type": "daily_and_avg", "title": "Daily"}],
     },
     "tests": {
         "filename": "pa-tests.csv",
@@ -29,6 +29,9 @@ data_index = {
             "moving_avg": "added_since_prev_day",
             "set_first_non_zero_val_to_zero": "added_since_prev_day",
         },
-        "charts": [daily_and_avg],
+        "charts": [
+            {"type": "daily_and_avg", "title": "Daily"},
+            {"type": "stacked_area", "title": "Cumulative"},
+        ],
     },
 }
