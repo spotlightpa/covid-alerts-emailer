@@ -6,7 +6,7 @@ from definitions import DIR_DATA
 
 def process_data(
     data: Dict[str, Dict],
-    dataIndex: Dict[str, Dict],
+    data_index: Dict[str, Dict],
     county: str,
     *,
     save_pickle: bool = False,
@@ -16,7 +16,7 @@ def process_data(
 
     Args:
         data (dict): Dictionary of ordered dictionaries that contain data to clean/parse/filter
-        dataIndex (dict): Dictionary of dictionaries that includes info about how to handle data.
+        data_index (dict): Dictionary of dictionaries that includes info about how to handle data.
         county (str): The county to filter the data for.
         save_pickle (bool): Saves a pickle of the dataframe
 
@@ -24,11 +24,10 @@ def process_data(
         A dictionary of pandas dataframes with cleaned data.
     """
     clean_data = {}
-    county = county.lower()
     for key, item in data.items():
         logging.info(f"Cleaning and processing '{key}' data...")
 
-        clean_rules = dataIndex[key]["clean_rules"]
+        clean_rules = data_index[key]["clean_rules"]
         df = pd.DataFrame(item)
         df.columns = map(str.lower, df.columns)  # set col names to lowercase
 
