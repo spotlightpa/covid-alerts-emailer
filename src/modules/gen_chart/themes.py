@@ -9,6 +9,8 @@ def spotlight():
     labelFont = "Benton Gothic, sans-serif"
     labelFontSize = 11.5
     labelFontWeight = "normal"
+    legendFontSize = 16
+    legendFontWeight = "normal"
     font = "Benton Gothic, sans-serif"
 
     # Axes
@@ -68,15 +70,15 @@ def spotlight():
             },
             "legend": {
                 "labelColor": "black",
-                "labelFont": labelFont,
-                "labelFontSize": labelFontSize,
+                "labelFont": font,
+                "labelFontSize": legendFontSize,
                 "symbolType": "square",  # just 'cause
                 "symbolSize": 100,  # default
-                "titleFont": titleFont,
-                "titleFontSize": labelFontSize,
-                "titleFontWeight": labelFontWeight,
+                "titleFont": font,
+                "titleFontSize": legendFontSize,
+                "titleFontWeight": legendFontWeight,
                 # "orientation": "vertical",
-                # "orient": "top",
+                "orient": "top",
                 "padding": 0,
                 # "title": "",  # set it to no-title by default
             },
