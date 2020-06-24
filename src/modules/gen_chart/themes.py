@@ -17,6 +17,7 @@ def spotlight():
     return {
         "width": 600,
         "height": 380,
+        "autosize": {"type": "fit", "contains": "padding"},
         "config": {
             "title": {
                 "fontSize": titleFontSize,

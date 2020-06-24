@@ -47,7 +47,7 @@ def daily_and_avg(
         )
     )
     chart = bars + lines
-    chart = chart.configure_point(size=0)
+    chart = chart.configure_point(size=0)  # .properties(width=400, height=600)
     logging.info("...chart created")
 
     return chart

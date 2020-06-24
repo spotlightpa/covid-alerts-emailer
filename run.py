@@ -140,6 +140,7 @@ def main():
     copy_to_s3(PATH_OUTPUT_HTML, bucket_name, bucket_dest_dir, content_type="text/html")
 
     # Send email
+    # quit()
     logging.info("Sending email...")
     send_email_list(html, counties["42043"]["id"], subject="Test alert!")
     logging.info("...email sent")
