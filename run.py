@@ -124,6 +124,8 @@ def main():
     newsletter_vars = {
         "preview_text": "COVID-19 case trend information",
         "newsletter_browser_link": f"https://{bucket_name}/{bucket_dest_dir}/newsletter.html",
+        "unsubscribe_preferences_link": "{{{unsubscribe_preferences}}}",
+        "unsubscribe_link": "{{{unsubscribe}}}",
         "head": {"title": "The latest COVID-19 statistics from Spotlight PA"},
         "hero": {
             "title": "COVID-19 Report",
