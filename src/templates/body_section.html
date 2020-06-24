@@ -68,27 +68,9 @@
                   text-align: left;
                 "
               >
-                <p
-                  style="
-                    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-                    line-height: 150%;
-                    margin: 10px 0;
-                    padding: 0;
-                    mso-line-height-rule: exactly;
-                    -ms-text-size-adjust: 100%;
-                    -webkit-text-size-adjust: 100%;
-                    color: #444444;
-                    font-size: 16px;
-                    text-align: left;
-                  "
-                >
-                  <!-- SECTION TEXT-->
-                <h3>{{ section.title }}</h3>
-                  {% for chart in section.charts %}
-                    {% include 'section_chart.html' %}
-                  {% endfor %}
-                  <!-- END SECTION TEXT-->
-                </p>
+                <!-- SECTION TEXT-->
+                {% block content %}{% endblock %}
+                <!-- END SECTION TEXT-->
               </td>
             </tr>
           </tbody>

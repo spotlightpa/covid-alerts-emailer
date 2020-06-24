@@ -63,8 +63,9 @@
             "
           >
             <!-- BODY CONTAINER -->
+            {% include 'body_section_welcome.html' %}
             {% for section in sections %}
-              {% include 'body_section.html' %}
+              {% include 'body_section_charts.html' %}
             {% endfor %}
             <!-- END BODY CONTAINER -->
           </td>
@@ -72,9 +73,9 @@
       </tbody>
     </table>
     <!--[if (gte mso 9)|(IE)]>
-                      </td>
-                      </tr>
-                      </table>
-                      <![endif]-->
+      </td>
+      </tr>
+      </table>
+      <![endif]-->
   </td>
 </tr>
