@@ -112,6 +112,20 @@ def main():
         # Generate HTML
         subject = f"COVID-19 Report: {county}"
         newsletter_vars = {
+            "stats_pa": {
+                "title": "Pennsylvania",
+                "stats_items": [
+                    {"label": "cases", "value": "83,770"},
+                    {"label": "deaths", "value": "6,000"},
+                ],
+            },
+            "stats_county": {
+                "title": f"{county}",
+                "stats_items": [
+                    {"label": "cases", "value": "4,000"},
+                    {"label": "deaths", "value": "160"},
+                ],
+            },
             "preview_text": f"Here are the latest stats on cases, deaths, and testing in {county}",
             "newsletter_browser_link": f"https://{bucket_name}/{bucket_dest_dir}/newsletter.html",
             "unsubscribe_preferences_link": "{{{unsubscribe_preferences}}}",
