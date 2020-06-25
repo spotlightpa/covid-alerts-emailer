@@ -14,8 +14,8 @@ data_index = {
                 "type": "daily_and_avg",
                 "title": "Daily",
                 "legend": [
-                    {"label": "Daily cases", "color": "#CCCEE5"},
-                    {"label": "7 day avg", "color": "#1D204E"},
+                    {"label": "Daily cases", "color": "#F4D2D2"},
+                    {"label": "7 day avg", "color": "#CC0000"},
                 ],
             }
         ],
