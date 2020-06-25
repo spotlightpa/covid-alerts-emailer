@@ -16,6 +16,7 @@ from src.modules.helper.time import est_now_formatted_brief
 from src.modules.init.init_program import init_program
 from src.modules.fetch.fetch import fetch_data
 from src.modules.process_data.helper.stack_df import stack_df
+from src.modules.process_data.process_cumulative_tests import process_cumulative_tests
 from src.modules.process_data.process_data import process_data
 from assets.data_index import data_index
 from src.modules.s3.copy_to_s3 import copy_to_s3
@@ -62,6 +63,7 @@ def main():
             for chart_obj in item["charts"]:
                 chart_type = chart_obj["type"]
                 chart_title = chart_obj["title"]
+                chart_legend = chart_obj["legend"]
                 fmt = "png"
                 content_type = "image/png"
                 primary_color = item["theme"]["colors"]["primary"]
@@ -74,30 +76,7 @@ def main():
                         bar_color=secondary_color,
                     )
                 elif "stacked_area" in chart_type:
-                    df_cases = data["cases"]
-                    df_tests = data["tests"]
-                    df_cases = df_cases[["date", "total"]]
-                    df_tests = df_tests[["date", "total"]]
-                    df_tests = df_tests[df_tests["total"] > 0]
-                    # We merge data to ensure that we're using a common date range
-                    df = df_cases.merge(
-                        df_tests,
-                        left_on="date",
-                        right_on="date",
-                        how="inner",
-                        suffixes=("_cases", "_tests"),
-                    )
-                    df["negative"] = df["total_tests"] - df["total_cases"]
-                    print("Merged df", df)
-                    df = df.rename(columns={"total_cases": "positive"})
-                    df = stack_df(
-                        df,
-                        xAxisCol="date",
-                        stackCols=["positive", "negative"],
-                        yAxisLabel="count",
-                        categoryLabel="data_type",
-                    )
-                    print("Stacked df", df)
+                    df = process_cumulative_tests(data["cases"], data["tests"])
                     chart = stacked_area(
                         df,
                         x_axis_col="date",
@@ -119,6 +98,7 @@ def main():
                 chart_payload.append(
                     {
                         "title": f"{chart_title}",
+                        "legend": chart_legend,
                         "image_path": f"https://{bucket_name}/{bucket_dest_dir}/{image_filename}",
                         "description": f"Info about {key.title()} {chart_title} chart for {county}",
                     }

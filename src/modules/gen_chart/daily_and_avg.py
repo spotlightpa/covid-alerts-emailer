@@ -23,16 +23,16 @@ def daily_and_avg(
         Altair chart instance.
     """
     logging.info("Creating daily and moving avg chart...")
-    legend_title_1 = f"New daily {data_type}"
-    df[legend_title_1] = ""
-    df["7 day average"] = ""
+    # legend_title_1 = f"New daily {data_type}"
+    # df[legend_title_1] = ""
+    # df["7 day average"] = ""
     bars = (
         alt.Chart(df)
         .mark_bar()
         .encode(
             x="date",
             y="added_since_prev_day",
-            opacity=legend_title_1,
+            # opacity=legend_title_1,
             color=alt.value(bar_color),
         )
     )
@@ -40,7 +40,7 @@ def daily_and_avg(
         alt.Chart(df)
         .mark_line()
         .encode(
-            shape="7 day average",
+            # shape="7 day average",
             color=alt.value(line_color),
             x=alt.X("date", axis=alt.Axis(title=None)),
             y=alt.Y("moving_avg", axis=alt.Axis(title=None)),

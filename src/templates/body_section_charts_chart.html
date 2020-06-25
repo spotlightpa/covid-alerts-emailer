@@ -1,0 +1,1 @@
+<div>    {{ chart.title }}    <div class="chart__legend-container">        {% for legend_item in chart.legend %}            {% include 'body_section_charts_chart_legend-item.html' %}        {% endfor %}    </div>    <img alt="chart image" src="{{ chart.image_path }}" class="chartImage"/>    {{ chart.description }}</div>

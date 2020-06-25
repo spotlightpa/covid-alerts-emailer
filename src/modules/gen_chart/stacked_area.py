@@ -38,7 +38,9 @@ def stacked_area(
         .encode(
             x=x_axis_col,
             y=alt.Y(y_axis_col, stack=True),
-            color=alt.Color(category_col, scale=alt.Scale(domain=domain, range=range_)),
+            color=alt.Color(
+                category_col, scale=alt.Scale(domain=domain, range=range_), legend=None
+            ),
         )
     )
     return chart
