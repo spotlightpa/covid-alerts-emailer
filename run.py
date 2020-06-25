@@ -97,7 +97,7 @@ def main():
 
                 chart_payload.append(
                     {
-                        "title": f"{chart_title}",
+                        "title": "",
                         "legend": chart_legend,
                         "image_path": f"https://{bucket_name}/{bucket_dest_dir}/{image_filename}",
                         "description": f"Info about {key.title()} {chart_title} chart for {county}",
