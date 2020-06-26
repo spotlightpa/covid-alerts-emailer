@@ -24,6 +24,7 @@ from src.modules.process_data.process_data import process_data
 from assets.data_index import data_index
 from src.modules.process_data.process_stats import process_stats
 from src.modules.s3.copy_to_s3 import copy_to_s3
+from src.modules.send_email.count_subscribers import count_subscribers
 from src.modules.send_email.send_email_list import send_email_list
 
 
@@ -54,8 +55,17 @@ def main():
     # loop over counties and get charts + add newsletter text
     for fips, county_dict in test_counties.items():
         county = county_dict["name"]
-        logging.info(f"Creating newsletter payload for {county}")
         email_list_id = county_dict["id"]
+        subscriber_count = count_subscribers(email_list_id)
+        if subscriber_count == 0:
+            logging.info(
+                f"No subscribers in {county} email list, moving on to next county..."
+            )
+            continue
+        logging.info(
+            f"Creating newsletter payload for {county}, which has {subscriber_count} subscribers."
+        )
+
         county_clean = county.lower().replace(" county", "")
         county_data = process_data(data, data_index, county=county_clean)
         county_stats = process_stats(county_data)
@@ -169,6 +179,14 @@ def main():
                     "date": est_now_formatted_brief(),
                 },
                 "sections": county_payload,
+                "footnote": {
+                    "sources": "Pa. Department of Health data collected daily by Spotlight PA/the Philadelphia "
+                    "Inquirer.",
+                    "note": "Case totals include confirmed and probable cases. Note that data reporting tends to "
+                    "spike during the middle of the week and tail-off on the weekends. Similarly, "
+                    "sometimes the department revises it data, causing irregular patterns in its daily "
+                    "reported figures.",
+                },
             }
             html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
             with open(PATH_OUTPUT_HTML, "w") as fout:
