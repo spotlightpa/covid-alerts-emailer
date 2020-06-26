@@ -36,8 +36,8 @@ def copy_to_s3(
             raise
 
         # GET ENV VARS
-        keyID = os.environ.get("KEY_ID")
-        sKeyID = os.environ.get("SECRET_KEY_ID")
+        keyID = os.environ.get("AWS_KEY_ID")
+        sKeyID = os.environ.get("AWS_SECRET_KEY_ID")
         source_path = str(local_file_path.resolve())
         destination_path = f"{destination_dir}/{filename}"
 
