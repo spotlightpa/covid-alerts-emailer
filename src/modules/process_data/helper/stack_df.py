@@ -39,7 +39,6 @@ def stack_df(
         categoryLabel (str) OPTIONAL: A way of describing the types of data in the stackCols. Defaults to 'category'
 
     """
-    print(df)
     new_df = pd.DataFrame()
     for col in stackCols:
         df_stack = df[[xAxisCol, col]]
