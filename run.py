@@ -31,6 +31,10 @@ from src.modules.send_email.send_email_list import send_email_list
 def main():
 
     test_counties = {
+        "42053": {
+            "id": "84912f53-a7c7-46ed-ba80-10d4a07e9d48",
+            "name": "Forest County",
+        },
         "42043": {
             "id": "0724edae-40a6-48e6-8330-cc06b3c67ede",
             "name": "Dauphin County",
@@ -196,7 +200,7 @@ def main():
             )
 
             # Send email
-            # quit()
+            quit()
             logging.info(f"Sending email for {county}...")
             send_email_list(html, email_list_id, subject=subject)
             logging.info("...email sent")
