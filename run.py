@@ -7,8 +7,12 @@ from definitions import (
     DIR_TEMPLATES,
     PATH_COUNTY_LIST,
     DIR_DATA,
+    PATH_PA_GEOJSON,
+    PATH_PA_POP,
+    PATH_OUTPUT_GEOJSON,
 )
 from src.modules.gen_chart.daily_and_avg import daily_and_avg
+from src.modules.gen_chart.map_choropleth import map_choropleth
 from src.modules.gen_chart.stacked_area import stacked_area
 from src.modules.gen_chart.themes import spotlight
 from src.modules.gen_desc.desc_area_tests import desc_area_tests
@@ -20,7 +24,7 @@ from src.modules.fetch.fetch import fetch_data
 from src.modules.process_data.process_cumulative_tests import process_cumulative_tests
 from src.modules.process_data.process_data import process_data
 from assets.data_index import data_index
-from src.modules.process_data.process_neighbors import process_neighbors
+from src.modules.process_data.process_neighbors import process_geo
 from src.modules.process_data.process_stats import process_stats
 from src.modules.s3.copy_to_s3 import copy_to_s3
 from src.modules.send_email.count_subscribers import count_subscribers
@@ -54,9 +58,16 @@ def main():
     # clean and filter
     data_state = process_data(data, data_index, county="total")
     state_stats = process_stats(data_state)
-    neighbors = process_neighbors(data_state)
+    print(data)
     quit()
-
+    gdf_pa = process_geo(
+        PATH_PA_GEOJSON,
+        path_pop_file=PATH_PA_POP,
+        path_output_geojson=PATH_OUTPUT_GEOJSON,
+        data_state=data_state,
+    )
+    map_choropleth(gdf_pa)
+    quit()
     # loop over counties and get charts + add newsletter text
     for fips, county_dict in test_counties.items():
         county = county_dict["name"]

@@ -21,6 +21,7 @@ pytest = "*"
 shapely = "*"
 geopandas = "*"
 altair-saver = "*"
+gpdvega = "*"
 
 [requires]
 python_version = "3.6"
