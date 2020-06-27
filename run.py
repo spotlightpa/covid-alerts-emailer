@@ -5,7 +5,7 @@ from altair_saver import save
 from definitions import (
     PATH_OUTPUT_HTML,
     DIR_TEMPLATES,
-    PATH_DATA_COUNTY_LIST,
+    PATH_COUNTY_LIST,
     DIR_DATA,
 )
 from src.modules.gen_chart.daily_and_avg import daily_and_avg
@@ -20,6 +20,7 @@ from src.modules.fetch.fetch import fetch_data
 from src.modules.process_data.process_cumulative_tests import process_cumulative_tests
 from src.modules.process_data.process_data import process_data
 from assets.data_index import data_index
+from src.modules.process_data.process_neighbors import process_neighbors
 from src.modules.process_data.process_stats import process_stats
 from src.modules.s3.copy_to_s3 import copy_to_s3
 from src.modules.send_email.count_subscribers import count_subscribers
@@ -45,7 +46,7 @@ def main():
     bucket_dest_dir = "assets/covid-email-alerts/test"
 
     # fetch
-    with open(PATH_DATA_COUNTY_LIST) as f:
+    with open(PATH_COUNTY_LIST) as f:
         counties = json.load(f)
     dir = "http://interactives.data.spotlightpa.org/2020/coronavirus/data/inquirer"
     data = fetch_data(dir, data_index)
@@ -53,6 +54,8 @@ def main():
     # clean and filter
     data_state = process_data(data, data_index, county="total")
     state_stats = process_stats(data_state)
+    neighbors = process_neighbors(data_state)
+    quit()
 
     # loop over counties and get charts + add newsletter text
     for fips, county_dict in test_counties.items():
