@@ -14,11 +14,9 @@ from src.modules.gen_chart.themes import spotlight
 from src.modules.gen_desc.desc_area_tests import desc_area_tests
 from src.modules.gen_desc.desc_daily import desc_daily
 from src.modules.gen_html.gen_html import gen_html
-from src.modules.helper.formatters import format_commas
-from src.modules.helper.time import est_now_formatted_brief
+from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
 from src.modules.init.init_program import init_program
 from src.modules.fetch.fetch import fetch_data
-from src.modules.process_data.helper.stack_df import stack_df
 from src.modules.process_data.process_cumulative_tests import process_cumulative_tests
 from src.modules.process_data.process_data import process_data
 from assets.data_index import data_index
@@ -141,69 +139,30 @@ def main():
                 {"title": f"{data_type.title()} in {county}", "charts": chart_payload,}
             )
 
-            # Generate HTML
-            subject = f"COVID-19 Report: {county}"
-            newsletter_vars = {
-                "stats_pa": {
-                    "title": "Pennsylvania",
-                    "stats_items": [
-                        {
-                            "label": "cases",
-                            "value": format_commas(state_stats["cases"]),
-                        },
-                        {
-                            "label": "deaths",
-                            "value": format_commas(state_stats["deaths"]),
-                        },
-                    ],
-                },
-                "stats_county": {
-                    "title": f"{county}",
-                    "stats_items": [
-                        {
-                            "label": "cases",
-                            "value": format_commas(county_stats["cases"]),
-                        },
-                        {
-                            "label": "deaths",
-                            "value": format_commas(county_stats["deaths"]),
-                        },
-                    ],
-                },
-                "preview_text": f"Here are the latest stats on cases, deaths, and testing in {county}",
-                "newsletter_browser_link": f"https://{bucket_name}/{bucket_dest_dir}/newsletter.html",
-                "unsubscribe_preferences_link": "{{{unsubscribe_preferences}}}",
-                "unsubscribe_link": "{{{unsubscribe}}}",
-                "head": {
-                    "title": f"The latest COVID-19 statistics for {county} from Spotlight PA."
-                },
-                "hero": {
-                    "title": "COVID-19 Report",
-                    "tagline": f"The latest COVID-19 statistics for {county}.",
-                    "date": est_now_formatted_brief(),
-                },
-                "sections": county_payload,
-                "footnote": {
-                    "sources": "Pa. Department of Health data collected daily by Spotlight PA/the Philadelphia "
-                    "Inquirer.",
-                    "note": "Case totals include confirmed and probable cases. Note that data reporting tends to "
-                    "spike during the middle of the week and tail-off on the weekends. Similarly, "
-                    "sometimes the department revises it data, causing irregular patterns in its daily "
-                    "reported figures.",
-                },
-            }
-            html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
-            with open(PATH_OUTPUT_HTML, "w") as fout:
-                fout.writelines(html)
-            copy_to_s3(
-                PATH_OUTPUT_HTML, bucket_name, bucket_dest_dir, content_type="text/html"
-            )
+        # Generate HTML
+        subject = f"COVID-19 Report: {county}"
+        newsletter_browser_link = (
+            f"https://{bucket_name}/{bucket_dest_dir}/newsletter.html"
+        )
+        newsletter_vars = gen_jinja_vars(
+            county,
+            county_payload=county_payload,
+            newsletter_browser_link=newsletter_browser_link,
+            state_stats=state_stats,
+            county_stats=county_stats,
+        )
+        html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
+        with open(PATH_OUTPUT_HTML, "w") as fout:
+            fout.writelines(html)
+        copy_to_s3(
+            PATH_OUTPUT_HTML, bucket_name, bucket_dest_dir, content_type="text/html"
+        )
 
-            # Send email
-            quit()
-            logging.info(f"Sending email for {county}...")
-            send_email_list(html, email_list_id, subject=subject)
-            logging.info("...email sent")
+        # Send email
+        quit()
+        logging.info(f"Sending email for {county}...")
+        send_email_list(html, email_list_id, subject=subject)
+        logging.info("...email sent")
 
 
 if __name__ == "__main__":
