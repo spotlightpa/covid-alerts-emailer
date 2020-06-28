@@ -174,7 +174,6 @@ def main():
         )
 
         # Send email
-        quit()
         logging.info(f"Sending email for {county}...")
         send_email_list(html, email_list_id, subject=subject)
         logging.info("...email sent")
