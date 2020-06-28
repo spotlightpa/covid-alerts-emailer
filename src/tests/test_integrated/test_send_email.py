@@ -1,20 +1,23 @@
+import json
+
 import pytest
 from dotenv import load_dotenv
 
-from definitions import DIR_TEMPLATES
+from definitions import DIR_TEMPLATES, PATH_COUNTY_LIST
 from src.modules.gen_html.gen_html import gen_html
 from src.modules.send_email.send_email_list import send_email_list
 from src.tests.fixtures.newsletter_vars import gen_dummy_template_vars
-
+from assets.data_index import data_index
 
 def test_email_send():
     """
-    Test to generate HTML and send email.
+    Test that HTML is successfully generated and email sends.
     """
-    # load_dotenv()
-    county = "Dauphin"
+    with open(PATH_COUNTY_LIST) as f:
+        counties = json.load(f)
+    county = counties["42043"]["name"]
+    email_list_id = counties["42043"]["id"]
     newsletter_vars = gen_dummy_template_vars(county)
-    email_list_id = "0724edae-40a6-48e6-8330-cc06b3c67ede"
     print(newsletter_vars)
     try:
         html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
