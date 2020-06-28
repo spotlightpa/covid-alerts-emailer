@@ -17,10 +17,16 @@ def map_choropleth(gdf: geopandas.GeoDataFrame):
         .mark_geoshape()
         .project()
         .encode(
-            color="properties.cases_per_capita:Q",  # shorthand infer types as for regular pd.DataFrame
-            # tooltip="id:Q",  # GeoDataFrame.index is accessible as id
+            color=alt.Color(
+                "properties.cases_per_capita:Q", scale=alt.Scale(type="quantize", nice=True),
+            legend=alt.Legend(orient="top")
+            )
         )
-        .properties(width=500, height=300)
+        .properties(width=500, height=300).configure_view(
+             strokeWidth=0
+        )
     )
+    print(chart.to_dict())
+    print(chart)
     save(chart, str(DIR_DATA / "map.png"))
     return
