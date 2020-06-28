@@ -71,7 +71,7 @@ def spotlight():
             "legend": {
                 "labelColor": "black",
                 "labelFont": font,
-                "labelFontSize": legendFontSize,
+                "labelFontSize": labelFontSize,
                 "symbolType": "square",  # just 'cause
                 "symbolSize": 100,  # default
                 "titleFont": font,
