@@ -1,9 +1,10 @@
 import os
 import requests
-
+import logging
 
 def send_email_list(html_content: str, list_id: str, *, subject: str) -> None:
     token = os.environ.get("SENDGRID_API_KEY")
+    assert token is not None, "A SendGrid API key needs to be defined as an environment variable."
     sender_id = 889752
     headers = {"Authorization": f"Bearer {token}"}
     data = {
