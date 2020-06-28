@@ -51,6 +51,10 @@ def main():
     bucket_name = "interactives.data.spotlightpa.org"
     bucket_dest_dir = "assets/covid-email-alerts/test"
 
+    # enable chart themes
+    alt.themes.register("spotlight", spotlight)
+    alt.themes.enable("spotlight")
+
     # fetch
     with open(PATH_COUNTY_LIST) as f:
         counties = json.load(f)
@@ -94,8 +98,6 @@ def main():
             logging.info(f"Creating payload for: {data_type}")
 
             # create charts
-            alt.themes.register("spotlight", spotlight)
-            alt.themes.enable("spotlight")
             for chart_dict in data_index_dict["charts"]:
                 chart_type = chart_dict["type"]
                 chart_legend = chart_dict["legend"]

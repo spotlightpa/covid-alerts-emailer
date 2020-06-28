@@ -14,17 +14,18 @@ def map_choropleth(gdf: geopandas.GeoDataFrame):
                           format=alt.DataFormat(property='features', type='json'))
     chart = (
         alt.Chart(data)
-        .mark_geoshape()
+        .mark_geoshape(
+            strokeWidth=1, stroke="#fff",
+            # width=300,height=200
+            )
         .project()
         .encode(
             color=alt.Color(
                 "properties.cases_per_capita:Q", scale=alt.Scale(type="quantize", nice=True),
-            legend=alt.Legend(orient="top")
+            legend=alt.Legend(orient="top", title="Cases per 100,000 people", titleLimit=200)
             )
         )
-        .properties(width=500, height=300).configure_view(
-             strokeWidth=0
-        )
+        # .properties(width=580, height=380)
     )
     print(chart.to_dict())
     print(chart)
