@@ -22,6 +22,5 @@ def merge_geo(
             gdf[col_name] / gdf["population"]
         ) * 100000  # calculate rate per 100k people
 
-    print(gdf)
     logging.info("Data merged")
     return gdf
