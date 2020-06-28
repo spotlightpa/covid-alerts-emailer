@@ -56,3 +56,4 @@ def gen_dummy_template_vars(county):
         },
         "sections": county_payload,
     }
+    return newsletter_vars
