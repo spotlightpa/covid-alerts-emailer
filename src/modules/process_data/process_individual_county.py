@@ -4,15 +4,16 @@ import logging
 from definitions import DIR_DATA
 
 
-def process_data(
-    data: Dict[str, Dict],
+def process_individual_county(
+    data: Dict[str, pd.DataFrame],
     data_index: Dict[str, Dict],
     county: str,
     *,
     save_pickle: bool = False,
 ) -> Dict[str, pd.DataFrame]:
     """
-    Converts an ordered dictionary into a Dict and cleans, parses and filters it based on rules supplied in dataIndex
+    Takes a dict of pandas DataFrames and formats column names, filters based on specific county and processes
+    based on provided cleaning rules.
 
     Args:
         data (dict): Dictionary of ordered dictionaries that contain data to clean/parse/filter
@@ -23,22 +24,16 @@ def process_data(
     Return:
         A dictionary of pandas dataframes with cleaned data.
     """
-    clean_data = {}
-    for key, item in data.items():
-        logging.info(f"Cleaning and processing '{key}' data...")
+    processed_data = {}
+    for data_type, df in data.items():
+        logging.info(f"Cleaning and processing '{data_type}' data...")
 
-        clean_rules = data_index[key]["clean_rules"]
-        df = pd.DataFrame(item)
-        df.columns = map(str.lower, df.columns)  # set col names to lowercase
-
-        # set types
-        df["date"] = pd.to_datetime(df["date"])
-        df = df[["date", county]]
+        # clean county column name
         df = df.rename(columns={county: "total"})
-        df["total"] = df["total"].replace(r"^\s*$", 0, regex=True)
-        df = df.astype({"total": "int64"})
+        df = df[["date", "total"]]
 
         # optional rules
+        clean_rules = data_index[data_type]["clean_rules"]
         if clean_rules.get("added_since_prev_day", False):
             df["added_since_prev_day"] = df.total.diff()
             df["added_since_prev_day"] = df["added_since_prev_day"].apply(
@@ -63,11 +58,11 @@ def process_data(
 
         # optional save
         if save_pickle:
-            export_path = DIR_DATA / f"{key}.pkl"
+            export_path = DIR_DATA / f"{data_type}.pkl"
             df.to_pickle(export_path)
 
         # add to payload dict
-        clean_data[key] = df
+        processed_data[data_type] = df
         logging.info(f"...data processed")
 
-    return clean_data
+    return processed_data

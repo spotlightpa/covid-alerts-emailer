@@ -26,8 +26,10 @@ def process_geo(
     """
     logging.info("Processing geo data...")
     gdf = geopandas.read_file(path_geo_file)
+    # gdf["NAME"] = gdf["NAME"].str.lower()  # lower case to make merging easier
     if path_pop_file:
         df_pop = pd.read_csv(path_pop_file)
+        # df_pop["name"] = df_pop["name"].str.lower()  # lower case to make merging easier
         gdf = gdf.merge(df_pop, left_on="NAME", right_on="name", how="left")
         gdf["population"] = gdf["population"].astype(int)
     gdf["NEIGHBORS"] = None  # add NEIGHBORS column

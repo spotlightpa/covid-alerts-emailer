@@ -21,10 +21,12 @@ from src.modules.gen_html.gen_html import gen_html
 from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
 from src.modules.init.init_program import init_program
 from src.modules.fetch.fetch import fetch_data
+from src.modules.process_data.merge_geo import merge_geo
+from src.modules.process_data.process_clean import process_clean
 from src.modules.process_data.process_cumulative_tests import process_cumulative_tests
-from src.modules.process_data.process_data import process_data
+from src.modules.process_data.process_individual_county import process_individual_county
 from assets.data_index import data_index
-from src.modules.process_data.process_neighbors import process_geo
+from src.modules.process_data.process_geo import process_geo
 from src.modules.process_data.process_stats import process_stats
 from src.modules.s3.copy_to_s3 import copy_to_s3
 from src.modules.send_email.count_subscribers import count_subscribers
@@ -53,21 +55,18 @@ def main():
     with open(PATH_COUNTY_LIST) as f:
         counties = json.load(f)
     dir = "http://interactives.data.spotlightpa.org/2020/coronavirus/data/inquirer"
-    data = fetch_data(dir, data_index)
-
-    # clean and filter
-    data_state = process_data(data, data_index, county="total")
+    data_raw = fetch_data(dir, data_index)
+    # clean, filter, process
+    data_clean = process_clean(data_raw)
+    data_state = process_individual_county(data_clean, data_index, county="Total")
     state_stats = process_stats(data_state)
-    print(data)
-    quit()
     gdf_pa = process_geo(
         PATH_PA_GEOJSON,
         path_pop_file=PATH_PA_POP,
         path_output_geojson=PATH_OUTPUT_GEOJSON,
-        data_state=data_state,
     )
+    gdf_pa = merge_geo(gdf_pa, data_clean)
     map_choropleth(gdf_pa)
-    quit()
     # loop over counties and get charts + add newsletter text
     for fips, county_dict in test_counties.items():
         county = county_dict["name"]
@@ -82,8 +81,10 @@ def main():
             f"Creating newsletter payload for {county}, which has {subscriber_count} subscribers."
         )
 
-        county_clean = county.lower().replace(" county", "")
-        county_data = process_data(data, data_index, county=county_clean)
+        county_clean = county.replace(" County", "")
+        county_data = process_individual_county(
+            data_clean, data_index, county=county_clean
+        )
         county_stats = process_stats(county_data)
 
         # create email payload

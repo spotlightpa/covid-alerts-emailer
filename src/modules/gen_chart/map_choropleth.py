@@ -8,16 +8,15 @@ from definitions import DIR_DATA
 
 
 def map_choropleth(gdf):
-    print(gdf)
-    print(gdf.info())
-    gdf = gdf.drop(["id"], axis=1)
-    print(gdf)
+    gdf = gdf.drop(
+        ["id"], axis=1
+    )  # dropping ID col to avoid warning message from gpdvega/altair
     chart = (
         alt.Chart(gdf)
         .mark_geoshape()
         .project()
         .encode(
-            color="population",  # shorthand infer types as for regular pd.DataFrame
+            color="cases_per_capita",  # shorthand infer types as for regular pd.DataFrame
             # tooltip="id:Q",  # GeoDataFrame.index is accessible as id
         )
         .properties(width=500, height=300)
