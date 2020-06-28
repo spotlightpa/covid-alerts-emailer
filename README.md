@@ -16,3 +16,5 @@ An app that sends out emails to subscribers with updates on COVID-19 cases, deat
 dependencies. Run:
 
     `pipenv install`
+
+5. Create a .env file in the project root and add API keys and associated variables. Use .env.example as a template.
