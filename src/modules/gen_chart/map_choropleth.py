@@ -1,11 +1,19 @@
-import pandas as pd
 import geopandas
 import altair as alt
 from altair_saver import save
-from definitions import DIR_DATA
+from pathlib import Path
 
+def map_choropleth(gdf: geopandas.GeoDataFrame, path_output_file:Path) -> None:
+    """
+    Creates a choropleth map of covid data from a geopandas dataframe.
 
-def map_choropleth(gdf: geopandas.GeoDataFrame):
+    Args:
+        gdf (geopandas.GeoDataFrame): geodataframe of covid data.
+        path_output_file (Path): path to where file should be saved.
+
+    Returns:
+        None.
+    """
     gdf = gdf.drop(
         ["id"], axis=1
     )  # dropping ID col to avoid warning message from gpdvega/altair
@@ -29,5 +37,5 @@ def map_choropleth(gdf: geopandas.GeoDataFrame):
     )
     print(chart.to_dict())
     print(chart)
-    save(chart, str(DIR_DATA / "map.png"))
+    save(chart, str(path_output_file))
     return

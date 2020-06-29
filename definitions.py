@@ -15,6 +15,9 @@ DIR_DATA = ROOT_DIR / "data"
 DIR_ASSETS = ROOT_DIR / "assets"
 DIR_SRC = ROOT_DIR / "src"
 DIR_TEMPLATES = DIR_SRC / "templates"
+DIR_TESTS = DIR_SRC / "tests"
+DIR_FIXTURES = DIR_TESTS / "fixtures"
+DIR_TESTS_OUTPUT = DIR_TESTS / "output"
 
 # PATHS
 PATH_LOGS_CONFIG = DIR_LOGS_CONFIG / "logging.yaml"

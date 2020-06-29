@@ -70,7 +70,9 @@ def main():
         path_output_geojson=PATH_OUTPUT_GEOJSON,
     )
     gdf_pa = merge_geo(gdf_pa, data_clean)
-    map_choropleth(gdf_pa)
+    # test = gdf_pa.drop("NEIGHBORS", axis=1)
+    gdf_pa.to_file(DIR_DATA / "pa_geodata.geojson", driver='GeoJSON')
+    map_choropleth(gdf_pa, path_output_file=DIR_DATA/"map.png")
     # loop over counties and get charts + add newsletter text
     for fips, county_dict in test_counties.items():
         county = county_dict["name"]
