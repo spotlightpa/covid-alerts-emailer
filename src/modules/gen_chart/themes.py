@@ -3,15 +3,16 @@ import altair as alt
 
 def spotlight():
     # la times typography
-    titleFont = "Benton Gothic Bold, sans-serif"
+    font = "Helvetica"
+    titleFont = font
     titleFontSize = 22
     titleFontWeight = "normal"
-    labelFont = "Benton Gothic, sans-serif"
+    labelFont = font
     labelFontSize = 11.5
     labelFontWeight = "normal"
     legendFontSize = 16
     legendFontWeight = "normal"
-    font = "Benton Gothic, sans-serif"
+    # font = "Benton Gothic, sans-serif"
 
     # Axes
     axisColor = "#000000"
