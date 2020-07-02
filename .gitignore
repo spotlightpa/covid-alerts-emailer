@@ -4,6 +4,7 @@ data/
 logs/output/
 .vscode
 .pytest_cache
+tests/output/*
 
 ### gitignore Python template
 # Byte-compiled / optimized / DLL files
