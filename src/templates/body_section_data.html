@@ -1,7 +1,11 @@
 {% extends 'body_section.html' %}
 
 {% block content %}
-  <div class="section-data__title">{{ section.title }}</div>
+  <div class="section-data__title">
+    <span style="border-bottom: 3.5px solid {{ section.colors.primary }};">
+          {{ section.title }}
+    </span>
+  </div>
   <div>
     {% for chart in section.charts %}
       {% include 'body_section_data_chart.html' %}

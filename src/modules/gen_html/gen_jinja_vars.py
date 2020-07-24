@@ -36,7 +36,7 @@ def gen_jinja_vars(
             "title": "Weekly Coronavirus Update".upper(),
             "tagline": county_name.upper(),
         },
-        "welcome": f"{brief_date}:  Over the past two weeks, {county_name} has had XXX new cases and XXX new "
+        "section_welcome": f"{brief_date}:  Over the past two weeks, {county_name} has had XXX new cases and XXX new "
         f"deaths. Read on for more information about how cases, deaths, and tests are trending in "
         f"{county_name.replace(' County','')} and the surrounding area.",
         "sections_data": county_payload,

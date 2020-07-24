@@ -97,6 +97,8 @@ def main():
         for data_type, data_index_dict in data_index.items():
             chart_payload = []
             logging.info(f"Creating payload for: {data_type}")
+            primary_color = data_index_dict["theme"]["colors"]["primary"]
+            secondary_color = data_index_dict["theme"]["colors"]["secondary"]
 
             # create charts
             for chart_dict in data_index_dict["charts"]:
@@ -104,8 +106,6 @@ def main():
                 chart_desc = ""
                 fmt = "png"
                 content_type = "image/png"
-                primary_color = data_index_dict["theme"]["colors"]["primary"]
-                secondary_color = data_index_dict["theme"]["colors"]["secondary"]
                 if "daily_and_avg" in chart_type:
                     chart = daily_and_avg(
                         data_type=data_type,
@@ -168,7 +168,11 @@ def main():
 
             # add to email payload
             county_payload.append(
-                {"title": f"{data_type.upper()}", "charts": chart_payload,}
+                {
+                    "title": f"{data_type.upper()}",
+                    "charts": chart_payload,
+                    "colors": {"primary": primary_color, "secondary": secondary_color,},
+                }
             )
 
         # Generate HTML
@@ -187,7 +191,6 @@ def main():
         copy_to_s3(PATH_OUTPUT_HTML, AWS_BUCKET, AWS_DIR_TEST, content_type="text/html")
 
         # Send email
-        quit()
         logging.info(f"Sending email for {county_name}...")
         send_email_list(html, email_list_id, subject=subject)
         logging.info("...email sent")
