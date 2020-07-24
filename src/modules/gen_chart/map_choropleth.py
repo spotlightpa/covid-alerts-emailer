@@ -5,6 +5,7 @@ from pathlib import Path
 import logging
 from typing import List
 from src.modules.process_data.helper.convert_gfp_to_alt import convert_gfp_to_alt
+from colour import Color
 
 
 def map_choropleth(
@@ -12,7 +13,10 @@ def map_choropleth(
     color_field,
     *,
     highlight_polygon: str = "",
-    color_range: List[str] = ["#F4D2D2", "#EA9E9E", "#E06969", "#D63535", "#CC0000"],
+    min_color: str = "#F4D2D2",
+    max_color: str = "#CC0000",
+    color_steps: int = 5,
+    legend_title: str = None,
 ) -> alt.Chart:
     """
     Creates a choropleth map of covid data from a geopandas dataframe.
@@ -20,15 +24,25 @@ def map_choropleth(
     Args:
         gdf (geopandas.GeoDataFrame): geodataframe of covid data.
         color_field (str): Column from gdf that will be used for the choropleth map.
-       highlight_polygon (str, optional): Creates a border around a selected polygon to emphasise it.
-       color_range (List[str], optional): List of hex codes for choropleth colors
+        highlight_polygon (str, optional): Creates a border around a selected polygon to emphasise it.
+        min_color (str, optional): HSL, RGB, HEX, WEB of min color of choropleth range. Defaults to
+            "#F4D2D2"
+        max_color (str, optional): HSL, RGB, HEX, WEB of  max color of choropleth range. Defaults to "#CC0000"
+        color_steps (int, optional): Number of steps between min and max for final choropleth color range.
+            Defaults to 5.
+        legend_title (str, optional): Title for legend. Defaults to color_field value.
+
     Returns:
         Altair chart instance.
     """
+
     gdf = gdf.drop(
         ["id"], axis=1
     )  # dropping ID col to avoid warning message from gpdvega/altair
     data = convert_gfp_to_alt(gdf)
+    color_range = list(Color(min_color).range_to(Color(max_color), color_steps))
+    color_range = [x.hex for x in color_range]
+    legend_title = color_field if not legend_title else legend_title
 
     chart = (
         alt.Chart(data)
@@ -41,15 +55,8 @@ def map_choropleth(
         .encode(
             color=alt.Color(
                 f"properties.{color_field}:Q",
-                scale=alt.Scale(
-                    type="quantize",
-                    nice=True,
-                    # scheme="blues"
-                    range=color_range,
-                ),
-                legend=alt.Legend(
-                    orient="top", title="Cases per 100,000 people", titleLimit=200
-                ),
+                scale=alt.Scale(type="quantize", nice=True, range=color_range,),
+                legend=alt.Legend(orient="top", title=legend_title, titleLimit=200),
             )
         )
         .properties(width=600, height=460)

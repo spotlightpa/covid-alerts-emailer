@@ -70,11 +70,8 @@ def main():
         path_output_geojson=PATH_OUTPUT_GEOJSON,
     )
     gdf_pa = merge_geo(gdf_pa, data_clean)
-    print(gdf_pa)
-    quit()
-    # test = gdf_pa.drop("NEIGHBORS", axis=1)
     gdf_pa.to_file(DIR_DATA / "pa_geodata.geojson", driver="GeoJSON")
-    map_choropleth(gdf_pa, path_output_file=DIR_DATA / "map.png")
+
     # loop over counties and get charts + add newsletter text
     for fips, county_dict in test_counties.items():
         county_name = county_dict["name"]
@@ -123,9 +120,15 @@ def main():
                         county=county_name,
                     )
                 elif "choropleth" in chart_type:
-                    color_field = chart_dict["type"]
-                    map_choropleth(
-                        gdf_pa, highlight_polygon=county_name,
+                    color_field = chart_dict["color_field"]
+                    legend_title = chart_legend[0]["label"]
+                    chart = map_choropleth(
+                        gdf_pa,
+                        color_field=color_field,
+                        highlight_polygon=county_name,
+                        min_color=secondary_color,
+                        max_color=primary_color,
+                        legend_title=legend_title,
                     )
                     chart_desc = "Testing choropleth map!"
                 elif "stacked_area" in chart_type:
@@ -191,6 +194,7 @@ def main():
         )
 
         # Send email
+        # quit()
         logging.info(f"Sending email for {county_name}...")
         send_email_list(html, email_list_id, subject=subject)
         logging.info("...email sent")

@@ -30,7 +30,6 @@ def process_cumulative_tests(df_cases: DataFrame, df_tests: DataFrame) -> DataFr
         lambda x: x if x >= 0 else 0
     )  # default value to 0 if its negative
 
-    print("Merged df", df)
     df = df.rename(columns={"total_cases": "positive"})
     df = stack_df(
         df,

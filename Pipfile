@@ -20,7 +20,7 @@ boto3 = "*"
 pytest = "*"
 geopandas = "*"
 altair-saver = "*"
-gpdvega = "*"
+colour = "*"
 
 [requires]
 python_version = "3.6"

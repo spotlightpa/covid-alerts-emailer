@@ -14,7 +14,12 @@ def test_map_choropleth(gdf):
     try:
         output_path = DIR_TESTS_OUTPUT / "map.png"
         chart = map_choropleth(
-            gdf, "deaths_per_capita", highlight_polygon="Philadelphia"
+            gdf,
+            "cases_per_capita",
+            highlight_polygon="Philadelphia",
+            min_color="red",
+            max_color="purple",
+            legend_title="Testing!",
         )
         save(chart, str(output_path))
 

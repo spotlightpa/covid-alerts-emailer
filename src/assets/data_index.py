@@ -17,7 +17,12 @@ data_index = {
                     {"label": "Daily cases", "color": "#F4D2D2"},
                     {"label": "7 day avg", "color": "#CC0000"},
                 ],
-            }
+            },
+            {
+                "type": "choropleth",
+                "color_field": "cases_per_capita",
+                "legend": [{"label": "Cases per 100,000"}],
+            },
         ],
     },
     "deaths": {
@@ -36,7 +41,12 @@ data_index = {
                     {"label": "Daily deaths", "color": "#CCCEE5"},
                     {"label": "7 day avg", "color": "#1D204E"},
                 ],
-            }
+            },
+            {
+                "type": "choropleth",
+                "color_field": "deaths_per_capita",
+                "legend": [{"label": "Deaths per 100,000"}],
+            },
         ],
     },
     "tests": {
@@ -55,6 +65,11 @@ data_index = {
                     {"label": "Daily deaths", "color": "#CBECEC"},
                     {"label": "7 day avg", "color": "#009999"},
                 ],
+            },
+            {
+                "type": "choropleth",
+                "color_field": "tests_per_capita",
+                "legend": [{"label": "Tests per 100,000"}],
             },
             {
                 "type": "stacked_area",

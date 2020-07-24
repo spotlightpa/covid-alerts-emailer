@@ -22,7 +22,6 @@ def process_clean(data: Dict[str, Dict],) -> Dict[str, pd.DataFrame]:
         df = pd.DataFrame(data_dict)
         # df.columns = map(str.lower, df.columns)  # set col names to lowercase
         df = df.rename(columns={"Date": "date"})
-        print(df.info())
         for col in df.columns:
             if "date" in col:
                 df["date"] = pd.to_datetime(df["date"])

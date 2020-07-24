@@ -1,5 +1,6 @@
 import os
 import shutil
+import logging
 
 
 def delete_dir_contents(folder):
@@ -11,4 +12,4 @@ def delete_dir_contents(folder):
             elif os.path.isdir(file_path):
                 shutil.rmtree(file_path)
         except Exception as e:
-            print("Failed to delete %s. Reason: %s" % (file_path, e))
+            logging.warning("Failed to delete %s. Reason: %s" % (file_path, e))
