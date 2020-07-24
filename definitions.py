@@ -28,3 +28,7 @@ PATH_COUNTY_LIST = DIR_ASSETS / "counties.json"
 PATH_PA_GEOJSON = DIR_ASSETS / "pa-county.geojson"
 PATH_PA_POP = DIR_ASSETS / "pa-county-pop.csv"
 PATH_OUTPUT_GEOJSON = DIR_DATA / "pa-county.json"
+
+# AWS
+AWS_BUCKET = "interactives.data.spotlightpa.org"
+AWS_DIR_TEST = "2020/covid-email-alerts/assets/tests"

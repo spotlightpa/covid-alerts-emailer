@@ -12,16 +12,17 @@ data_index = {
         "charts": [
             {
                 "type": "daily_and_avg",
-                "title": "Daily",
-                "legend": [
+                "title": "Daily trend",
+                "custom_legend": [
                     {"label": "Daily cases", "color": "#F4D2D2"},
                     {"label": "7 day avg", "color": "#CC0000"},
                 ],
             },
             {
                 "type": "choropleth",
+                "title": "Per capita rate",
                 "color_field": "cases_per_capita",
-                "legend": [{"label": "Cases per 100,000"}],
+                "legend_title": "Cases per 100,000",
             },
         ],
     },
@@ -37,15 +38,16 @@ data_index = {
             {
                 "type": "daily_and_avg",
                 "title": "Daily",
-                "legend": [
+                "custom_legend": [
                     {"label": "Daily deaths", "color": "#CCCEE5"},
                     {"label": "7 day avg", "color": "#1D204E"},
                 ],
             },
             {
                 "type": "choropleth",
+                "title": "Per capita rate",
                 "color_field": "deaths_per_capita",
-                "legend": [{"label": "Deaths per 100,000"}],
+                "legend_title": "Deaths per 100,000",
             },
         ],
     },
@@ -61,20 +63,15 @@ data_index = {
             {
                 "type": "daily_and_avg",
                 "title": "Daily",
-                "legend": [
+                "custom_legend": [
                     {"label": "Daily deaths", "color": "#CBECEC"},
                     {"label": "7 day avg", "color": "#009999"},
                 ],
             },
             {
-                "type": "choropleth",
-                "color_field": "tests_per_capita",
-                "legend": [{"label": "Tests per 100,000"}],
-            },
-            {
                 "type": "stacked_area",
                 "title": "Cumulative",
-                "legend": [
+                "custom_legend": [
                     {"label": "Positive", "color": "#CBECEC"},
                     {"label": "Negative", "color": "#009999"},
                 ],

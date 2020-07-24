@@ -67,7 +67,12 @@ def map_choropleth(
         data_highlight = convert_gfp_to_alt(gdf_highlight)
         chart_highlight = (
             alt.Chart(data_highlight)
-            .mark_geoshape(strokeWidth=2, stroke="#0E0E0E", fill=None)
+            .mark_geoshape(
+                strokeWidth=2,
+                stroke="#0E0E0E",
+                # stroke="white",
+                fill=None,
+            )
             .project()
         )
         final_chart = chart + chart_highlight

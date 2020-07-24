@@ -10,6 +10,8 @@ from definitions import (
     PATH_PA_GEOJSON,
     PATH_PA_POP,
     PATH_OUTPUT_GEOJSON,
+    AWS_BUCKET,
+    AWS_DIR_TEST,
 )
 from src.modules.gen_chart.daily_and_avg import daily_and_avg
 from src.modules.gen_chart.map_choropleth import map_choropleth
@@ -48,8 +50,6 @@ def main():
 
     # init
     init_program()
-    bucket_name = "interactives.data.spotlightpa.org"
-    bucket_dest_dir = "covid_email_alerts/assets/covid-email-alerts/test"
 
     # enable chart themes
     alt.themes.register("spotlight", spotlight)
@@ -86,9 +86,9 @@ def main():
             f"Creating newsletter payload for {county_name}, which has {subscriber_count} subscribers."
         )
 
-        county_clean = county_name.replace(" County", "")
+        county_name_clean = county_name.replace(" County", "")
         county_data = process_individual_county(
-            data_clean, data_index, county=county_clean
+            data_clean, data_index, county=county_name_clean
         )
         county_stats = process_stats(county_data)
 
@@ -101,7 +101,6 @@ def main():
             # create charts
             for chart_dict in data_index_dict["charts"]:
                 chart_type = chart_dict["type"]
-                chart_legend = chart_dict["legend"]
                 chart_desc = ""
                 fmt = "png"
                 content_type = "image/png"
@@ -120,15 +119,13 @@ def main():
                         county=county_name,
                     )
                 elif "choropleth" in chart_type:
-                    color_field = chart_dict["color_field"]
-                    legend_title = chart_legend[0]["label"]
                     chart = map_choropleth(
                         gdf_pa,
-                        color_field=color_field,
-                        highlight_polygon=county_name,
+                        color_field=chart_dict["color_field"],
+                        highlight_polygon=county_name_clean,
                         min_color=secondary_color,
                         max_color=primary_color,
-                        legend_title=legend_title,
+                        legend_title=chart_dict["legend_title"],
                     )
                     chart_desc = "Testing choropleth map!"
                 elif "stacked_area" in chart_type:
@@ -145,33 +142,33 @@ def main():
                     )
                     chart_desc = desc_area_tests(data=df, county=county_name)
 
-                image_filename = f"{county_clean}_{data_type}_{chart_type}.{fmt}"
+                image_filename = (
+                    f"{county_name_clean.lower()}_{data_type}_{chart_type}.{fmt}"
+                )
                 image_path = DIR_DATA / image_filename
                 save(chart, str(image_path))
                 logging.info("...saved")
 
-                # generate county description
-
                 # move to s3
                 copy_to_s3(
-                    image_path, bucket_name, bucket_dest_dir, content_type=content_type
+                    image_path, AWS_BUCKET, AWS_DIR_TEST, content_type=content_type
                 )
+
+                chart_title = chart_dict.get("title")
+                chart_title_clean = chart_title.title() if chart_title else ""
 
                 chart_payload.append(
                     {
-                        "title": "",
-                        "legend": chart_legend,
-                        "image_path": f"https://{bucket_name}/{bucket_dest_dir}/{image_filename}",
+                        "title": chart_dict.get("title", chart_title_clean),
+                        "custom_legend": chart_dict.get("custom_legend"),
+                        "image_path": f"https://{AWS_BUCKET}/{AWS_DIR_TEST}/{image_filename}",
                         "description": chart_desc,
                     }
                 )
 
             # add to email payload
             county_payload.append(
-                {
-                    "title": f"{data_type.title()} in {county_name}",
-                    "charts": chart_payload,
-                }
+                {"title": f"{data_type.upper()}", "charts": chart_payload,}
             )
 
         # Generate HTML
@@ -194,7 +191,7 @@ def main():
         )
 
         # Send email
-        # quit()
+        quit()
         logging.info(f"Sending email for {county_name}...")
         send_email_list(html, email_list_id, subject=subject)
         logging.info("...email sent")

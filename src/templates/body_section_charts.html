@@ -1,8 +1,8 @@
 {% extends 'body_section.html' %}
 
 {% block content %}
-  <h3>{{ section.title }}</h3>
-  <div class="charts__container">
+  <div class="section-charts__title">{{ section.title }}</div>
+  <div>
     {% for chart in section.charts %}
       {% include 'body_section_charts_chart.html' %}
     {% endfor %}
