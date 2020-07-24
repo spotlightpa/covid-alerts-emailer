@@ -18,6 +18,7 @@ from src.modules.gen_chart.map_choropleth import map_choropleth
 from src.modules.gen_chart.stacked_area import stacked_area
 from src.modules.gen_chart.themes import spotlight
 from src.modules.gen_desc.desc_area_tests import desc_area_tests
+from src.modules.gen_desc.desc_choro import desc_choro
 from src.modules.gen_desc.desc_daily import desc_daily
 from src.modules.gen_html.gen_html import gen_html
 from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
@@ -114,9 +115,7 @@ def main():
                         bar_color=secondary_color,
                     )
                     chart_desc = desc_daily(
-                        data=county_data[data_type],
-                        data_type=data_type,
-                        county=county_name,
+                        county_name=county_name_clean, data_type=data_type
                     )
                 elif "choropleth" in chart_type:
                     chart = map_choropleth(
@@ -127,7 +126,7 @@ def main():
                         max_color=primary_color,
                         legend_title=chart_dict["legend_title"],
                     )
-                    chart_desc = "Testing choropleth map!"
+                    chart_desc = desc_choro(county_name_clean, data_type=data_type)
                 elif "stacked_area" in chart_type:
                     df = process_cumulative_tests(
                         county_data["cases"], county_data["tests"]

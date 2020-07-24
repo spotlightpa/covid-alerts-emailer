@@ -1,10 +1,11 @@
 import pandas as pd
 
 
-def desc_daily(data: pd.DataFrame, data_type: str, county: str) -> str:
+def desc_daily(county_name: str, data_type: str) -> str:
 
     output = (
-        f"Over the past week, there has been a total of XXX new {data_type} in {county}, with a daily average of XXX "
-        f"{data_type}."
+        f"There has been a total of XXX reported {data_type} in {county_name} County since the start of the outbreak. "
+        f"Over the past two weeks, the county has had a daily average of XXX new {data_type}. Here’s how its case trend "
+        f"looks since March:"
     )
     return output
