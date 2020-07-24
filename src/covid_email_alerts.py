@@ -175,7 +175,7 @@ def main():
         subject = f"COVID-19 Report: {county_name}"
         newsletter_browser_link = f"https://{AWS_BUCKET}/{AWS_DIR_TEST}/newsletter.html"
         newsletter_vars = gen_jinja_vars(
-            county_name,
+            county_name=county_name,
             county_payload=county_payload,
             newsletter_browser_link=newsletter_browser_link,
             state_stats=state_stats,
@@ -187,6 +187,7 @@ def main():
         copy_to_s3(PATH_OUTPUT_HTML, AWS_BUCKET, AWS_DIR_TEST, content_type="text/html")
 
         # Send email
+        quit()
         logging.info(f"Sending email for {county_name}...")
         send_email_list(html, email_list_id, subject=subject)
         logging.info("...email sent")

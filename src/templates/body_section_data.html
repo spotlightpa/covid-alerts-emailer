@@ -1,10 +1,10 @@
 {% extends 'body_section.html' %}
 
 {% block content %}
-  <div class="section-charts__title">{{ section.title }}</div>
+  <div class="section-data__title">{{ section.title }}</div>
   <div>
     {% for chart in section.charts %}
-      {% include 'body_section_charts_chart.html' %}
+      {% include 'body_section_data_chart.html' %}
     {% endfor %}
   </div>
   {% include 'body_divider.html' %}
