@@ -173,9 +173,7 @@ def main():
 
         # Generate HTML
         subject = f"COVID-19 Report: {county_name}"
-        newsletter_browser_link = (
-            f"https://{bucket_name}/{bucket_dest_dir}/newsletter.html"
-        )
+        newsletter_browser_link = f"https://{AWS_BUCKET}/{AWS_DIR_TEST}/newsletter.html"
         newsletter_vars = gen_jinja_vars(
             county_name,
             county_payload=county_payload,
@@ -186,12 +184,9 @@ def main():
         html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
         with open(PATH_OUTPUT_HTML, "w") as fout:
             fout.writelines(html)
-        copy_to_s3(
-            PATH_OUTPUT_HTML, bucket_name, bucket_dest_dir, content_type="text/html"
-        )
+        copy_to_s3(PATH_OUTPUT_HTML, AWS_BUCKET, AWS_DIR_TEST, content_type="text/html")
 
         # Send email
-        quit()
         logging.info(f"Sending email for {county_name}...")
         send_email_list(html, email_list_id, subject=subject)
         logging.info("...email sent")
