@@ -63,12 +63,6 @@
             "
           >
             <!-- BODY CONTAINER -->
-            {% with stats = stats_pa %}
-              {% include 'body_section_stats.html' %}
-            {% endwith %}
-            {% with stats = stats_county %}
-              {% include 'body_section_stats.html' %}
-            {% endwith %}
             {% include 'body_section_welcome.html' %}
             {% for section in sections %}
               {% include 'body_section_charts.html' %}
