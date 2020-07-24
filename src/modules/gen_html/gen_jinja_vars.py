@@ -25,34 +25,20 @@ def gen_jinja_vars(
         A dictionary of newsletter variables.
         
     """
-
+    brief_date = est_now_formatted_brief()
     payload = {
-        "stats_pa": {
-            "title": "Pennsylvania",
-            "stats_items": [
-                {"label": "cases", "value": format_commas(state_stats["cases"]),},
-                {"label": "deaths", "value": format_commas(state_stats["deaths"]),},
-            ],
-        },
-        "stats_county": {
-            "title": f"{county_name}",
-            "stats_items": [
-                {"label": "cases", "value": format_commas(county_stats["cases"]),},
-                {"label": "deaths", "value": format_commas(county_stats["deaths"]),},
-            ],
-        },
-        "preview_text": f"Here are the latest stats on cases, deaths, and testing in {county_name}",
-        "newsletter_browser_link": newsletter_browser_link,
-        "unsubscribe_preferences_link": "{{{unsubscribe_preferences}}}",
-        "unsubscribe_link": "{{{unsubscribe}}}",
         "head": {
             "title": f"The latest COVID-19 statistics for {county_name} from Spotlight PA."
         },
+        "preview_text": f"Here are the latest stats on cases, deaths, and testing in {county_name}",
+        "newsletter_browser_link": newsletter_browser_link,
         "hero": {
-            "title": "COVID-19 Report",
-            "tagline": county_name,
-            "date": est_now_formatted_brief(),
+            "title": "Weekly Coronavirus Update".upper(),
+            "tagline": county_name.upper(),
         },
+        "welcome": f"{brief_date}:  Over the past two weeks, {county_name} has had XXX new cases and XXX new "
+        f"deaths. Read on for more information about how cases, deaths, and tests are trending in "
+        f"{county_name.replace(' County','')} and the surrounding area.",
         "sections_data": county_payload,
         "footnote": {
             "sources": "Pa. Department of Health data collected daily by Spotlight PA/the Philadelphia "
@@ -62,5 +48,7 @@ def gen_jinja_vars(
             "sometimes the department revises it data, causing irregular patterns in its daily "
             "reported figures.",
         },
+        "unsubscribe_preferences_link": "{{{unsubscribe_preferences}}}",
+        "unsubscribe_link": "{{{unsubscribe}}}",
     }
     return payload

@@ -37,7 +37,7 @@ data_index = {
         "charts": [
             {
                 "type": "daily_and_avg",
-                "title": "Daily",
+                "title": "Daily trend",
                 "custom_legend": [
                     {"label": "Daily deaths", "color": "#CCCEE5"},
                     {"label": "7 day avg", "color": "#1D204E"},
@@ -62,7 +62,7 @@ data_index = {
         "charts": [
             {
                 "type": "daily_and_avg",
-                "title": "Daily",
+                "title": "Daily trend",
                 "custom_legend": [
                     {"label": "Daily deaths", "color": "#CBECEC"},
                     {"label": "7 day avg", "color": "#009999"},
@@ -70,7 +70,7 @@ data_index = {
             },
             {
                 "type": "stacked_area",
-                "title": "Cumulative",
+                "title": "Running total",
                 "custom_legend": [
                     {"label": "Positive", "color": "#CBECEC"},
                     {"label": "Negative", "color": "#009999"},
