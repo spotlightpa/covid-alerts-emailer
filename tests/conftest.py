@@ -8,13 +8,14 @@ from src.modules.gen_chart.themes import spotlight
 from src.modules.gen_html.gen_html import gen_html
 from src.modules.helper.formatters import format_commas
 from src.modules.helper.time import est_now_formatted_brief
-from assets.data_index import data_index
+from src.assets.data_index import data_index
 
 
 @pytest.fixture(scope="session")
 def county():
     with open(PATH_COUNTY_LIST) as f:
         counties = json.load(f)
+    # 42043 = Dauphin County
     return counties["42043"]
 
 

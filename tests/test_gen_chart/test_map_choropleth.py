@@ -2,6 +2,7 @@ import logging
 import pytest
 from definitions import DIR_TESTS_OUTPUT
 from src.modules.gen_chart.map_choropleth import map_choropleth
+from altair_saver import save
 
 
 def test_map_choropleth(gdf):
@@ -12,7 +13,11 @@ def test_map_choropleth(gdf):
     # caplog.set_level(logging.INFO)
     try:
         output_path = DIR_TESTS_OUTPUT / "map.png"
-        map_choropleth(gdf, output_path, highlight_polygon="Northumberland")
+        chart = map_choropleth(
+            gdf, "deaths_per_capita", highlight_polygon="Philadelphia"
+        )
+        save(chart, str(output_path))
+
         logging.info(f"View file: {output_path}")
     except Exception as e:
         pytest.fail(f"Test fail: {e}")

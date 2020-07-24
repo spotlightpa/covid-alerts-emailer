@@ -11,11 +11,11 @@ ROOT_DIR = Path(os.path.dirname(os.path.abspath(__file__)))  # This is your Proj
 DIR_LOGS = ROOT_DIR / "logs"  # main dir for log-related files
 DIR_LOGS_OUTPUT = DIR_LOGS / "output"
 DIR_LOGS_CONFIG = DIR_LOGS / "config"
-DIR_DATA = ROOT_DIR / "data"
-DIR_ASSETS = ROOT_DIR / "assets"
 DIR_SRC = ROOT_DIR / "src"
+DIR_TESTS = ROOT_DIR / "tests"
+DIR_ASSETS = DIR_SRC / "assets"
+DIR_DATA = DIR_SRC / "data"
 DIR_TEMPLATES = DIR_SRC / "templates"
-DIR_TESTS = DIR_SRC / "tests"
 DIR_FIXTURES = DIR_TESTS / "fixtures"
 DIR_TESTS_OUTPUT = DIR_TESTS / "output"
 

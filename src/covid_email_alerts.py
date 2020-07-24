@@ -25,7 +25,7 @@ from src.modules.process_data.merge_geo import merge_geo
 from src.modules.process_data.process_clean import process_clean
 from src.modules.process_data.process_cumulative_tests import process_cumulative_tests
 from src.modules.process_data.process_individual_county import process_individual_county
-from assets.data_index import data_index
+from src.assets.data_index import data_index
 from src.modules.process_data.process_geo import process_geo
 from src.modules.process_data.process_stats import process_stats
 from src.modules.s3.copy_to_s3 import copy_to_s3
@@ -49,7 +49,7 @@ def main():
     # init
     init_program()
     bucket_name = "interactives.data.spotlightpa.org"
-    bucket_dest_dir = "assets/covid-email-alerts/test"
+    bucket_dest_dir = "covid_email_alerts/assets/covid-email-alerts/test"
 
     # enable chart themes
     alt.themes.register("spotlight", spotlight)
@@ -70,24 +70,26 @@ def main():
         path_output_geojson=PATH_OUTPUT_GEOJSON,
     )
     gdf_pa = merge_geo(gdf_pa, data_clean)
+    print(gdf_pa)
+    quit()
     # test = gdf_pa.drop("NEIGHBORS", axis=1)
-    gdf_pa.to_file(DIR_DATA / "pa_geodata.geojson", driver='GeoJSON')
-    map_choropleth(gdf_pa, path_output_file=DIR_DATA/"map.png")
+    gdf_pa.to_file(DIR_DATA / "pa_geodata.geojson", driver="GeoJSON")
+    map_choropleth(gdf_pa, path_output_file=DIR_DATA / "map.png")
     # loop over counties and get charts + add newsletter text
     for fips, county_dict in test_counties.items():
-        county = county_dict["name"]
+        county_name = county_dict["name"]
         email_list_id = county_dict["id"]
         subscriber_count = count_subscribers(email_list_id)
         if subscriber_count == 0:
             logging.info(
-                f"No subscribers in {county} email list, moving on to next county..."
+                f"No subscribers in {county_name} email list, moving on to next county..."
             )
             continue
         logging.info(
-            f"Creating newsletter payload for {county}, which has {subscriber_count} subscribers."
+            f"Creating newsletter payload for {county_name}, which has {subscriber_count} subscribers."
         )
 
-        county_clean = county.replace(" County", "")
+        county_clean = county_name.replace(" County", "")
         county_data = process_individual_county(
             data_clean, data_index, county=county_clean
         )
@@ -116,8 +118,16 @@ def main():
                         bar_color=secondary_color,
                     )
                     chart_desc = desc_daily(
-                        data=county_data[data_type], data_type=data_type, county=county
+                        data=county_data[data_type],
+                        data_type=data_type,
+                        county=county_name,
                     )
+                elif "choropleth" in chart_type:
+                    color_field = chart_dict["type"]
+                    map_choropleth(
+                        gdf_pa, highlight_polygon=county_name,
+                    )
+                    chart_desc = "Testing choropleth map!"
                 elif "stacked_area" in chart_type:
                     df = process_cumulative_tests(
                         county_data["cases"], county_data["tests"]
@@ -130,7 +140,7 @@ def main():
                         domain=["positive", "negative"],
                         range_=[primary_color, secondary_color],
                     )
-                    chart_desc = desc_area_tests(data=df, county=county)
+                    chart_desc = desc_area_tests(data=df, county=county_name)
 
                 image_filename = f"{county_clean}_{data_type}_{chart_type}.{fmt}"
                 image_path = DIR_DATA / image_filename
@@ -155,16 +165,19 @@ def main():
 
             # add to email payload
             county_payload.append(
-                {"title": f"{data_type.title()} in {county}", "charts": chart_payload,}
+                {
+                    "title": f"{data_type.title()} in {county_name}",
+                    "charts": chart_payload,
+                }
             )
 
         # Generate HTML
-        subject = f"COVID-19 Report: {county}"
+        subject = f"COVID-19 Report: {county_name}"
         newsletter_browser_link = (
             f"https://{bucket_name}/{bucket_dest_dir}/newsletter.html"
         )
         newsletter_vars = gen_jinja_vars(
-            county,
+            county_name,
             county_payload=county_payload,
             newsletter_browser_link=newsletter_browser_link,
             state_stats=state_stats,
@@ -178,7 +191,7 @@ def main():
         )
 
         # Send email
-        logging.info(f"Sending email for {county}...")
+        logging.info(f"Sending email for {county_name}...")
         send_email_list(html, email_list_id, subject=subject)
         logging.info("...email sent")
 

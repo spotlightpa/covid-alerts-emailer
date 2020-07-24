@@ -1,10 +1,10 @@
 ### Project specific ignore files
-data/
+src/data/
 .idea/
 logs/output/
 .vscode
 .pytest_cache
-src/tests/output/*
+tests/output/*
 
 ### gitignore Python template
 # Byte-compiled / optimized / DLL files
