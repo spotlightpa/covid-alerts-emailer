@@ -4,12 +4,7 @@ from typing import List, Dict
 
 
 def gen_jinja_vars(
-    county_name: str,
-    *,
-    county_payload=List[Dict],
-    state_stats: Dict,
-    county_stats: Dict,
-    newsletter_browser_link: str,
+    county_name: str, *, county_payload=List[Dict], newsletter_browser_link: str,
 ) -> Dict:
     """
     Creates a dict of variables for jinja HTML templates.
@@ -17,8 +12,6 @@ def gen_jinja_vars(
     Args:
         county_name (str): Name of county
         county_payload (List[Dict]): List of dictionaries containing county info, like links to chart images.
-        state_stats (Dict): Dict of state statistics
-        county_stats (Dict): Dict of county statistics
         newsletter_browser_link (str): Hyperlink to HTML of final newsletter.
 
     Returns:
