@@ -73,7 +73,6 @@ def main():
         path_output_geojson=PATH_OUTPUT_GEOJSON,
     )
     gdf_pa = merge_geo(gdf_pa, data_clean)
-    gdf_pa.to_file(DIR_OUTPUT / "pa_geodata.geojson", driver="GeoJSON")
 
     # loop over counties and get charts + add newsletter text
     for fips, county_dict in test_counties.items():
