@@ -3,7 +3,7 @@ import logging
 
 # from vega_datasets import data as dummy_data
 from altair_saver import save
-from definitions import DIR_DATA
+from definitions import DIR_OUTPUT
 import pandas as pd
 from typing import List
 from src.modules.helper.encode import encode_str_base64

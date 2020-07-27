@@ -1,6 +1,6 @@
 import logging
 from dotenv import load_dotenv
-from definitions import DIR_DATA
+from definitions import DIR_OUTPUT
 from logs.config.logging import logs_config
 from src.modules.helper.misc import delete_dir_contents
 from src.modules.helper.time import utc_now
@@ -18,12 +18,12 @@ def init_program():
     logging.info(f"Begin program run: {program_start_time} ({timezone} time)")
 
     # create or clean download dir
-    if DIR_DATA.is_dir():
+    if DIR_OUTPUT.is_dir():
         # delete files from previous run
-        delete_dir_contents(DIR_DATA)
+        delete_dir_contents(DIR_OUTPUT)
     else:
         logging.info("Data directory doesn't exist - building")
-        DIR_DATA.mkdir()
+        DIR_OUTPUT.mkdir()
 
     pandas_opts()
 

@@ -6,7 +6,7 @@ from definitions import (
     PATH_OUTPUT_HTML,
     DIR_TEMPLATES,
     PATH_COUNTY_LIST,
-    DIR_DATA,
+    DIR_OUTPUT,
     PATH_PA_GEOJSON,
     PATH_PA_POP,
     PATH_OUTPUT_GEOJSON,
@@ -73,7 +73,7 @@ def main():
         path_output_geojson=PATH_OUTPUT_GEOJSON,
     )
     gdf_pa = merge_geo(gdf_pa, data_clean)
-    gdf_pa.to_file(DIR_DATA / "pa_geodata.geojson", driver="GeoJSON")
+    gdf_pa.to_file(DIR_OUTPUT / "pa_geodata.geojson", driver="GeoJSON")
 
     # loop over counties and get charts + add newsletter text
     for fips, county_dict in test_counties.items():
@@ -146,7 +146,7 @@ def main():
                 image_filename = (
                     f"{county_name_clean.lower()}_{data_type}_{chart_type}.{fmt}"
                 )
-                image_path = DIR_DATA / image_filename
+                image_path = DIR_OUTPUT / image_filename
                 save(chart, str(image_path))
                 logging.info("...saved")
 
@@ -192,6 +192,7 @@ def main():
         copy_to_s3(PATH_OUTPUT_HTML, AWS_BUCKET, AWS_DIR_TEST, content_type="text/html")
 
         # Send email
+        quit()
         logging.info(f"Sending email for {county_name}...")
         send_email_list(html, email_list_id, subject=subject)
         logging.info("...email sent")
