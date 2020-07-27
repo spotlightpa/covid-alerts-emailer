@@ -56,8 +56,8 @@ chart_index = {
                 "type": "stacked_area",
                 "title": "Running total",
                 "custom_legend": [
-                    {"label": "Positive", "color": "#CBECEC"},
-                    {"label": "Negative", "color": "#009999"},
+                    {"label": "Total tests", "color": "#CBECEC"},
+                    {"label": "Positive", "color": "#009999"},
                 ],
             },
         ],
