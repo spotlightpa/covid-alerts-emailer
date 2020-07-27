@@ -1,5 +1,4 @@
 import pytest
-
 from src.assets.data_index import data_index
 from src.modules.process_data.process_individual_county import process_individual_county
 
