@@ -28,6 +28,7 @@ from src.modules.process_data.merge_geo import merge_geo
 from src.modules.process_data.process_clean import process_clean
 from src.modules.process_data.process_cumulative_tests import process_cumulative_tests
 from src.modules.process_data.process_individual_county import process_individual_county
+from src.assets.chart_index import chart_index
 from src.assets.data_index import data_index
 from src.modules.process_data.process_geo import process_geo
 from src.modules.process_data.process_stats import process_stats
@@ -61,6 +62,7 @@ def main():
         counties = json.load(f)
     dir = "http://interactives.data.spotlightpa.org/2020/coronavirus/data/inquirer"
     data_raw = fetch_data(dir, data_index)
+
     # clean, filter, process
     data_clean = process_clean(data_raw)
     data_state = process_individual_county(data_clean, data_index, county="Total")
@@ -95,14 +97,14 @@ def main():
 
         # create email payload
         county_payload = []
-        for data_type, data_index_dict in data_index.items():
+        for data_type, chart_index_dict in chart_index.items():
             chart_payload = []
             logging.info(f"Creating payload for: {data_type}")
-            primary_color = data_index_dict["theme"]["colors"]["primary"]
-            secondary_color = data_index_dict["theme"]["colors"]["secondary"]
+            primary_color = chart_index_dict["theme"]["colors"]["primary"]
+            secondary_color = chart_index_dict["theme"]["colors"]["secondary"]
 
             # create charts
-            for chart_dict in data_index_dict["charts"]:
+            for chart_dict in chart_index_dict["charts"]:
                 chart_type = chart_dict["type"]
                 chart_desc = ""
                 fmt = "png"
@@ -190,6 +192,7 @@ def main():
         copy_to_s3(PATH_OUTPUT_HTML, AWS_BUCKET, AWS_DIR_TEST, content_type="text/html")
 
         # Send email
+        quit()
         logging.info(f"Sending email for {county_name}...")
         send_email_list(html, email_list_id, subject=subject)
         logging.info("...email sent")
