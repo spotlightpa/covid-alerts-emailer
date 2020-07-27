@@ -11,7 +11,7 @@ def process_individual_county(
     county: str,
     *,
     save_pickle: bool = False,
-    pickle_save_path: Path,
+    pickle_save_path: Path = None,
 ) -> Dict[str, pd.DataFrame]:
     """
     Takes a dict of pandas DataFrames and formats column names, filters based on specific county and processes
