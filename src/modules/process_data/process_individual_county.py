@@ -56,6 +56,12 @@ def process_individual_county(
             )
             df.loc[df.index[first_nonzero_row], target_col] = 0
 
+        if clean_rules.get("total_per_capita"):
+            county_pop = get_county_pop(county_name)
+            df["total_per_capita"] = (
+                df["total"] / county_pop
+            ) * 100000  # calculate rate per 100k people
+
         if clean_rules.get("moving_avg"):
             col_to_avg = clean_rules["moving_avg"]
             df["moving_avg"] = df[col_to_avg].rolling(window=7).mean()
