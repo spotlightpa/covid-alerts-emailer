@@ -8,7 +8,7 @@ from src.modules.gen_chart.themes import spotlight
 from src.modules.gen_html.gen_html import gen_html
 from src.modules.helper.formatters import format_commas
 from src.modules.helper.time import est_now_formatted_brief
-from src.assets.data_index import data_index
+from src.assets.chart_index import chart_index
 
 
 @pytest.fixture(scope="session")
@@ -34,7 +34,7 @@ def county_payload(aws_bucket, county):
     bucket_dest_dir = aws_bucket["test_dir"]
 
     payload = []
-    for data_type, data_index_dict in data_index.items():
+    for data_type, data_index_dict in chart_index.items():
         for chart_dict in data_index_dict["charts"]:
             chart_type = chart_dict["type"]
             payload.append(
