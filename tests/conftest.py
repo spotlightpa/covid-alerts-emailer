@@ -1,18 +1,28 @@
 import json
-
 import pytest
 import geopandas
-from definitions import DIR_FIXTURES, DIR_TEMPLATES, PATH_COUNTY_LIST
+from definitions import (
+    DIR_FIXTURES,
+    DIR_TEMPLATES,
+    PATH_COUNTY_LIST,
+    AWS_BUCKET,
+    AWS_DIR_TEST,
+)
 import altair as alt
 from src.modules.gen_chart.themes import spotlight
 from src.modules.gen_html.gen_html import gen_html
-from src.modules.helper.formatters import format_commas
-from src.modules.helper.time import est_now_formatted_brief
 from src.assets.chart_index import chart_index
+from typing import Dict, List
+
+from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
 
 
 @pytest.fixture(scope="session")
-def county():
+def county() -> Dict:
+    """
+    Gets basic info for a specific county, like its name and mailing list ID,
+    from an index.
+    """
     with open(PATH_COUNTY_LIST) as f:
         counties = json.load(f)
     # 42043 = Dauphin County
@@ -20,85 +30,62 @@ def county():
 
 
 @pytest.fixture(scope="session")
-def aws_bucket():
-    return {
-        "name": "interactives.data.spotlightpa.org",
-        "test_dir": "assets/covid-email-alerts/test",
-    }
-
-
-@pytest.fixture(scope="session")
-def county_payload(aws_bucket, county):
+def county_payload(county: Dict) -> List[Dict]:
+    """
+    Creates a list of dicts that represents important payload data for email newsletter.
+    """
     county_name = county["name"]
-    bucket_name = aws_bucket["name"]
-    bucket_dest_dir = aws_bucket["test_dir"]
+    bucket_name = AWS_BUCKET
+    bucket_dest_dir = AWS_DIR_TEST
 
     payload = []
-    for data_type, data_index_dict in chart_index.items():
-        for chart_dict in data_index_dict["charts"]:
+    for data_type, chart_index_dict in chart_index.items():
+        chart_payload = []
+        primary_color = chart_index_dict["theme"]["colors"]["primary"]
+        secondary_color = chart_index_dict["theme"]["colors"]["secondary"]
+        for chart_dict in chart_index_dict["charts"]:
             chart_type = chart_dict["type"]
-            payload.append(
+            chart_payload.append(
                 {
                     "title": "",
-                    "legend": chart_dict["legend"],
+                    "custom_legend": chart_dict.get("custom_legend"),
                     "image_path": f"https://{bucket_name}/{bucket_dest_dir}/{county_name}_{data_type}_{chart_type}.png",
                     "description": "Description of chart and stats, blah blah blah",
                 }
             )
+        payload.append(
+            {
+                "title": f"{data_type.upper()}",
+                "charts": chart_payload,
+                "colors": {"primary": primary_color, "secondary": secondary_color,},
+            }
+        )
+
     return payload
 
 
 @pytest.fixture(scope="session")
-def newsletter_vars(county, county_payload, aws_bucket):
-    county_name = county["name"]
-    bucket_name = aws_bucket["name"]
-    bucket_dest_dir = aws_bucket["test_dir"]
-
-    payload = {
-        "stats_pa": {
-            "title": "Pennsylvania",
-            "stats_items": [
-                {"label": "cases", "value": format_commas(10000),},
-                {"label": "deaths", "value": format_commas(1000),},
-            ],
-        },
-        "stats_county": {
-            "title": f"{county_name}",
-            "stats_items": [
-                {"label": "cases", "value": format_commas(2000),},
-                {"label": "deaths", "value": format_commas(200),},
-            ],
-        },
-        "preview_text": f"Here are the latest stats on cases, deaths, and testing in {county_name}",
-        "newsletter_browser_link": f"https://{bucket_name}/{bucket_dest_dir}/newsletter.html",
-        "unsubscribe_preferences_link": "{{{unsubscribe_preferences}}}",
-        "unsubscribe_link": "{{{unsubscribe}}}",
-        "head": {
-            "title": f"The latest COVID-19 statistics for {county_name} from Spotlight PA."
-        },
-        "hero": {
-            "title": "COVID-19 Report",
-            "tagline": f"The latest COVID-19 statistics for {county_name}.",
-            "date": est_now_formatted_brief(),
-        },
-        "sections": county_payload,
-    }
-    return payload
-
-
-@pytest.fixture(scope="session")
-def enable_theme():
+def enable_theme() -> None:
+    """
+    Enables Spotlight altair theme
+    """
     alt.themes.register("spotlight", spotlight)
     alt.themes.enable("spotlight")
 
 
 @pytest.fixture(scope="session")
-def gdf(enable_theme):
+def gdf(enable_theme) -> geopandas.GeoDataFrame:
+    """
+    Creates an instance of a geopandas geodataframe with the necessary data to create a map.
+    """
     gdf = geopandas.read_file(DIR_FIXTURES / "pa_geodata.geojson")
     return gdf
 
 
 @pytest.fixture(scope="session")
-def html(county, newsletter_vars):
+def html(county, county_payload):
+    newsletter_vars = gen_jinja_vars(
+        county["name"], county_payload=county_payload, newsletter_browser_link=""
+    )
     html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
     return html
