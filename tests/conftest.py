@@ -7,13 +7,16 @@ from definitions import (
     PATH_COUNTY_LIST,
     AWS_BUCKET,
     AWS_DIR_TEST,
+    DIR_FIXTURES_PA_CLEAN,
 )
 import altair as alt
+
+from src.assets.data_index import data_index
 from src.modules.gen_chart.themes import spotlight
 from src.modules.gen_html.gen_html import gen_html
 from src.assets.chart_index import chart_index
 from typing import Dict, List
-
+import pandas as pd
 from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
 
 
@@ -27,6 +30,18 @@ def county() -> Dict:
         counties = json.load(f)
     # 42043 = Dauphin County
     return counties["42043"]
+
+
+@pytest.fixture(scope="session")
+def data_clean() -> Dict[str, pd.DataFrame]:
+    """
+    Creates data_clean, ie. a dict of pandas Dataframes emulating Pa. data that has been fetched and had minimal
+    cleaning.
+    """
+    payload = {}
+    for data_type, data_index_dict in data_index.items():
+        payload[data_type] = pd.read_pickle(DIR_FIXTURES_PA_CLEAN / f"{data_type}.pkl")
+    return payload
 
 
 @pytest.fixture(scope="session")
