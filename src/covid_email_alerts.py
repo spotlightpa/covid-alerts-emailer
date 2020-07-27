@@ -182,8 +182,6 @@ def main():
             county_name=county_name,
             county_payload=county_payload,
             newsletter_browser_link=newsletter_browser_link,
-            state_stats=state_stats,
-            county_stats=county_stats,
         )
         html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
         with open(PATH_OUTPUT_HTML, "w") as fout:
