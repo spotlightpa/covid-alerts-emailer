@@ -1,15 +1,17 @@
 import pandas as pd
 from typing import Dict
 import logging
+from definitions import ROOT_DIR
 
 
-def process_clean(data: Dict[str, Dict],) -> Dict[str, pd.DataFrame]:
+def process_clean(data: Dict[str, Dict], *, save_pickle) -> Dict[str, pd.DataFrame]:
     """
     Takes a dict of ordered dictionaries of county data, converts each one into a pandas DataFrame and formats column
     names and sets datatypes.
 
     Args:
         data (Dict[str, Dict]): A dict of ordered dictionaries.
+        save_pickle (bool): Save each dataframe as a pickel in the root directory
 
     Return:
         A dictionary of pandas dataframes with cleaned data.
@@ -31,5 +33,9 @@ def process_clean(data: Dict[str, Dict],) -> Dict[str, pd.DataFrame]:
 
         # add to payload dict
         clean_data[data_type] = df
+
+        # save pickel
+        if save_pickle:
+            df.to_pickle(f"{ROOT_DIR}/{data_type}.pkl")
 
     return clean_data
