@@ -19,7 +19,6 @@ def test_process_individual_county_total(data_clean):
 
 
 def test_process_individual_county_dauphin(data_clean):
-    pandas_opts()
     county_data = process_individual_county(
         data_clean, data_index, county_name="Dauphin"
     )
