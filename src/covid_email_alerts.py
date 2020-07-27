@@ -65,7 +65,7 @@ def main():
 
     # clean, filter, process
     data_clean = process_clean(data_raw)
-    data_state = process_individual_county(data_clean, data_index, county="Total")
+    data_state = process_individual_county(data_clean, data_index, county_name="Total")
     state_stats = process_stats(data_state)
     gdf_pa = process_geo(PATH_PA_GEOJSON)
     gdf_pa = merge_geo(gdf_pa, data_clean)
@@ -86,7 +86,7 @@ def main():
 
         county_name_clean = county_name.replace(" County", "")
         county_data = process_individual_county(
-            data_clean, data_index, county=county_name_clean
+            data_clean, data_index, county_name=county_name_clean
         )
         county_stats = process_stats(county_data)
 
