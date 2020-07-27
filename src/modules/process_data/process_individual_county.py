@@ -2,6 +2,7 @@ import pandas as pd
 from typing import Dict
 import logging
 from definitions import DIR_OUTPUT
+from pathlib import Path
 
 
 def process_individual_county(
@@ -10,6 +11,7 @@ def process_individual_county(
     county: str,
     *,
     save_pickle: bool = False,
+    pickle_save_path: Path,
 ) -> Dict[str, pd.DataFrame]:
     """
     Takes a dict of pandas DataFrames and formats column names, filters based on specific county and processes
@@ -19,7 +21,8 @@ def process_individual_county(
         data (dict): Dictionary of ordered dictionaries that contain data to clean/parse/filter
         data_index (dict): Dictionary of dictionaries that includes info about how to handle data.
         county (str): The county to filter the data for.
-        save_pickle (bool): Saves a pickle of the dataframe
+        save_pickle (bool, optional): Saves a pickle of the dataframe. Defaults to false.
+        pickle_save_path (Path, optional): Path to save pickle.
 
     Return:
         A dictionary of pandas dataframes with cleaned data.
@@ -58,7 +61,12 @@ def process_individual_county(
 
         # optional save
         if save_pickle:
-            export_path = DIR_OUTPUT / f"{data_type}.pkl"
+            pickle = f"{data_type}.pkl"
+            export_path = (
+                DIR_OUTPUT / pickle
+                if not pickle_save_path
+                else pickle_save_path / pickle
+            )
             df.to_pickle(export_path)
 
         # add to payload dict
