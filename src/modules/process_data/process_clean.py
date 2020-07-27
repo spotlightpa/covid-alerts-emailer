@@ -4,7 +4,9 @@ import logging
 from definitions import DIR_OUTPUT
 
 
-def process_clean(data: Dict[str, Dict], *, save_pickle) -> Dict[str, pd.DataFrame]:
+def process_clean(
+    data: Dict[str, Dict], *, save_pickle=False
+) -> Dict[str, pd.DataFrame]:
     """
     Takes a dict of ordered dictionaries of county data, converts each one into a pandas DataFrame and formats column
     names and sets datatypes.
