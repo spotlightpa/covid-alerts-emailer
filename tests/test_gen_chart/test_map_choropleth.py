@@ -16,8 +16,8 @@ def test_map_choropleth(gdf):
         chart = map_choropleth(
             gdf,
             "cases_per_capita",
-            highlight_polygon="allegheny",
-            legend_title="Testing!",
+            highlight_polygon="montour",
+            legend_title="Legend title!",
         )
         save(chart, str(output_path))
 
