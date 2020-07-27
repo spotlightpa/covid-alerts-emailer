@@ -1,7 +1,7 @@
 import pandas as pd
 from typing import Dict
 import logging
-from definitions import ROOT_DIR
+from definitions import DIR_OUTPUT
 
 
 def process_clean(data: Dict[str, Dict], *, save_pickle) -> Dict[str, pd.DataFrame]:
@@ -36,6 +36,6 @@ def process_clean(data: Dict[str, Dict], *, save_pickle) -> Dict[str, pd.DataFra
 
         # save pickel
         if save_pickle:
-            df.to_pickle(f"{ROOT_DIR}/{data_type}.pkl")
+            df.to_pickle(f"{DIR_OUTPUT}/{data_type}.pkl")
 
     return clean_data
