@@ -1,5 +1,5 @@
 ### Project specific ignore files
-src/data/
+src/output/
 .idea/
 logs/output/
 .vscode
