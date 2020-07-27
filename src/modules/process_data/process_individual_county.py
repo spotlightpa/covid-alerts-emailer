@@ -1,7 +1,7 @@
 import pandas as pd
 from typing import Dict
 import logging
-from definitions import DIR_DATA
+from definitions import DIR_OUTPUT
 
 
 def process_individual_county(
@@ -58,7 +58,7 @@ def process_individual_county(
 
         # optional save
         if save_pickle:
-            export_path = DIR_DATA / f"{data_type}.pkl"
+            export_path = DIR_OUTPUT / f"{data_type}.pkl"
             df.to_pickle(export_path)
 
         # add to payload dict
