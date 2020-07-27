@@ -1,7 +1,7 @@
 import pandas as pd
 import geopandas
 from pathlib import Path
-from definitions import PATH_PA_GEOJSON, PATH_OUTPUT_GEOJSON
+from definitions import PATH_PA_GEOJSON, PATH_OUTPUT_GEOJSON, PATH_PA_POP
 import logging
 from typing import Dict
 
@@ -9,9 +9,12 @@ from typing import Dict
 def process_geo(
     path_geo_file: Path,
     *,
-    path_pop_file: Path = None,
-    centroids: bool = False,
-    path_output_geojson: Path = None,
+    add_pop: bool = True,
+    add_neighbors: bool = True,
+    add_centroids: bool = False,
+    save_geojson: bool = False,
+    path_pop_file: Path = PATH_PA_POP,
+    path_output_geojson: Path = PATH_OUTPUT_GEOJSON,
 ) -> geopandas.GeoDataFrame:
     """
     Reads a given geographic file (eg. geojson), converts it to a geopandas geoDataFrame,
@@ -20,34 +23,37 @@ def process_geo(
 
     Args:
         path_geo_file (Path): Path to geographic file (eg. geojson)
-        path_pop_file (Path) OPTIONAL: Path to CSV with population data to merge to geo data.
-        centroids (bool) OPTIONAL: Gets centroids of each polygon if selected. Defaults to false.
+        add_neighbors (bool): Adds a new column called NEIGBHORS for each county with all geographic regions that
+            border each region. Defaults to True.
+        add_pop (bool): Adds a new field with the population for each county. Defaults to True.
+        save_geojson (bool): Whether to save file as geojson. Default to False.
+        path_pop_file (Path) OPTIONAL: Path to CSV with population data to merge to geo data. Defaults to PATH_PA_POP.
+        add_centroids (bool) OPTIONAL: Gets centroids of each polygon if selected. Defaults to false.
         path_output_geojson (Path. optional): Path to output geojson file.
     """
-    logging.info("Processing geo data...")
     gdf = geopandas.read_file(path_geo_file)
 
     # add population data
-    if path_pop_file:
+    if add_pop:
         df_pop = pd.read_csv(path_pop_file)
         gdf = gdf.merge(df_pop, left_on="NAME", right_on="name", how="left")
         gdf["population"] = gdf["population"].astype(int)
 
     # add NEIGHBORS column
-    gdf["NEIGHBORS"] = None
-    for index, country in gdf.iterrows():
-        # get 'not disjoint' countries
-        neighbors = gdf[~gdf.geometry.disjoint(country.geometry)].NAME.tolist()
-        # remove own name from the list
-        neighbors = [name for name in neighbors if country.NAME != name]
-        # add names of neighbors as NEIGHBORS value
-        gdf.at[index, "NEIGHBORS"] = ", ".join(neighbors)
+    if add_neighbors:
+        gdf["NEIGHBORS"] = None
+        for index, country in gdf.iterrows():
+            # get 'not disjoint' countries
+            neighbors = gdf[~gdf.geometry.disjoint(country.geometry)].NAME.tolist()
+            # remove own name from the list
+            neighbors = [name for name in neighbors if country.NAME != name]
+            # add names of neighbors as NEIGHBORS value
+            gdf.at[index, "NEIGHBORS"] = ", ".join(neighbors)
 
-    if centroids:
+    if add_centroids:
         gdf["CENTROID"] = gdf["geometry"].centroid
 
-    if path_output_geojson:
+    if save_geojson:
         gdf.to_file(path_output_geojson, driver="GeoJSON")
 
-    logging.info("Processing complete")
     return gdf

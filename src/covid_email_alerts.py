@@ -67,11 +67,7 @@ def main():
     data_clean = process_clean(data_raw)
     data_state = process_individual_county(data_clean, data_index, county="Total")
     state_stats = process_stats(data_state)
-    gdf_pa = process_geo(
-        PATH_PA_GEOJSON,
-        path_pop_file=PATH_PA_POP,
-        path_output_geojson=PATH_OUTPUT_GEOJSON,
-    )
+    gdf_pa = process_geo(PATH_PA_GEOJSON)
     gdf_pa = merge_geo(gdf_pa, data_clean)
 
     # loop over counties and get charts + add newsletter text
