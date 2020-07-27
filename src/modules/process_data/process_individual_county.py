@@ -1,14 +1,16 @@
 import pandas as pd
 from typing import Dict
 import logging
-from definitions import DIR_OUTPUT
+from definitions import DIR_OUTPUT, PATH_PA_POP
 from pathlib import Path
+
+from src.modules.process_data.helper.get_county_pop import get_county_pop
 
 
 def process_individual_county(
     data: Dict[str, pd.DataFrame],
     data_index: Dict[str, Dict],
-    county: str,
+    county_name: str,
     *,
     save_pickle: bool = False,
     pickle_save_path: Path = None,
@@ -20,7 +22,7 @@ def process_individual_county(
     Args:
         data (dict): Dictionary of ordered dictionaries that contain data to clean/parse/filter
         data_index (dict): Dictionary of dictionaries that includes info about how to handle data.
-        county (str): The county to filter the data for.
+        county_name (str): The county to filter the data for.
         save_pickle (bool, optional): Saves a pickle of the dataframe. Defaults to false.
         pickle_save_path (Path, optional): Path to save pickle.
 
@@ -32,19 +34,19 @@ def process_individual_county(
         logging.info(f"Cleaning and processing '{data_type}' data...")
 
         # clean county column name
-        df = df.rename(columns={county: "total"})
+        df = df.rename(columns={county_name: "total"})
         df = df[["date", "total"]]
 
         # optional rules
         clean_rules = data_index[data_type]["clean_rules"]
-        if clean_rules.get("added_since_prev_day", False):
+        if clean_rules.get("added_since_prev_day"):
             df["added_since_prev_day"] = df.total.diff()
             df["added_since_prev_day"] = df["added_since_prev_day"].apply(
                 lambda x: x if x >= 0 else 0
             )  # default value to 0 if its negative
             df.iloc[0, 2] = df.iloc[0, 1]  # default first val to same as total
 
-        if clean_rules.get("set_first_non_zero_val_to_zero", False):
+        if clean_rules.get("set_first_non_zero_val_to_zero"):
             # If the first value is extreme, we may want to remove it. This rule sets the first
             # non-zero number as a zero.
             target_col = clean_rules["set_first_non_zero_val_to_zero"]
@@ -54,10 +56,16 @@ def process_individual_county(
             )
             df.loc[df.index[first_nonzero_row], target_col] = 0
 
-        if clean_rules.get("moving_avg", False):
+        if clean_rules.get("moving_avg"):
             col_to_avg = clean_rules["moving_avg"]
             df["moving_avg"] = df[col_to_avg].rolling(window=7).mean()
             df["moving_avg"] = df["moving_avg"].fillna(0).astype("int64")
+
+        if clean_rules.get("moving_avg") and clean_rules.get("moving_avg_per_capita"):
+            county_pop = get_county_pop(county_name)
+            df["moving_avg_per_capita"] = (
+                df["moving_avg"] / county_pop
+            ) * 100000  # calculate rate per 100k people
 
         # optional save
         if save_pickle:
