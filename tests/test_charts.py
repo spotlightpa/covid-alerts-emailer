@@ -58,19 +58,17 @@ def test_gen_custom_legend_limit():
 
 
 def test_multi_line(cases_multi_county, gdf):
-    cols = [col for col in cases_multi_county.columns if col != "date"]
-    cols = cols[0:5]
-    print(cols)
-    df = stack_df(cases_multi_county, stackCols=cols, xAxisCol="date")
-    colors = Dark2_5.hex_colors
-
+    counties = [col for col in cases_multi_county.columns if col != "date"]
+    counties = counties[0:5]
+    df = stack_df(cases_multi_county, stackCols=counties, xAxisCol="date")
+    legend_obj = CustomLegend(counties)
     chart = multi_line(
         df,
         x_axis_col="date",
         y_axis_col="value",
         category_col="category",
-        domain=cols,
-        range_=colors,
+        domain=counties,
+        range_=legend_obj.colors,
     )
     output_path = DIR_TESTS_OUTPUT / "multiline.png"
     save(chart, str(output_path))
