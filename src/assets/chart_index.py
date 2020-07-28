@@ -1,4 +1,4 @@
-# Config file for chart creation
+# Config file for chart creation. Determines what charts appear and how they look.
 
 chart_index = {
     "cases": {
@@ -19,6 +19,12 @@ chart_index = {
                 "color_field": "cases_per_capita",
                 "legend_title": "Cases per 100,000",
             },
+            {
+                "type": "neigbhors_per_capita",
+                "title": "Regional comparison",
+                "compare_field": "moving_avg_per_capita",
+                "neighbor_limit": 4,
+            },
         ],
     },
     "deaths": {
@@ -38,6 +44,12 @@ chart_index = {
                 "title": "Per capita rate",
                 "color_field": "deaths_per_capita",
                 "legend_title": "Deaths per 100,000",
+            },
+            {
+                "type": "neigbhors_per_capita",
+                "title": "Regional comparison",
+                "compare_field": "moving_avg_per_capita",
+                "neighbor_limit": 4,
             },
         ],
     },
