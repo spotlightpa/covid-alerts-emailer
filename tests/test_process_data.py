@@ -3,7 +3,7 @@ from src.assets.data_index import data_index
 from src.modules.init.pandas_opts import pandas_opts
 from src.modules.process_data.helper.get_neighbors import get_neighbors
 from src.modules.process_data.process_individual_county import process_individual_county
-from src.modules.process_data.process_neighbors import process_neighbors
+from src.modules.process_data.compare_counties import compare_counties
 
 
 def test_process_individual_county_total(data_clean):
@@ -34,6 +34,13 @@ def test_process_individual_county_dauphin(data_clean):
 
 def test_process_neighbors(data_clean, gdf):
     neighbors = get_neighbors("Dauphin", gdf)
-    process_neighbors()
-
-    print(neighbors)
+    compare_list = ["Dauphin"] + neighbors
+    data_clean_cases = data_clean["cases"]
+    clean_rules = data_index["cases"]["clean_rules"]
+    df = compare_counties(
+        data_clean_cases,
+        clean_rules=clean_rules,
+        compare_field="total",
+        counties=compare_list,
+    )
+    print(df)
