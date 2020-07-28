@@ -12,7 +12,7 @@ def stack_df(
 ) -> pd.DataFrame:
     """
     Takes a pandas Dataframe and returns a new dataframe with specified columns stacked on top of each
-    other. This is useful for creating area charts with Altair.
+    other. This is useful for creating multi-series charts with Altair.
 
     Eg. Data like this:
 
