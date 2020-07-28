@@ -4,11 +4,11 @@ from typing import List
 
 def stack_df(
     df,
-    stackCols: List[str],
-    xAxisCol: str,
+    stack_cols: List[str],
+    x_axis_col: str,
     *,
-    yAxisLabel: str = "value",
-    categoryLabel: str = "category",
+    y_axis_label: str = "value",
+    category_label: str = "category",
 ) -> pd.DataFrame:
     """
     Takes a pandas Dataframe and returns a new dataframe with specified columns stacked on top of each
@@ -32,17 +32,17 @@ def stack_df(
 
     Args:
         df (pd.Dataframe): Data to stack.
-        stackCols (list): A list of strings that represent the names of columns you wish to stack.
-        xAxisCol (str): A column that can act as a dependent variable across all columns specified in stackCols and
+        stack_cols (list): A list of strings that represent the names of columns you wish to stack.
+        x_axis_col (str): A column that can act as a dependent variable across all columns specified in stackCols and
             would work as an x axis if the date is charted. Eg. a date or time.
-        yAxisLabel (str) OPTIONAL: A way of describing the values in all stackCols. Defaults to 'value'
-        categoryLabel (str) OPTIONAL: A way of describing the types of data in the stackCols. Defaults to 'category'
+        y_axis_label (str) OPTIONAL: A way of describing the values in all stackCols. Defaults to 'value'
+        category_label (str) OPTIONAL: A way of describing the types of data in the stackCols. Defaults to 'category'
 
     """
     new_df = pd.DataFrame()
-    for col in stackCols:
-        df_stack = df[[xAxisCol, col]]
-        df_stack.columns = [xAxisCol, yAxisLabel]
-        df_stack[categoryLabel] = col
+    for col in stack_cols:
+        df_stack = df[[x_axis_col, col]]
+        df_stack.columns = [x_axis_col, y_axis_label]
+        df_stack[category_label] = col
         new_df = new_df.append(df_stack)
     return new_df

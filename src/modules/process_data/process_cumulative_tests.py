@@ -33,9 +33,9 @@ def process_cumulative_tests(df_cases: DataFrame, df_tests: DataFrame) -> DataFr
     df = df.rename(columns={"total_cases": "positive"})
     df = stack_df(
         df,
-        xAxisCol="date",
-        stackCols=["positive", "negative"],
-        yAxisLabel="count",
-        categoryLabel="data_type",
+        x_axis_col="date",
+        stack_cols=["positive", "negative"],
+        y_axis_label="count",
+        category_label="data_type",
     )
     return df
