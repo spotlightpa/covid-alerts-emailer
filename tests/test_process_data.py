@@ -43,4 +43,8 @@ def test_process_neighbors(data_clean, gdf):
         compare_field="total",
         counties=compare_list,
     )
-    print(df)
+    df = df.set_index("date")
+    cases_lebanon_july_26 = df.at["2020-07-26", "lebanon"]
+    cases_lebanon_july_23 = df.at["2020-07-23", "cumberland"]
+    assert cases_lebanon_july_26 == 1544
+    assert cases_lebanon_july_23 == 1066
