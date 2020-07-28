@@ -17,6 +17,7 @@ from src.modules.gen_desc.desc_choro import desc_choro
 from src.modules.gen_desc.desc_daily import desc_daily
 from src.modules.process_data.compare_counties import compare_counties
 from src.modules.process_data.helper.get_neighbors import get_neighbors
+from src.modules.process_data.helper.sort_counties_by_pop import sort_counties_by_pop
 from src.modules.process_data.helper.stack_df import stack_df
 from src.modules.process_data.process_cumulative_tests import process_cumulative_tests
 from src.modules.s3.copy_to_s3 import copy_to_s3
@@ -94,6 +95,7 @@ def gen_chart(
         compare_field = chart_dict["compare_field"]
         neighbor_limit = chart_dict["neighbor_limit"]
         neighbors = get_neighbors("Dauphin", gdf_pa)
+        neighbors = sort_counties_by_pop(neighbors)
         neighbors = neighbors[0:neighbor_limit]
         compare_list = ["Dauphin"] + neighbors
         data_clean_cases = data_clean["cases"]
