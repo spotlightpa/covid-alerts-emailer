@@ -38,10 +38,10 @@ def multi_line(
         .encode(
             x=x_axis_col,
             y=alt.Y(y_axis_col),
-            color=category_col
-            # color=alt.Color(
-            #     category_col, scale=alt.Scale(domain=domain, range=range_), legend=None
-            # ),
+            # color=category_col
+            color=alt.Color(
+                category_col, scale=alt.Scale(domain=domain, range=range_), legend=None
+            ),
         )
     )
     return chart
