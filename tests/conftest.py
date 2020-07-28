@@ -18,6 +18,8 @@ from src.assets.chart_index import chart_index
 from typing import Dict, List
 import pandas as pd
 from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
+from src.modules.process_data.compare_counties import compare_counties
+from src.modules.process_data.helper.get_neighbors import get_neighbors
 
 
 @pytest.fixture(scope="session")
@@ -42,6 +44,23 @@ def data_clean() -> Dict[str, pd.DataFrame]:
     for data_type, data_index_dict in data_index.items():
         payload[data_type] = pd.read_pickle(DIR_FIXTURES_PA_CLEAN / f"{data_type}.pkl")
     return payload
+
+
+@pytest.fixture(scope="session")
+def cases_multi_county(data_clean, gdf) -> pd.DataFrame:
+    """
+    A DataFrame representing a day-by-day comparison of cases data between counties.
+    """
+    neighbors = get_neighbors("Dauphin", gdf)
+    compare_list = ["Dauphin"] + neighbors
+    data_clean_cases = data_clean["cases"]
+    clean_rules = data_index["cases"]["clean_rules"]
+    return compare_counties(
+        data_clean_cases,
+        clean_rules=clean_rules,
+        compare_field="moving_avg_per_capita",
+        counties=compare_list,
+    )
 
 
 @pytest.fixture(scope="session")
