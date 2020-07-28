@@ -22,4 +22,4 @@ def get_neighbors(
     """
     gdf = gdf.set_index(field_county_name)
     neighbors = gdf.at[county_name, field_neighbors]
-    return neighbors.split(",")
+    return neighbors.split(", ")

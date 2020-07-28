@@ -9,6 +9,7 @@ def test_get_neighbors(gdf):
     neighbors = get_neighbors("Dauphin", gdf)
     assert "Lebanon" in neighbors
     assert "Allegheny" not in neighbors
+    print(neighbors)
 
 
 def test_get_county_pop():
