@@ -6,27 +6,18 @@ from definitions import (
     PATH_OUTPUT_HTML,
     DIR_TEMPLATES,
     PATH_COUNTY_LIST,
-    DIR_OUTPUT,
     PATH_PA_GEOJSON,
-    PATH_PA_POP,
-    PATH_OUTPUT_GEOJSON,
     AWS_BUCKET,
     AWS_DIR_TEST,
 )
-from src.modules.gen_chart.daily_and_avg import daily_and_avg
-from src.modules.gen_chart.map_choropleth import map_choropleth
-from src.modules.gen_chart.stacked_area import stacked_area
+from src.modules.gen_chart.gen_chart import gen_chart
 from src.modules.gen_chart.themes import spotlight
-from src.modules.gen_desc.desc_area_tests import desc_area_tests
-from src.modules.gen_desc.desc_choro import desc_choro
-from src.modules.gen_desc.desc_daily import desc_daily
 from src.modules.gen_html.gen_html import gen_html
 from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
 from src.modules.init.init_program import init_program
 from src.modules.fetch.fetch import fetch_data
 from src.modules.process_data.merge_geo import merge_geo
 from src.modules.process_data.process_clean import process_clean
-from src.modules.process_data.process_cumulative_tests import process_cumulative_tests
 from src.modules.process_data.process_individual_county import process_individual_county
 from src.assets.chart_index import chart_index
 from src.assets.data_index import data_index
@@ -93,74 +84,25 @@ def main():
         # create email payload
         county_payload = []
         for data_type, chart_index_dict in chart_index.items():
-            chart_payload = []
             logging.info(f"Creating payload for: {data_type}")
             primary_color = chart_index_dict["theme"]["colors"]["primary"]
             secondary_color = chart_index_dict["theme"]["colors"]["secondary"]
 
             # create charts
+            chart_payload = []
             for chart_dict in chart_index_dict["charts"]:
-                chart_type = chart_dict["type"]
-                chart_desc = ""
-                fmt = "png"
-                content_type = "image/png"
-                if "daily_and_avg" in chart_type:
-                    chart = daily_and_avg(
-                        data_type=data_type,
-                        df=county_data[data_type],
-                        line_color=primary_color,
-                        bar_color=secondary_color,
-                    )
-                    chart_desc = desc_daily(
-                        county_name=county_name_clean, data_type=data_type
-                    )
-                elif "choropleth" in chart_type:
-                    chart = map_choropleth(
-                        gdf_pa,
-                        color_field=chart_dict["color_field"],
-                        highlight_polygon=county_name_clean,
-                        min_color=secondary_color,
-                        max_color=primary_color,
-                        legend_title=chart_dict["legend_title"],
-                    )
-                    chart_desc = desc_choro(county_name_clean, data_type=data_type)
-                elif "stacked_area" in chart_type:
-                    df = process_cumulative_tests(
-                        county_data["confirmed"], county_data["tests"]
-                    )
-                    chart = stacked_area(
-                        df,
-                        x_axis_col="date",
-                        y_axis_col="count",
-                        category_col="data_type",
-                        domain=["positive", "negative"],
-                        range_=[primary_color, secondary_color],
-                    )
-                    chart_desc = desc_area_tests(data=df, county=county_name)
-
-                image_filename = (
-                    f"{county_name_clean.lower()}_{data_type}_{chart_type}.{fmt}"
+                chart_payload_item = gen_chart(
+                    county_name_clean,
+                    data_type,
+                    data_clean=data_clean,
+                    data_index=data_index,
+                    chart_dict=chart_dict,
+                    county_data=county_data,
+                    gdf_pa=gdf_pa,
+                    primary_color=primary_color,
+                    secondary_color=secondary_color,
                 )
-                image_path = DIR_OUTPUT / image_filename
-                save(chart, str(image_path))
-                logging.info("...saved")
-
-                # move to s3
-                copy_to_s3(
-                    image_path, AWS_BUCKET, AWS_DIR_TEST, content_type=content_type
-                )
-
-                chart_title = chart_dict.get("title")
-                chart_title_clean = chart_title.title() if chart_title else ""
-
-                chart_payload.append(
-                    {
-                        "title": chart_dict.get("title", chart_title_clean),
-                        "custom_legend": chart_dict.get("custom_legend"),
-                        "image_path": f"https://{AWS_BUCKET}/{AWS_DIR_TEST}/{image_filename}",
-                        "description": chart_desc,
-                    }
-                )
+                chart_payload.append(chart_payload_item)
 
             # add to email payload
             county_payload.append(
