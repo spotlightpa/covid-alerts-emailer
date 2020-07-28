@@ -57,6 +57,19 @@ def test_gen_custom_legend_limit():
     assert len(legend) == 2
 
 
+def test_gen_custom_legend_title_case():
+    labels = [
+        "dauphin",
+        "cumberland",
+        "york",
+        "lancaster",
+    ]
+    legend_obj = CustomLegend(labels)
+    legend = legend_obj.legend(title_case=True)
+    print(legend)
+    print(legend_obj.labels)
+
+
 def test_multi_line(cases_multi_county, gdf):
     counties = [col for col in cases_multi_county.columns if col != "date"]
     counties = counties[0:5]

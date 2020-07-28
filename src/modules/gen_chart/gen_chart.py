@@ -119,7 +119,7 @@ def gen_chart(
             domain=legend_obj.labels,
             range_=legend_obj.colors,
         )
-        custom_legend = legend_obj.legend()
+        custom_legend = legend_obj.legend(title_case=True)
         chart_desc = "Testing multi line chart!"
 
     elif "stacked_area" in chart_type:

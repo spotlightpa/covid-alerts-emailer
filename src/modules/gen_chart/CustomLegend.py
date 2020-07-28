@@ -23,6 +23,15 @@ class CustomLegend:
     def __repr__(self) -> str:
         return "<CustomLegend labels:%s colors:%s>" % (self.labels, self.colors)
 
-    def legend(self) -> List[Dict[str, str]]:
-        """Returns a list of dicts representing the legend"""
-        return [{"label": x, "color": y} for x, y in zip(self.labels, self.colors)]
+    def legend(self, title_case=False) -> List[Dict[str, str]]:
+
+        """Returns a list of dicts representing the legend
+
+        Args:
+            title_case (bool, optional): Ensures labels are in title case when legend method is called
+
+        Returns:
+            List[Dict[str, str]]: Legend
+        """
+        labels = self.labels if not title_case else [x.title() for x in self.labels]
+        return [{"label": x, "color": y} for x, y in zip(labels, self.colors)]
