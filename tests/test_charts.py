@@ -60,7 +60,7 @@ def test_gen_custom_legend_limit():
 def test_multi_line(cases_multi_county, gdf):
     counties = [col for col in cases_multi_county.columns if col != "date"]
     counties = counties[0:5]
-    df = stack_df(cases_multi_county, stackCols=counties, xAxisCol="date")
+    df = stack_df(cases_multi_county, stack_cols=counties, x_axis_col="date")
     legend_obj = CustomLegend(counties)
     chart = multi_line(
         df,
