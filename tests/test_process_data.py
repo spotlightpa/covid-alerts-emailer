@@ -1,7 +1,11 @@
 import pytest
+
+from definitions import PATH_PA_GEOJSON
 from src.assets.data_index import data_index
 from src.modules.init.pandas_opts import pandas_opts
 from src.modules.process_data.helper.get_neighbors import get_neighbors
+from src.modules.process_data.merge_geo import merge_geo
+from src.modules.process_data.process_geo import process_geo
 from src.modules.process_data.process_individual_county import process_individual_county
 from src.modules.process_data.compare_counties import compare_counties
 
@@ -30,6 +34,14 @@ def test_process_individual_county_dauphin(data_clean):
     cases_total_per_capita_july_27 = df_cases.at["2020-07-27", "total_per_capita"]
     assert cases_total_july_27 == 2559
     assert int(round(cases_total_per_capita_july_27)) == 920
+
+
+def test_merge_geo(data_clean):
+    gdf_pa = process_geo(PATH_PA_GEOJSON)
+    df_merged = merge_geo(gdf_pa, data_clean, add_per_capita=True)
+    print("\n", df_merged)
+    # should have 67 rows, one for each county
+    assert len(df_merged.index) == 67
 
 
 def test_process_neighbors(data_clean, gdf):
