@@ -1,6 +1,6 @@
 # Config file for chart creation. Determines what charts appear and how they look.
 
-chart_index = {
+CHART_INDEX = {
     "cases": {
         "name": "cases",
         "theme": {"colors": {"primary": "#CC0000", "secondary": "#F4D2D2"}},

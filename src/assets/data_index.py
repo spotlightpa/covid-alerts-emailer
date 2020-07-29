@@ -1,6 +1,6 @@
 # Config file for data fetching and cleaning
 
-data_index = {
+DATA_INDEX = {
     "cases": {
         "filename": "pa-cases.csv",
         "clean_rules": {
