@@ -1,8 +1,6 @@
 import pytest
-
 from definitions import PATH_PA_GEOJSON
 from src.assets.data_index import data_index
-from src.modules.init.pandas_opts import pandas_opts
 from src.modules.process_data.helper.get_neighbors import get_neighbors
 from src.modules.process_data.merge_geo import merge_geo
 from src.modules.process_data.process_geo import process_geo
