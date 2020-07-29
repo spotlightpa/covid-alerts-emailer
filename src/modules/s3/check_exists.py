@@ -12,14 +12,7 @@ def copy_to_s3(
     content_type: str = "text/csv",
 ) -> None:
     """
-    Uploads a local file to an S3 bucket.
-
-    Note: Requires AWS credentials to be provided in a .env file stored in root project directory under AWS_KEY_ID
-    and AWS_SECRET_KEY_ID or credentials must be stored at ~/.aws/credentials like so:
-
-        [default]
-            aws_access_key_id=AKIAIOSFODNN7EXAMPLE
-            aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    Uploads files to S3 bucket. Requires AWS credentials to be provided in a .env file stored in root project directory.
 
     Args:
         local_file_path (Path): File path for file to be transferred.
