@@ -1,7 +1,6 @@
 from typing import Dict, Union, List
 
 from typing_extensions import TypedDict
-import altair as alt
 import logging
 import pandas as pd
 import geopandas
@@ -64,6 +63,7 @@ def gen_chart(
     Returns:
         A chart_payload_item.
     """
+
     chart_type = chart_dict["type"]
     chart_desc = ""
     custom_legend = None

@@ -2,9 +2,11 @@ import logging
 from dotenv import load_dotenv
 from definitions import DIR_OUTPUT
 from logs.config.logging import logs_config
+from src.modules.gen_chart.themes import spotlight
 from src.modules.helper.misc import delete_dir_contents
 from src.modules.helper.time import utc_now
 from src.modules.init.pandas_opts import pandas_opts
+import altair as alt
 
 
 def init_program():
@@ -25,6 +27,11 @@ def init_program():
         logging.info("Data directory doesn't exist - building")
         DIR_OUTPUT.mkdir()
 
+    # Set pandas options
     pandas_opts()
+
+    # set Altair themes
+    alt.themes.register("spotlight", spotlight)
+    alt.themes.enable("spotlight")
 
     return program_start_time

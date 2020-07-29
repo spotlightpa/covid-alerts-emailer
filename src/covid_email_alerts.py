@@ -43,10 +43,6 @@ def main():
     # init
     init_program()
 
-    # enable chart themes
-    alt.themes.register("spotlight", spotlight)
-    alt.themes.enable("spotlight")
-
     # fetch
     with open(PATH_COUNTY_LIST) as f:
         counties = json.load(f)
