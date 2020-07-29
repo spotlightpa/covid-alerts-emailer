@@ -41,7 +41,7 @@ def gen_chart(
     chart_dict: Dict,
     data_clean: Dict,
     county_data: Dict[str, pd.DataFrame],
-    gdf_pa: geopandas.GeoDataFrame,
+    gdf: geopandas.GeoDataFrame,
     primary_color: str,
     secondary_color: str,
 ) -> ChartPayloadItem:
@@ -54,9 +54,9 @@ def gen_chart(
         data_type (str): Type of data. Eg. "cases".
         data_index (Dict): Config settings for data.
         chart_dict (Dict): Config settings for chart.
-        data_clean (Dict): Data for all counties.
-        county_data (Dict[str, pd.DataFrame]: Cases, deaths, tests, etc data for a specific county.
-        gdf_pa (geopandas.GeoDataFrame): Map of PA.
+        data_clean (Dict[str, pd.DataFrame]): Dict of unprocessed cases, deaths, tests data for all counties.
+        county_data (Dict[str, pd.DataFrame]: Processed cases, deaths, tests, etc data for a specific county.
+        gdf (geopandas.GeoDataFrame): Pa geodataframe with cases, deaths, tests data merged on to it.
         primary_color (str): Hex code for color theme.
         secondary_color (str): Hex code for color theme.
 
@@ -82,7 +82,7 @@ def gen_chart(
 
     elif "choropleth" in chart_type:
         chart = map_choropleth(
-            gdf_pa,
+            gdf,
             color_field=chart_dict["color_field"],
             highlight_polygon=county_name,
             min_color=secondary_color,
@@ -94,7 +94,7 @@ def gen_chart(
     elif "neigbhors_per_capita" in chart_type:
         compare_field = chart_dict["compare_field"]
         neighbor_limit = chart_dict["neighbor_limit"]
-        neighbors = get_neighbors("Dauphin", gdf_pa)
+        neighbors = get_neighbors("Dauphin", gdf)
         neighbors = sort_counties_by_pop(neighbors)
         neighbors = neighbors[0:neighbor_limit]
         compare_list = ["Dauphin"] + neighbors

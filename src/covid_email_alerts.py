@@ -10,17 +10,16 @@ from definitions import (
     AWS_BUCKET,
     AWS_DIR_TEST,
 )
-from src.modules.gen_chart.gen_chart import gen_chart
 from src.modules.gen_chart.themes import spotlight
 from src.modules.gen_html.gen_html import gen_html
 from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
+from src.modules.gen_payload.gen_county_payload import gen_county_payload
 from src.modules.init.init_program import init_program
 from src.modules.fetch.fetch import fetch_data
 from src.modules.process_data.merge_geo import merge_geo
 from src.modules.process_data.process_clean import process_clean
 from src.modules.process_data.process_individual_county import process_individual_county
-from src.assets.chart_index import chart_index
-from src.assets.data_index import data_index
+from src.assets.data_index import DATA_INDEX
 from src.modules.process_data.process_geo import process_geo
 from src.modules.process_data.process_stats import process_stats
 from src.modules.s3.copy_to_s3 import copy_to_s3
@@ -52,17 +51,18 @@ def main():
     with open(PATH_COUNTY_LIST) as f:
         counties = json.load(f)
     dir = "http://interactives.data.spotlightpa.org/2020/coronavirus/data/inquirer"
-    data_raw = fetch_data(dir, data_index)
+    data_raw = fetch_data(dir, DATA_INDEX)
 
     # clean, filter, process
     data_clean = process_clean(data_raw)
-    data_state = process_individual_county(data_clean, data_index, county_name="Total")
+    data_state = process_individual_county(data_clean, DATA_INDEX, county_name="Total")
     state_stats = process_stats(data_state)
-    gdf_pa = process_geo(PATH_PA_GEOJSON)
-    gdf_pa = merge_geo(gdf_pa, data_clean)
+    gdf_raw = process_geo(PATH_PA_GEOJSON)
+    gdf_processed = merge_geo(gdf_raw, data_clean)
 
     # loop over counties and get charts + add newsletter text
     for fips, county_dict in test_counties.items():
+        # skip county if there are no subscribers to email list
         county_name = county_dict["name"]
         email_list_id = county_dict["id"]
         subscriber_count = count_subscribers(email_list_id)
@@ -77,41 +77,17 @@ def main():
 
         county_name_clean = county_name.replace(" County", "")
         county_data = process_individual_county(
-            data_clean, data_index, county_name=county_name_clean
+            data_clean, DATA_INDEX, county_name=county_name_clean
         )
         county_stats = process_stats(county_data)
 
         # create email payload
-        county_payload = []
-        for data_type, chart_index_dict in chart_index.items():
-            logging.info(f"Creating payload for: {data_type}")
-            primary_color = chart_index_dict["theme"]["colors"]["primary"]
-            secondary_color = chart_index_dict["theme"]["colors"]["secondary"]
-
-            # create charts
-            chart_payload = []
-            for chart_dict in chart_index_dict["charts"]:
-                chart_payload_item = gen_chart(
-                    county_name_clean,
-                    data_type,
-                    data_clean=data_clean,
-                    data_index=data_index,
-                    chart_dict=chart_dict,
-                    county_data=county_data,
-                    gdf_pa=gdf_pa,
-                    primary_color=primary_color,
-                    secondary_color=secondary_color,
-                )
-                chart_payload.append(chart_payload_item)
-
-            # add to email payload
-            county_payload.append(
-                {
-                    "title": f"{data_type.upper()}",
-                    "charts": chart_payload,
-                    "colors": {"primary": primary_color, "secondary": secondary_color,},
-                }
-            )
+        county_payload = gen_county_payload(
+            county_name_clean,
+            data_clean=data_clean,
+            county_data=county_data,
+            gdf=gdf_processed,
+        )
 
         # Generate HTML
         subject = f"COVID-19 Report: {county_name}"
@@ -122,11 +98,14 @@ def main():
             newsletter_browser_link=newsletter_browser_link,
         )
         html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
+
+        # Upload copy of HTML to s3
         with open(PATH_OUTPUT_HTML, "w") as fout:
             fout.writelines(html)
         copy_to_s3(PATH_OUTPUT_HTML, AWS_BUCKET, AWS_DIR_TEST, content_type="text/html")
 
         # Send email
+        quit()
         logging.info(f"Sending email for {county_name}...")
         send_email_list(html, email_list_id, subject=subject)
         logging.info("...email sent")
