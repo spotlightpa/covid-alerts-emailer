@@ -16,7 +16,7 @@ chart_index = {
             {
                 "type": "choropleth",
                 "title": "Per capita rate",
-                "color_field": "cases_per_capita",
+                "color_field": "cases_added_past_two_weeks_per_capita",
                 "legend_title": "Cases per 100,000",
             },
             {
@@ -42,7 +42,7 @@ chart_index = {
             {
                 "type": "choropleth",
                 "title": "Per capita rate",
-                "color_field": "deaths_per_capita",
+                "color_field": "deaths_added_past_two_weeks_per_capita",
                 "legend_title": "Deaths per 100,000",
             },
             {
