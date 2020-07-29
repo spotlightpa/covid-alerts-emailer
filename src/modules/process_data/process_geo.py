@@ -22,7 +22,7 @@ def process_geo(
     for each polygon.
 
     Args:
-        path_geo_file (Path): Path to geographic file (eg. geojson)
+        path_geo_file (Path): Path to geographic file (eg. geojson) that will be read.
         add_neighbors (bool): Adds a new column called NEIGBHORS for each county with all geographic regions that
             border each region. Defaults to True.
         add_pop (bool): Adds a new field with the population for each county. Defaults to True.
