@@ -2,28 +2,25 @@ import json
 import pytest
 import geopandas
 from definitions import (
-    DIR_FIXTURES,
     DIR_TEMPLATES,
     PATH_COUNTY_LIST,
-    AWS_BUCKET,
-    AWS_DIR_TEST,
     DIR_FIXTURES_PA_CLEAN,
     PATH_PA_GEOJSON,
 )
 import altair as alt
-
-from src.assets.data_index import data_index
+from src.assets.data_index import DATA_INDEX
 from src.modules.gen_chart.themes import spotlight
 from src.modules.gen_html.gen_html import gen_html
-from src.assets.chart_index import chart_index
-from typing import Dict, List
+from typing import Dict, List, Any
 import pandas as pd
 from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
+from src.modules.gen_payload.gen_county_payload import gen_county_payload
 from src.modules.init.pandas_opts import pandas_opts
 from src.modules.process_data.compare_counties import compare_counties
 from src.modules.process_data.helper.get_neighbors import get_neighbors
 from src.modules.process_data.merge_geo import merge_geo
 from src.modules.process_data.process_geo import process_geo
+from src.modules.process_data.process_individual_county import process_individual_county
 
 
 def pytest_configure(config):
@@ -34,6 +31,9 @@ def pytest_configure(config):
     """
     # Makes it easier to see pandas DFs when printing to console
     pandas_opts()
+    # Enables Spotlight altair theme
+    alt.themes.register("spotlight", spotlight)
+    alt.themes.enable("spotlight")
 
 
 @pytest.fixture(scope="session")
@@ -55,9 +55,22 @@ def data_clean() -> Dict[str, pd.DataFrame]:
     cleaning.
     """
     payload = {}
-    for data_type, data_index_dict in data_index.items():
+    for data_type, data_index_dict in DATA_INDEX.items():
         payload[data_type] = pd.read_pickle(DIR_FIXTURES_PA_CLEAN / f"{data_type}.pkl")
     return payload
+
+
+@pytest.fixture(scope="session")
+def county_data(county, data_clean) -> Dict[str, pd.DataFrame]:
+    """
+    Creates county_data, ie. a dict of pandas Dataframes with processed cases, deaths, test
+    data for a specific county
+    """
+    county_name = county["name"]
+    county_name_clean = county_name.replace(" County", "")
+    return process_individual_county(
+        data_clean, DATA_INDEX, county_name=county_name_clean
+    )
 
 
 @pytest.fixture(scope="session")
@@ -68,7 +81,7 @@ def cases_multi_county(data_clean, gdf_processed) -> pd.DataFrame:
     neighbors = get_neighbors("Dauphin", gdf_processed)
     compare_list = ["Dauphin"] + neighbors
     data_clean_cases = data_clean["cases"]
-    clean_rules = data_index["cases"]["clean_rules"]
+    clean_rules = DATA_INDEX["cases"]["clean_rules"]
     return compare_counties(
         data_clean_cases,
         clean_rules=clean_rules,
@@ -78,47 +91,16 @@ def cases_multi_county(data_clean, gdf_processed) -> pd.DataFrame:
 
 
 @pytest.fixture(scope="session")
-def county_payload(county: Dict) -> List[Dict]:
+def county_payload(
+    county: Dict, data_clean, county_data, gdf_processed
+) -> List[Dict[str, Any]]:
     """
     Creates a list of dicts that represents important payload data for email newsletter.
     """
     county_name = county["name"]
-    bucket_name = AWS_BUCKET
-    bucket_dest_dir = AWS_DIR_TEST
-
-    payload = []
-    for data_type, chart_index_dict in chart_index.items():
-        chart_payload = []
-        primary_color = chart_index_dict["theme"]["colors"]["primary"]
-        secondary_color = chart_index_dict["theme"]["colors"]["secondary"]
-        for chart_dict in chart_index_dict["charts"]:
-            chart_type = chart_dict["type"]
-            chart_payload.append(
-                {
-                    "title": "",
-                    "custom_legend": chart_dict.get("custom_legend"),
-                    "image_path": f"https://{bucket_name}/{bucket_dest_dir}/{county_name}_{data_type}_{chart_type}.png",
-                    "description": "Description of chart and stats, blah blah blah",
-                }
-            )
-        payload.append(
-            {
-                "title": f"{data_type.upper()}",
-                "charts": chart_payload,
-                "colors": {"primary": primary_color, "secondary": secondary_color,},
-            }
-        )
-
-    return payload
-
-
-@pytest.fixture(scope="session")
-def enable_theme() -> None:
-    """
-    Enables Spotlight altair theme
-    """
-    alt.themes.register("spotlight", spotlight)
-    alt.themes.enable("spotlight")
+    return gen_county_payload(
+        county_name, data_clean=data_clean, county_data=county_data, gdf=gdf_processed
+    )
 
 
 @pytest.fixture(scope="session")
