@@ -18,8 +18,19 @@ from src.assets.chart_index import chart_index
 from typing import Dict, List
 import pandas as pd
 from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
+from src.modules.init.pandas_opts import pandas_opts
 from src.modules.process_data.compare_counties import compare_counties
 from src.modules.process_data.helper.get_neighbors import get_neighbors
+
+
+def pytest_configure(config):
+    """
+    Allows plugins and conftest files to perform initial configuration.
+    This hook is called for every plugin and initial conftest
+    file after command line options have been parsed.
+    """
+    # Makes it easier to see pandas DFs when printing to console
+    pandas_opts()
 
 
 @pytest.fixture(scope="session")
