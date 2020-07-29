@@ -43,6 +43,8 @@ def gen_chart(
     gdf: geopandas.GeoDataFrame,
     primary_color: str,
     secondary_color: str,
+    aws_bucket: str,
+    aws_dir: str,
 ) -> ChartPayloadItem:
     """
     Creates a chart PNG using Altair and moves its to s3. Returns an URL to the image, a Dict representing a legend
@@ -58,7 +60,10 @@ def gen_chart(
         gdf (geopandas.GeoDataFrame): Pa geodataframe with cases, deaths, tests data merged on to it.
         primary_color (str): Hex code for color theme.
         secondary_color (str): Hex code for color theme.
-
+        aws_bucket (str): AWS bucket where charts will be uploaded to. Defaults to value stored in
+        definitions.py
+        aws_dir (str): Directory within AWS bucket where charts will be uploaded. Defaults to value stored in
+        definitions.py
 
     Returns:
         A chart_payload_item.
@@ -143,11 +148,11 @@ def gen_chart(
     logging.info("...saved")
 
     # Move to s3
-    copy_to_s3(image_path, AWS_BUCKET, AWS_DIR_TEST, content_type=content_type)
+    copy_to_s3(image_path, aws_bucket, aws_dir, content_type=content_type)
 
     return {
         "title": chart_dict.get("title", ""),
         "custom_legend": custom_legend,
-        "image_path": f"https://{AWS_BUCKET}/{AWS_DIR_TEST}/{image_filename}",
+        "image_path": f"https://{aws_bucket}/{aws_dir}/{image_filename}",
         "description": chart_desc,
     }

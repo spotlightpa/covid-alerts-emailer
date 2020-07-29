@@ -4,20 +4,31 @@ from typing import List, Dict, Any
 from src.assets.chart_index import CHART_INDEX
 from src.assets.data_index import DATA_INDEX
 from src.modules.gen_chart.gen_chart import gen_chart
+from definitions import AWS_BUCKET, AWS_DIR_TEST
 
 
 def gen_county_payload(
-    county_name: str, *, data_clean, county_data, gdf
+    county_name: str,
+    *,
+    data_clean,
+    county_data,
+    gdf,
+    aws_bucket: str = AWS_BUCKET,
+    aws_dir: str = AWS_DIR_TEST,
 ) -> List[Dict[str, Any]]:
     """
-    A subassembly function that builds charts and a list of dictionaries with county-specific data needed to construct
-    newsletter.
+    A subassembly function that builds charts, uploads those charts to S3, and returns
+     a list of dictionaries with county-specific data needed to construct newsletter.
 
     Args:
         county_name (str): Name of county. Eg. "Dauphin"
         data_clean (Dict[str, pd.DataFrame]): Dict of unprocessed cases, deaths, tests data for all counties.
         county_data (Dict[str, pd.DataFrame]: Processed cases, deaths, tests, etc data for a specific county.
         gdf (geopandas.GeoDataFrame): Pa geodataframe with cases, deaths, tests data merged on to it.
+        aws_bucket (optional, str): AWS bucket where charts will be uploaded to. Defaults to value stored in
+        definitions.py
+        aws_dir (optional, str): Directory within AWS bucket where charts will be uploaded. Defaults to value stored in
+        definitions.py
 
     Returns:
         List[Dict[str, Any]]: Data for a specific county for email payload
@@ -41,6 +52,8 @@ def gen_county_payload(
                 gdf=gdf,
                 primary_color=primary_color,
                 secondary_color=secondary_color,
+                aws_bucket=aws_bucket,
+                aws_dir=aws_dir,
             )
             chart_payload.append(chart_payload_item)
 
