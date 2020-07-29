@@ -1,6 +1,6 @@
 import pytest
 from definitions import PATH_PA_GEOJSON
-from src.assets.data_index import DATA_INDEX
+from src.assets.data_index import data_index
 from src.modules.process_data.helper.get_neighbors import get_neighbors
 from src.modules.process_data.merge_geo import merge_geo
 from src.modules.process_data.process_geo import process_geo
@@ -9,7 +9,7 @@ from src.modules.process_data.compare_counties import compare_counties
 
 
 def test_process_individual_county_total(data_clean):
-    state_data = process_individual_county(data_clean, DATA_INDEX, county_name="Total")
+    state_data = process_individual_county(data_clean, data_index, county_name="Total")
     df_cases = state_data["cases"]
     df_cases = df_cases.set_index("date")
 
@@ -22,7 +22,7 @@ def test_process_individual_county_total(data_clean):
 
 def test_process_individual_county_dauphin(data_clean):
     county_data = process_individual_county(
-        data_clean, DATA_INDEX, county_name="Dauphin"
+        data_clean, data_index, county_name="Dauphin"
     )
     df_cases = county_data["cases"]
     df_cases = df_cases.set_index("date")
@@ -45,7 +45,7 @@ def test_process_neighbors(data_clean, gdf_processed):
     neighbors = get_neighbors("Dauphin", gdf_processed)
     compare_list = ["Dauphin"] + neighbors
     data_clean_cases = data_clean["cases"]
-    clean_rules = DATA_INDEX["cases"]["clean_rules"]
+    clean_rules = data_index["cases"]["clean_rules"]
     df = compare_counties(
         data_clean_cases,
         clean_rules=clean_rules,

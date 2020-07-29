@@ -99,7 +99,7 @@ def county_payload(
     """
     county_name = county["name"]
     return gen_county_payload(
-        county_name, data_clean=data_clean, county_data=county_data, gdf=gdf_processed,
+        county_name, data_clean=data_clean, county_data=county_data, gdf=gdf_processed
     )
 
 
