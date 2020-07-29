@@ -19,7 +19,7 @@ from src.modules.process_data.helper.get_neighbors import get_neighbors
 from src.modules.process_data.helper.sort_counties_by_pop import sort_counties_by_pop
 from src.modules.process_data.helper.stack_df import stack_df
 from src.modules.process_data.process_cumulative_tests import process_cumulative_tests
-from src.modules.s3.copy_to_s3 import copy_to_s3
+from src.modules.aws.copy_to_s3 import copy_to_s3
 
 ChartPayloadItem = TypedDict(
     "ChartPayloadItem",
