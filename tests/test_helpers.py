@@ -6,8 +6,8 @@ from src.modules.process_data.helper.get_neighbors import get_neighbors
 from src.modules.process_data.helper.sort_counties_by_pop import sort_counties_by_pop
 
 
-def test_get_neighbors(gdf):
-    neighbors = get_neighbors("Dauphin", gdf)
+def test_get_neighbors(gdf_processed):
+    neighbors = get_neighbors("Dauphin", gdf_processed)
     assert "Lebanon" in neighbors
     assert "Allegheny" not in neighbors
     print(neighbors)

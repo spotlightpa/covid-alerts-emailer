@@ -34,16 +34,15 @@ def test_process_individual_county_dauphin(data_clean):
     assert int(round(cases_total_per_capita_july_27)) == 920
 
 
-def test_merge_geo(data_clean):
-    gdf_pa = process_geo(PATH_PA_GEOJSON)
-    df_merged = merge_geo(gdf_pa, data_clean, add_per_capita=True)
+def test_merge_geo(gdf_raw, data_clean):
+    df_merged = merge_geo(gdf_raw, data_clean, add_per_capita=True)
     print("\n", df_merged)
     # should have 67 rows, one for each county
     assert len(df_merged.index) == 67
 
 
-def test_process_neighbors(data_clean, gdf):
-    neighbors = get_neighbors("Dauphin", gdf)
+def test_process_neighbors(data_clean, gdf_processed):
+    neighbors = get_neighbors("Dauphin", gdf_processed)
     compare_list = ["Dauphin"] + neighbors
     data_clean_cases = data_clean["cases"]
     clean_rules = data_index["cases"]["clean_rules"]

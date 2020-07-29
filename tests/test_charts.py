@@ -11,7 +11,7 @@ from src.modules.init.pandas_opts import pandas_opts
 from src.modules.process_data.helper.stack_df import stack_df
 
 
-def test_map_choropleth(gdf):
+def test_map_choropleth(gdf_processed):
     """
     Test that choropleth map is generated.
     """
@@ -20,8 +20,8 @@ def test_map_choropleth(gdf):
     try:
         output_path = DIR_TESTS_OUTPUT / "map.png"
         chart = map_choropleth(
-            gdf,
-            "cases_per_capita",
+            gdf_processed,
+            "cases_added_past_two_weeks_per_capita",
             highlight_polygon="montour",
             legend_title="Legend title!",
         )
@@ -70,7 +70,7 @@ def test_gen_custom_legend_title_case():
     print(legend_obj.labels)
 
 
-def test_multi_line(cases_multi_county, gdf):
+def test_multi_line(cases_multi_county, gdf_processed):
     counties = [col for col in cases_multi_county.columns if col != "date"]
     counties = counties[0:5]
     df = stack_df(cases_multi_county, stack_cols=counties, x_axis_col="date")

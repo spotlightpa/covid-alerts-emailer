@@ -8,6 +8,7 @@ from definitions import (
     AWS_BUCKET,
     AWS_DIR_TEST,
     DIR_FIXTURES_PA_CLEAN,
+    PATH_PA_GEOJSON,
 )
 import altair as alt
 
@@ -21,6 +22,8 @@ from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
 from src.modules.init.pandas_opts import pandas_opts
 from src.modules.process_data.compare_counties import compare_counties
 from src.modules.process_data.helper.get_neighbors import get_neighbors
+from src.modules.process_data.merge_geo import merge_geo
+from src.modules.process_data.process_geo import process_geo
 
 
 def pytest_configure(config):
@@ -58,11 +61,11 @@ def data_clean() -> Dict[str, pd.DataFrame]:
 
 
 @pytest.fixture(scope="session")
-def cases_multi_county(data_clean, gdf) -> pd.DataFrame:
+def cases_multi_county(data_clean, gdf_processed) -> pd.DataFrame:
     """
     A DataFrame representing a day-by-day comparison of cases data between counties.
     """
-    neighbors = get_neighbors("Dauphin", gdf)
+    neighbors = get_neighbors("Dauphin", gdf_processed)
     compare_list = ["Dauphin"] + neighbors
     data_clean_cases = data_clean["cases"]
     clean_rules = data_index["cases"]["clean_rules"]
@@ -119,12 +122,20 @@ def enable_theme() -> None:
 
 
 @pytest.fixture(scope="session")
-def gdf(enable_theme) -> geopandas.GeoDataFrame:
+def gdf_raw() -> geopandas.GeoDataFrame:
+    """
+    Creates an instance of a geopandas geodataframe that is freshly loaded from a pa geojson
+    file. The gdf has not been merged with cases, deaths, tests data.
+    """
+    return process_geo(PATH_PA_GEOJSON)
+
+
+@pytest.fixture(scope="session")
+def gdf_processed(gdf_raw, data_clean) -> geopandas.GeoDataFrame:
     """
     Creates an instance of a geopandas geodataframe with the necessary data to create a map.
     """
-    gdf = geopandas.read_file(DIR_FIXTURES / "pa_geodata.geojson")
-    return gdf
+    return merge_geo(gdf_raw, data_clean)
 
 
 @pytest.fixture(scope="session")
