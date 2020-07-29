@@ -22,7 +22,7 @@ from src.modules.process_data.process_individual_county import process_individua
 from src.assets.data_index import DATA_INDEX
 from src.modules.process_data.process_geo import process_geo
 from src.modules.process_data.process_stats import process_stats
-from src.modules.s3.copy_to_s3 import copy_to_s3
+from src.modules.aws.copy_to_s3 import copy_to_s3
 from src.modules.send_email.count_subscribers import count_subscribers
 from src.modules.send_email.send_email_list import send_email_list
 
