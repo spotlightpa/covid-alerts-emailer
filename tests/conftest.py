@@ -37,10 +37,44 @@ def pytest_configure(config):
 
 
 @pytest.fixture(scope="session")
-def county() -> Dict:
+def counties_dict1() -> Dict[str, Dict]:
+    return {
+        "42041": {
+            "id": "da190a9a-8cbd-4a8c-896d-97a11e1508de",
+            "name": "Cumberland County",
+        },
+        "42097": {
+            "id": "be687656-7946-49ef-8eb0-546fb96a7507",
+            "name": "Northumberland County",
+        },
+        "42053": {
+            "id": "84912f53-a7c7-46ed-ba80-10d4a07e9d48",
+            "name": "Forest County",
+        },
+        "42043": {
+            "id": "0724edae-40a6-48e6-8330-cc06b3c67ede",
+            "name": "Dauphin County",
+        },
+    }
+
+
+@pytest.fixture(scope="session")
+def dauphin_county_dict() -> Dict[str, Dict]:
     """
-    Gets basic info for a specific county, like its name and mailing list ID,
-    from an index.
+    Gets a dict with a single dict containing name and mailing ID info for Dauphin County
+    """
+    return {
+        "42043": {
+            "id": "0724edae-40a6-48e6-8330-cc06b3c67ede",
+            "name": "Dauphin County",
+        },
+    }
+
+
+@pytest.fixture(scope="session")
+def dauphin_county() -> Dict[str, str]:
+    """
+    Gets a dict with basic info for Dauphin County, including its name and mailing list ID.
     """
     with open(PATH_COUNTY_LIST) as f:
         counties = json.load(f)
@@ -61,12 +95,12 @@ def data_clean() -> Dict[str, pd.DataFrame]:
 
 
 @pytest.fixture(scope="session")
-def county_data(county, data_clean) -> Dict[str, pd.DataFrame]:
+def county_data(dauphin_county, data_clean) -> Dict[str, pd.DataFrame]:
     """
     Creates county_data, ie. a dict of pandas Dataframes with processed cases, deaths, test
     data for a specific county
     """
-    county_name = county["name"]
+    county_name = dauphin_county["name"]
     county_name_clean = county_name.replace(" County", "")
     return process_individual_county(
         data_clean, DATA_INDEX, county_name=county_name_clean
@@ -74,9 +108,10 @@ def county_data(county, data_clean) -> Dict[str, pd.DataFrame]:
 
 
 @pytest.fixture(scope="session")
-def cases_multi_county(data_clean, gdf_processed) -> pd.DataFrame:
+def cases_multi_county_moving_avg_per_cap(data_clean, gdf_processed) -> pd.DataFrame:
     """
-    A DataFrame representing a day-by-day comparison of cases data between counties.
+    A DataFrame representing a day-by-day comparison of moving avg number of new daily cases, per capita,
+    for multiple counties.
     """
     neighbors = get_neighbors("Dauphin", gdf_processed)
     compare_list = ["Dauphin"] + neighbors
@@ -92,14 +127,17 @@ def cases_multi_county(data_clean, gdf_processed) -> pd.DataFrame:
 
 @pytest.fixture(scope="session")
 def county_payload(
-    county: Dict, data_clean, county_data, gdf_processed
+    dauphin_county, data_clean, county_data, gdf_processed
 ) -> List[Dict[str, Any]]:
     """
     Creates a list of dicts that represents important payload data for email newsletter.
     """
-    county_name = county["name"]
+    county_name_clean = dauphin_county["name"].replace(" County", "")
     return gen_county_payload(
-        county_name, data_clean=data_clean, county_data=county_data, gdf=gdf_processed
+        county_name_clean=county_name_clean,
+        data_clean=data_clean,
+        county_data=county_data,
+        gdf=gdf_processed,
     )
 
 
@@ -121,9 +159,11 @@ def gdf_processed(gdf_raw, data_clean) -> geopandas.GeoDataFrame:
 
 
 @pytest.fixture(scope="session")
-def html(county, county_payload):
+def html(dauphin_county, county_payload):
     newsletter_vars = gen_jinja_vars(
-        county["name"], county_payload=county_payload, newsletter_browser_link=""
+        dauphin_county["name"],
+        county_payload=county_payload,
+        newsletter_browser_link="",
     )
     html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
     return html

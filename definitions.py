@@ -23,12 +23,16 @@ DIR_FIXTURES_PA_CLEAN = DIR_FIXTURES / "pa_cleaned"
 # PATHS
 PATH_LOGS_CONFIG = DIR_LOGS_CONFIG / "logging.yaml"
 PATH_LOGS_CONFIG_TEST = DIR_LOGS_CONFIG / "logging_test.yaml"
-PATH_OUTPUT_HTML = DIR_OUTPUT / "newsletter.html"
 PATH_DATA_INDEX = DIR_ASSETS / "data_index.json"
 PATH_COUNTY_LIST = DIR_ASSETS / "counties.json"
 PATH_PA_GEOJSON = DIR_ASSETS / "pa-county.geojson"
 PATH_PA_POP = DIR_ASSETS / "pa-county-pop.csv"
 PATH_OUTPUT_GEOJSON = DIR_OUTPUT / "pa-county.json"
+
+# FETCH DATA
+FETCH_DIR_URL = (
+    "http://interactives.data.spotlightpa.org/2020/coronavirus/data/inquirer"
+)
 
 # AWS
 AWS_BUCKET = "interactives.data.spotlightpa.org"

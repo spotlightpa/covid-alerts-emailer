@@ -33,14 +33,25 @@ def gen_jinja_vars(
         f"deaths. Read on for more information about how cases, deaths, and tests are trending in "
         f"{county_name.replace(' County','')} and the surrounding area.",
         "sections_data": county_payload,
-        "footnote": {
+        "section_dash": {
+            "title": "Want more stats?",
+            "color": "#9E036E",
+            "blurb": "For the latest COVID-19 statistics on Pennsylvania and surrounding states, check out our <a "
+            'class="dash__link" '
+            'href="https://www.spotlightpa.org/news/2020/03/pa-coronavirus-updates-cases-map-live-tracker/" '
+            'target="_blank">live coronavirus tracker</a>. For the best accountability reporting in Pennsylvania, '
+            'stay tuned to <a href="https://www.spotlightpa.org" target="_blank">Spotlight PA</a>.',
+        },
+        "section_footnote": {
+            "footnote": "Cases include both lab-confirmed positive results and cases deemed probable based on "
+            "federal criteria. Total test numbers are calculated by adding together positive and negative "
+            "lab results. ‘Total' and 'positive' numbers prior to July 13 include a small number of probable "
+            "cases in addition to lab-confirmed results.",
             "sources": "Pa. Department of Health data collected daily by Spotlight PA/the Philadelphia "
             "Inquirer.",
-            "note": "Cases include both lab-confirmed positive results and cases deemed probable based on federal "
-            "criteria. "
-            "Total test numbers are calculated by adding together positive and negative lab results. ‘Total' and "
-            "'positive' numbers prior to July 13 include a small number of probable cases in addition to lab-confirmed "
-            "results.",
+        },
+        "footer": {
+            "about": "Spotlight PA is an independent, non-partisan newsroom powered by The Philadelphia Inquirer, the PennLive/The Patriot-News and other media partners."
         },
         "unsubscribe_preferences_link": "{{{unsubscribe_preferences}}}",
         "unsubscribe_link": "{{{unsubscribe}}}",

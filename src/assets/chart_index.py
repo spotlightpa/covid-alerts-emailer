@@ -60,13 +60,13 @@ CHART_INDEX = {
                 "type": "daily_and_avg",
                 "title": "Daily trend",
                 "custom_legend": [
-                    {"label": "Daily deaths", "color": "#CBECEC"},
+                    {"label": "Daily tests", "color": "#CBECEC"},
                     {"label": "7 day avg", "color": "#009999"},
                 ],
             },
             {
                 "type": "stacked_area",
-                "title": "Running total",
+                "title": "Running totals",
                 "custom_legend": [
                     {"label": "Total tests", "color": "#CBECEC"},
                     {"label": "Positive", "color": "#009999"},
