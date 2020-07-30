@@ -70,10 +70,14 @@ def test_gen_custom_legend_title_case():
     print(legend_obj.labels)
 
 
-def test_multi_line(cases_multi_county, gdf_processed):
-    counties = [col for col in cases_multi_county.columns if col != "date"]
+def test_multi_line(cases_multi_county_moving_avg_per_cap, gdf_processed):
+    counties = [
+        col for col in cases_multi_county_moving_avg_per_cap.columns if col != "date"
+    ]
     counties = counties[0:5]
-    df = stack_df(cases_multi_county, stack_cols=counties, x_axis_col="date")
+    df = stack_df(
+        cases_multi_county_moving_avg_per_cap, stack_cols=counties, x_axis_col="date"
+    )
     legend_obj = CustomLegend(counties)
     chart = multi_line(
         df,

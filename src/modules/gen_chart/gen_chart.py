@@ -1,6 +1,4 @@
-from typing import Dict, Union, List
-
-from typing_extensions import TypedDict
+from typing import Dict, Union, List, Any
 import logging
 import pandas as pd
 import geopandas
@@ -14,6 +12,7 @@ from src.modules.gen_chart.stacked_area import stacked_area
 from src.modules.gen_desc.desc_area_tests import desc_area_tests
 from src.modules.gen_desc.desc_choro import desc_choro
 from src.modules.gen_desc.desc_daily import desc_daily
+from src.modules.gen_desc.desc_neigbhors import desc_neighbors
 from src.modules.process_data.compare_counties import compare_counties
 from src.modules.process_data.helper.get_neighbors import get_neighbors
 from src.modules.process_data.helper.sort_counties_by_pop import sort_counties_by_pop
@@ -21,19 +20,9 @@ from src.modules.process_data.helper.stack_df import stack_df
 from src.modules.process_data.process_cumulative_tests import process_cumulative_tests
 from src.modules.aws.copy_to_s3 import copy_to_s3
 
-ChartPayloadItem = TypedDict(
-    "ChartPayloadItem",
-    {
-        "title": str,
-        "custom_legend": Union[List[Dict[str, str]], None],
-        "image_path": str,
-        "description": str,
-    },
-)
-
 
 def gen_chart(
-    county_name: str,
+    county_name_clean: str,
     data_type: str,
     *,
     data_index: Dict,
@@ -45,13 +34,13 @@ def gen_chart(
     secondary_color: str,
     aws_bucket: str,
     aws_dir: str,
-) -> ChartPayloadItem:
+) -> Dict[str, Union[Union[str, None, List[Dict[str, str]]], Any]]:
     """
     Creates a chart PNG using Altair and moves its to s3. Returns an URL to the image, a Dict representing a legend
     for the chart
 
     Args:
-        county_name (str): Name of county. Eg. "Dauphin"
+        county_name_clean (str): Name of county without 'County' suffix. Eg. "Dauphin"
         data_type (str): Type of data. Eg. "cases".
         data_index (Dict): Config settings for data.
         chart_dict (Dict): Config settings for chart.
@@ -66,7 +55,8 @@ def gen_chart(
         definitions.py
 
     Returns:
-        A chart_payload_item.
+        Dict[str, Union[Union[str, None, List[Dict[str, str]]], Any]]: Dict with keys relating to chart, legend,
+        and chart descriptive text.
     """
 
     chart_type = chart_dict["type"]
@@ -83,26 +73,26 @@ def gen_chart(
             bar_color=secondary_color,
         )
         custom_legend = chart_dict.get("custom_legend")
-        chart_desc = desc_daily(county_name=county_name, data_type=data_type)
+        chart_desc = desc_daily(county_name=county_name_clean, data_type=data_type)
 
     elif "choropleth" in chart_type:
         chart = map_choropleth(
             gdf,
             color_field=chart_dict["color_field"],
-            highlight_polygon=county_name,
+            highlight_polygon=county_name_clean,
             min_color=secondary_color,
             max_color=primary_color,
             legend_title=chart_dict["legend_title"],
         )
-        chart_desc = desc_choro(county_name, data_type=data_type)
+        chart_desc = desc_choro(county_name_clean, data_type=data_type)
 
     elif "neigbhors_per_capita" in chart_type:
         compare_field = chart_dict["compare_field"]
         neighbor_limit = chart_dict["neighbor_limit"]
-        neighbors = get_neighbors("Dauphin", gdf)
+        neighbors = get_neighbors(county_name_clean, gdf)
         neighbors = sort_counties_by_pop(neighbors)
         neighbors = neighbors[0:neighbor_limit]
-        compare_list = ["Dauphin"] + neighbors
+        compare_list = [county_name_clean] + neighbors
         data_clean_cases = data_clean["cases"]
         clean_rules = data_index["cases"]["clean_rules"]
         df_multi_county = compare_counties(
@@ -125,7 +115,7 @@ def gen_chart(
             range_=legend_obj.colors,
         )
         custom_legend = legend_obj.legend(title_case=True)
-        chart_desc = "Testing multi line chart!"
+        chart_desc = desc_neighbors(county_name_clean, data_type)
 
     elif "stacked_area" in chart_type:
         df = process_cumulative_tests(county_data["confirmed"], county_data["tests"])
@@ -138,11 +128,11 @@ def gen_chart(
             range_=[primary_color, secondary_color],
         )
         custom_legend = chart_dict.get("custom_legend")
-        chart_desc = desc_area_tests(data=df, county=county_name)
+        chart_desc = desc_area_tests(county=county_name_clean)
     else:
         raise Exception("Chart type not found")
 
-    image_filename = f"{county_name.lower()}_{data_type}_{chart_type}.{fmt}"
+    image_filename = f"{county_name_clean.lower()}_{data_type}_{chart_type}.{fmt}"
     image_path = DIR_OUTPUT / image_filename
     save(chart, str(image_path))
     logging.info("...saved")
@@ -151,7 +141,7 @@ def gen_chart(
     copy_to_s3(image_path, aws_bucket, aws_dir, content_type=content_type)
 
     return {
-        "title": chart_dict.get("title", ""),
+        "title": chart_dict.get("title", "").upper(),
         "custom_legend": custom_legend,
         "image_path": f"https://{aws_bucket}/{aws_dir}/{image_filename}",
         "description": chart_desc,

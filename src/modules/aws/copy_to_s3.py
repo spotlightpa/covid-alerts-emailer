@@ -68,7 +68,7 @@ def copy_to_s3(
         )
 
         logging.info(f"file uploaded to {destination_path}")
-        logging.info(f"Full URL: {bucket_name}/{destination_path}")
+        logging.info(f"Full URL: https://{bucket_name}/{destination_path}")
     except Exception as e:
         logging.error(
             "Something went wrong when attempting to copy file" " to S3 bucket"

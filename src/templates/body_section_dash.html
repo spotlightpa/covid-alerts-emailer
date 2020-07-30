@@ -1,12 +1,16 @@
 {% extends 'body_section.html' %}
 
 {% block content %}
-<div class="dash__container">
-    <h3 class="dash__heading">Want more stats?</h3>
-    <div class="dash__content">
-        View our <a class="dash__link"
-              href="https://spotlightpa.us3.list-manage.com/track/click?u=4f6d92afd9b3de3ddb48714b9&amp;id=8ae7b08a9a&amp;e=87448d50a3"
-              target="_blank">live coronavirus tracker</a> for the latest county-by-county data.
+<div class="section-dash__container">
+        <h3 class="section-dash__title">
+            <span style="border-bottom: 2.5px solid {{ section_dash.color }};">
+            {{ section_dash.title }}
+            </span>
+        </h3>
+    <div class="section-dash__blurb">
+        <p>
+            {{ section_dash.blurb }}
+        </p>
     </div>
 </div>
 {% endblock %}

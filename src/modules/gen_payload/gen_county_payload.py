@@ -8,7 +8,7 @@ from definitions import AWS_BUCKET, AWS_DIR_TEST
 
 
 def gen_county_payload(
-    county_name: str,
+    county_name_clean: str,
     *,
     data_clean,
     county_data,
@@ -21,7 +21,7 @@ def gen_county_payload(
      a list of dictionaries with county-specific data needed to construct newsletter.
 
     Args:
-        county_name (str): Name of county. Eg. "Dauphin"
+        county_name_clean (str): Name of county without 'County' suffix. Eg. "Dauphin"
         data_clean (Dict[str, pd.DataFrame]): Dict of unprocessed cases, deaths, tests data for all counties.
         county_data (Dict[str, pd.DataFrame]: Processed cases, deaths, tests, etc data for a specific county.
         gdf (geopandas.GeoDataFrame): Pa geodataframe with cases, deaths, tests data merged on to it.
@@ -43,8 +43,8 @@ def gen_county_payload(
         chart_payload = []
         for chart_dict in chart_index_dict["charts"]:
             chart_payload_item = gen_chart(
-                county_name,
-                data_type,
+                county_name_clean=county_name_clean,
+                data_type=data_type,
                 data_clean=data_clean,
                 data_index=DATA_INDEX,
                 chart_dict=chart_dict,

@@ -1,16 +1,14 @@
 import json
 import logging
-import altair as alt
-from altair_saver import save
 from definitions import (
-    PATH_OUTPUT_HTML,
     DIR_TEMPLATES,
     PATH_COUNTY_LIST,
     PATH_PA_GEOJSON,
     AWS_BUCKET,
     AWS_DIR_TEST,
+    FETCH_DIR_URL,
+    DIR_OUTPUT,
 )
-from src.modules.gen_chart.themes import spotlight
 from src.modules.gen_html.gen_html import gen_html
 from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
 from src.modules.gen_payload.gen_county_payload import gen_county_payload
@@ -22,42 +20,41 @@ from src.modules.process_data.process_individual_county import process_individua
 from src.assets.data_index import DATA_INDEX
 from src.modules.process_data.process_geo import process_geo
 from src.modules.process_data.process_stats import process_stats
-from src.modules.s3.copy_to_s3 import copy_to_s3
+from src.modules.aws.copy_to_s3 import copy_to_s3
 from src.modules.send_email.count_subscribers import count_subscribers
 from src.modules.send_email.send_email_list import send_email_list
+from src.modules.helper.time import est_now_iso
+from typing import List, Dict
 
 
-def main():
+def main(counties: Dict[str, Dict], email_send: bool = True) -> None:
+    """
+    Generates a unique newsletter based on COVID-19 data and emails it to selected counties.
+    
+    Args:
+        counties (Dict[str, Dict]): Dict of dicts representing county names and sendgrid email ID,
+        email_send (bool, optional): Whether to send emails. Defaults to True. Useful for testing program without
+            sending emails.
 
-    test_counties = {
-        "42053": {
-            "id": "84912f53-a7c7-46ed-ba80-10d4a07e9d48",
-            "name": "Forest County",
-        },
-        "42043": {
-            "id": "0724edae-40a6-48e6-8330-cc06b3c67ede",
-            "name": "Dauphin County",
-        },
-    }
+    Returns:
+        None.
+    """
 
-    # init
+    # set up basic settings
     init_program()
 
-    # fetch
-    with open(PATH_COUNTY_LIST) as f:
-        counties = json.load(f)
-    dir = "http://interactives.data.spotlightpa.org/2020/coronavirus/data/inquirer"
-    data_raw = fetch_data(dir, DATA_INDEX)
+    # fetch COVID-19 data
+    data_raw = fetch_data(FETCH_DIR_URL, DATA_INDEX)
 
-    # clean, filter, process
+    # clean, filter, process data
     data_clean = process_clean(data_raw)
     data_state = process_individual_county(data_clean, DATA_INDEX, county_name="Total")
     state_stats = process_stats(data_state)
     gdf_raw = process_geo(PATH_PA_GEOJSON)
     gdf_processed = merge_geo(gdf_raw, data_clean)
 
-    # loop over counties and get charts + add newsletter text
-    for fips, county_dict in test_counties.items():
+    # loop over dict of counties and generate charts and chatter
+    for fips, county_dict in counties.items():
         # skip county if there are no subscribers to email list
         county_name = county_dict["name"]
         email_list_id = county_dict["id"]
@@ -75,11 +72,10 @@ def main():
         county_data = process_individual_county(
             data_clean, DATA_INDEX, county_name=county_name_clean
         )
-        county_stats = process_stats(county_data)
 
         # create email payload
         county_payload = gen_county_payload(
-            county_name_clean,
+            county_name_clean=county_name_clean,
             data_clean=data_clean,
             county_data=county_data,
             gdf=gdf_processed,
@@ -87,7 +83,11 @@ def main():
 
         # Generate HTML
         subject = f"COVID-19 Report: {county_name}"
-        newsletter_browser_link = f"https://{AWS_BUCKET}/{AWS_DIR_TEST}/newsletter.html"
+        newsletter_filename = f"newsletter_{county_name_clean}_{est_now_iso()}.html"
+        newsletter_local_path = DIR_OUTPUT / newsletter_filename
+        newsletter_browser_link = (
+            f"https://{AWS_BUCKET}/{AWS_DIR_TEST}/{newsletter_filename}"
+        )
         newsletter_vars = gen_jinja_vars(
             county_name=county_name,
             county_payload=county_payload,
@@ -96,16 +96,23 @@ def main():
         html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
 
         # Upload copy of HTML to s3
-        with open(PATH_OUTPUT_HTML, "w") as fout:
+        with open(newsletter_local_path, "w") as fout:
             fout.writelines(html)
-        copy_to_s3(PATH_OUTPUT_HTML, AWS_BUCKET, AWS_DIR_TEST, content_type="text/html")
+        copy_to_s3(
+            newsletter_local_path, AWS_BUCKET, AWS_DIR_TEST, content_type="text/html"
+        )
 
         # Send email
-        quit()
-        logging.info(f"Sending email for {county_name}...")
-        send_email_list(html, email_list_id, subject=subject)
-        logging.info("...email sent")
+        if email_send:
+            logging.info(f"Sending email for {county_name}...")
+            send_email_list(html, email_list_id, subject=subject)
+            logging.info("...email sent")
+        else:
+            logging.info("No email has been sent because 'email_send' option is False")
 
 
 if __name__ == "__main__":
-    main()
+    # Get dict of county dicts
+    with open(PATH_COUNTY_LIST) as f:
+        selected_counties = json.load(f)
+    main(selected_counties)
