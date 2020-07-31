@@ -23,6 +23,7 @@ altair-saver = "*"
 colour = "*"
 palettable = "*"
 typing-extensions = "*"
+css-html-js-minify = "*"
 
 [requires]
 python_version = "3.6"
