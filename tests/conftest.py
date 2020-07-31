@@ -14,6 +14,7 @@ from src.modules.gen_html.gen_html import gen_html
 from typing import Dict, List, Any
 import pandas as pd
 from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
+from src.modules.gen_html.minify import minify_email_html
 from src.modules.gen_payload.gen_county_payload import gen_county_payload
 from src.modules.init.pandas_opts import pandas_opts
 from src.modules.process_data.compare_counties import compare_counties
@@ -144,3 +145,9 @@ def html(dauphin_county, county_payload):
     )
     html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
     return html
+
+
+@pytest.fixture(scope="session")
+def minified_html(html: str) -> str:
+    """ Returns minified HTML"""
+    return minify_email_html(html, include_comments=True)
