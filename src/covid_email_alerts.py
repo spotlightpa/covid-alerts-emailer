@@ -25,7 +25,7 @@ from src.modules.aws.copy_to_s3 import copy_to_s3
 from src.modules.send_email.count_subscribers import count_subscribers
 from src.modules.send_email.send_email_list import send_email_list
 from src.modules.gen_html.minify import minify_email_html
-from src.modules.helper.time import est_now_iso, est_now_formatted_brief
+from src.modules.helper.time import est_now_iso, est_now_ap_brief
 from typing import List, Dict
 
 
@@ -116,7 +116,7 @@ def main(
         if email_send:
             html = html if not condense_email else condense_whitespace(html)
             subject = (
-                f"COVID-19 Update: {county_name} ({est_now_formatted_brief()})"
+                f"COVID-19 Update: {county_name} ({est_now_ap_brief()})"
                 if not custom_subject_line
                 else custom_subject_line
             )
