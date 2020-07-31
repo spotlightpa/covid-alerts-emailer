@@ -23,6 +23,7 @@ from src.modules.process_data.process_stats import process_stats
 from src.modules.aws.copy_to_s3 import copy_to_s3
 from src.modules.send_email.count_subscribers import count_subscribers
 from src.modules.send_email.send_email_list import send_email_list
+from src.modules.gen_html.minify import minify_email_html
 from src.modules.helper.time import est_now_iso, est_now_formatted_brief
 from typing import List, Dict
 
@@ -107,13 +108,14 @@ def main(
 
         # Send email
         if email_send:
+            minified_html = minify_email_html(html)
             subject = (
                 f"COVID-19 Report: {county_name} ({est_now_formatted_brief()})"
                 if not custom_subject_line
                 else custom_subject_line
             )
             logging.info(f"Sending email for {county_name}...")
-            send_email_list(html, email_list_id, subject=subject)
+            send_email_list(minified_html, email_list_id, subject=subject)
             logging.info("...email sent")
         else:
             logging.info("No email has been sent because 'email_send' option is False")
