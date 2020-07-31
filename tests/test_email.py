@@ -1,9 +1,17 @@
 import pytest
-
-from definitions import DIR_TEMPLATES, DIR_TESTS_OUTPUT
+from definitions import DIR_TEMPLATES, DIR_TESTS_OUTPUT, PATH_FIXTURE_HTML, DIR_OUTPUT
 from src.modules.gen_html.gen_html import gen_html
 from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
+from src.modules.gen_html.minify import minify_email_html
 from src.modules.send_email.send_email_list import send_email_list
+
+
+def test_minify_html():
+    with PATH_FIXTURE_HTML.open() as f:
+        html = f.read()
+    result = minify_email_html(html, DIR_TESTS_OUTPUT / "newsletter-minified.html")
+    assert result
+    print(result)
 
 
 def test_gen_html(dauphin_county, county_payload):
