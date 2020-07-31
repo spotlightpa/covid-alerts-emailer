@@ -25,6 +25,34 @@ def est_now_formatted_brief() -> str:
     return est_time.strftime("%b %-d, %Y")
 
 
+def est_now_ap_brief(datetime_obj: datetime = None) -> str:
+    """ Converts current EST date into AP-style formatted string. Eg. Aug. 13, 2020
+
+    Args:
+        datetime_obj (datetime, optional): Instead of getting current datetime, this datetime obj will be
+            convert to AP-style string instead.
+
+    Returns:
+         AP formatted date string. Eg. Aug. 13, 2020
+    """
+    replace_list = {
+        "January": "Jan.",
+        "February": "Feb.",
+        "August": "Aug.",
+        "September": "Sept.",
+        "October": "Oct.",
+        "December": "Dec.",
+    }
+    if not datetime_obj:
+        now = utc_now()
+        datetime_obj = convert_utc_to_est(now)
+
+    date_str = datetime_obj.strftime("%B %-d, %Y")
+    for key, item in replace_list.items():
+        date_str = date_str.replace(key, item)
+    return date_str
+
+
 def est_now_iso() -> str:
     # Provides current EST time as ISO formatted string
     now = utc_now()

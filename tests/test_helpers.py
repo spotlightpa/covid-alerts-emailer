@@ -1,5 +1,6 @@
 import pytest
 
+from src.modules.helper.time import est_now_ap_brief, convert_iso_to_datetime
 from src.modules.init.pandas_opts import pandas_opts
 from src.modules.process_data.helper.get_county_pop import get_county_pop
 from src.modules.process_data.helper.get_neighbors import get_neighbors
@@ -48,3 +49,13 @@ def test_sort_counties_by_pop():
         "lancaster",
         "lebanon",
     ]
+
+
+def test_est_ap_style():
+    datetime_obj1 = convert_iso_to_datetime("2020-08-01")
+    result1 = est_now_ap_brief(datetime_obj1)
+    assert result1 == "Aug. 1, 2020"
+
+    datetime_obj2 = convert_iso_to_datetime("2020-07-30")
+    result2 = est_now_ap_brief(datetime_obj2)
+    assert result2 == "July 30, 2020"
