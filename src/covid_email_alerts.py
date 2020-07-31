@@ -107,12 +107,11 @@ def main(
 
         # Send email
         if email_send:
-            if email_send:
-                subject = (
-                    f"COVID-19 Report: {county_name} ({est_now_formatted_brief()})"
-                    if not custom_subject_line
-                    else custom_subject_line
-                )
+            subject = (
+                f"COVID-19 Report: {county_name} ({est_now_formatted_brief()})"
+                if not custom_subject_line
+                else custom_subject_line
+            )
             logging.info(f"Sending email for {county_name}...")
             send_email_list(html, email_list_id, subject=subject)
             logging.info("...email sent")
