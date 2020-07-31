@@ -37,49 +37,26 @@ def pytest_configure(config):
 
 
 @pytest.fixture(scope="session")
-def counties_dict1() -> Dict[str, Dict]:
-    return {
-        "42041": {
-            "id": "da190a9a-8cbd-4a8c-896d-97a11e1508de",
-            "name": "Cumberland County",
-        },
-        "42097": {
-            "id": "be687656-7946-49ef-8eb0-546fb96a7507",
-            "name": "Northumberland County",
-        },
-        "42053": {
-            "id": "84912f53-a7c7-46ed-ba80-10d4a07e9d48",
-            "name": "Forest County",
-        },
-        "42043": {
-            "id": "0724edae-40a6-48e6-8330-cc06b3c67ede",
-            "name": "Dauphin County",
-        },
-    }
-
-
-@pytest.fixture(scope="session")
 def dauphin_county_dict() -> Dict[str, Dict]:
     """
-    Gets a dict with a single dict containing name and mailing ID info for Dauphin County
+    Returns a dict with a single dict containing county and a special testing mailing ID so that mail is not sent to
+    actual subscribers.
+
     """
     return {
         "42043": {
-            "id": "0724edae-40a6-48e6-8330-cc06b3c67ede",
+            "id": "5a839eb5-d3bc-4f65-9fbe-283c02762a95",
             "name": "Dauphin County",
         },
     }
 
 
 @pytest.fixture(scope="session")
-def dauphin_county() -> Dict[str, str]:
+def dauphin_county(dauphin_county_dict) -> Dict[str, str]:
     """
-    Gets a dict with basic info for Dauphin County, including its name and mailing list ID.
+    Returns a dict with basic info for Dauphin County, including its name and mailing list ID.
     """
-    with open(PATH_COUNTY_LIST) as f:
-        counties = json.load(f)
-    # 42043 = Dauphin County
-    return counties["42043"]
+    return dauphin_county_dict["42043"]
 
 
 @pytest.fixture(scope="session")
