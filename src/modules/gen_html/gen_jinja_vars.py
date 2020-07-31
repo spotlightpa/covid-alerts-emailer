@@ -40,12 +40,12 @@ def gen_jinja_vars(
             'class="dash__link" '
             'href="https://www.spotlightpa.org/news/2020/03/pa-coronavirus-updates-cases-map-live-tracker/" '
             'target="_blank">live coronavirus tracker</a>. For the best accountability reporting in Pennsylvania, '
-            'stay tuned to <a href="https://www.spotlightpa.org" target="_blank">Spotlight PA</a>.',
+            'sign up for our weekly <a href="https://www.spotlightpa.org/newsletters/" target="_blank">newsletter</a>.',
         },
         "section_footnote": {
             "footnote": "Cases include both lab-confirmed positive results and cases deemed probable based on "
             "federal criteria. Total test numbers are calculated by adding together positive and negative "
-            "lab results. ‘Total' and 'positive' numbers prior to July 13 include a small number of probable "
+            "lab results. ‘Total' and 'positive' numbers prior to July 13 may include a small number of probable "
             "cases in addition to lab-confirmed results.",
             "sources": "Pa. Department of Health data collected daily by Spotlight PA/the Philadelphia "
             "Inquirer.",
