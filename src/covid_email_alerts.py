@@ -12,6 +12,7 @@ from definitions import (
 from src.modules.gen_html.gen_html import gen_html
 from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
 from src.modules.gen_payload.gen_county_payload import gen_county_payload
+from src.modules.helper.condense_whitespace import condense_whitespace
 from src.modules.init.init_program import init_program
 from src.modules.fetch.fetch import fetch_data
 from src.modules.process_data.merge_geo import merge_geo
@@ -29,7 +30,10 @@ from typing import List, Dict
 
 
 def main(
-    counties: Dict[str, Dict], email_send: bool = True, custom_subject_line: str = None
+    counties: Dict[str, Dict],
+    email_send: bool = True,
+    custom_subject_line: str = None,
+    condense_email: bool = True,
 ) -> None:
     """
     Generates a unique newsletter based on COVID-19 data and emails it to selected counties.
@@ -40,6 +44,8 @@ def main(
             sending emails.
         custom_subject_line (str, optional): A custom subject line that overwrites the programmatically generated
             subject line. Useful for testing purposes. Disabled by default.
+        condense_email (bool, optional): Condenses multiple white spaces in email HTML into single spaces before
+            sending. Defaults to True.
 
     Returns:
         None.
@@ -108,14 +114,15 @@ def main(
 
         # Send email
         if email_send:
-            minified_html = minify_email_html(html)
+            html = html if not condense_email else condense_whitespace(html)
             subject = (
-                f"COVID-19 Report: {county_name} ({est_now_formatted_brief()})"
+                f"COVID-19 Update: {county_name} ({est_now_formatted_brief()})"
                 if not custom_subject_line
                 else custom_subject_line
             )
             logging.info(f"Sending email for {county_name}...")
-            send_email_list(minified_html, email_list_id, subject=subject)
+            logging.info(f"Subject line: {subject}")
+            send_email_list(html, email_list_id, subject=subject)
             logging.info("...email sent")
         else:
             logging.info("No email has been sent because 'email_send' option is False")
