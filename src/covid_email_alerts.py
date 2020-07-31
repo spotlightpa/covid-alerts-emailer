@@ -27,7 +27,9 @@ from src.modules.helper.time import est_now_iso
 from typing import List, Dict
 
 
-def main(counties: Dict[str, Dict], email_send: bool = True) -> None:
+def main(
+    counties: Dict[str, Dict], email_send: bool = True, custom_subject_line: str = None
+) -> None:
     """
     Generates a unique newsletter based on COVID-19 data and emails it to selected counties.
     
@@ -35,6 +37,8 @@ def main(counties: Dict[str, Dict], email_send: bool = True) -> None:
         counties (Dict[str, Dict]): Dict of dicts representing county names and sendgrid email ID,
         email_send (bool, optional): Whether to send emails. Defaults to True. Useful for testing program without
             sending emails.
+        custom_subject_line (str, optional): A custom subject line that overwrites the programmatically generated
+            subject line. Useful for testing purposes. Disabled by default.
 
     Returns:
         None.
@@ -82,7 +86,6 @@ def main(counties: Dict[str, Dict], email_send: bool = True) -> None:
         )
 
         # Generate HTML
-        subject = f"COVID-19 Report: {county_name}"
         newsletter_filename = f"newsletter_{county_name_clean}_{est_now_iso()}.html"
         newsletter_local_path = DIR_OUTPUT / newsletter_filename
         newsletter_browser_link = (
@@ -104,6 +107,11 @@ def main(counties: Dict[str, Dict], email_send: bool = True) -> None:
 
         # Send email
         if email_send:
+            subject = (
+                f"COVID-19 Report: {county_name}"
+                if not custom_subject_line
+                else custom_subject_line
+            )
             logging.info(f"Sending email for {county_name}...")
             send_email_list(html, email_list_id, subject=subject)
             logging.info("...email sent")
