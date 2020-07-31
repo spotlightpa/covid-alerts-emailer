@@ -1,6 +1,4 @@
-{% extends 'body_section.html' %}
-
-{% block content %}
+{% extends 'body_section.html' %} {% block content %}
 <table
   align="left"
   border="0"
@@ -15,7 +13,7 @@
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
   "
-  class="mcnBoxedTextContentContainer"
+  class="mcnBoxedTextContentContainer section-donate__container"
 >
   <tbody>
     <tr>
@@ -65,51 +63,8 @@
                   line-height: 150%;
                 "
               >
-                <div style="text-align: left;">
-                  <span style="color: #000000;"
-                    ><strong
-                      ><span style="font-size: 18px;"
-                        ><span
-                          style="
-                            font-family: arial, helvetica neue, helvetica,
-                              sans-serif;
-                          "
-                          >QUOTE OF THE WEEK</span
-                        ></span
-                      ></strong
-                    ></span
-                  ><br />
-                  <br />
-                  <span
-                    style="
-                      font-family: arial, helvetica neue, helvetica, sans-serif;
-                    "
-                    ><span style="font-size: 18px;"
-                      >"I have no room in my heart for hatred. And frankly, I do
-                      not have time for intolerance."</span
-                    ></span
-                  ><br />
-                  <br />
-                  <em
-                    ><font
-                      color="#444444"
-                      face="arial, helvetica neue, helvetica, sans-serif"
-                      >— Pennsylvania Secretary of Health Rachel Levine on
-                      <a
-                        href="https://www.spotlightpa.org/news/2020/07/rachel-levine-transphobic-attacks-pennsylvania-health-secretary/"
-                        target="_blank"
-                        style="
-                          mso-line-height-rule: exactly;
-                          -ms-text-size-adjust: 100%;
-                          -webkit-text-size-adjust: 100%;
-                          color: #009edb;
-                          font-weight: normal;
-                          text-decoration: underline;
-                        "
-                        >recent transphobic comments and personal attacks</a
-                      ></font
-                    ></em
-                  >
+                <div style="text-align: center;">
+                  {{ section_donate.blurb }}
                 </div>
               </td>
             </tr>
