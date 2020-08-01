@@ -51,7 +51,7 @@ def gen_jinja_vars(
             "federal criteria. Total test numbers are calculated by adding together positive and negative "
             "lab results. ‘Total' and 'positive' numbers prior to July 13 may include a small number of probable "
             "cases in addition to lab-confirmed results.",
-            "sources": "Pa. Department of Health data collected daily by Spotlight PA/the Philadelphia "
+            "sources": "Pa. Department of Health data compiled by Spotlight PA and The Philadelphia "
             "Inquirer.",
         },
         "footer": {
