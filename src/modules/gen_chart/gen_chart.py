@@ -93,8 +93,8 @@ def gen_chart(
         neighbors = sort_counties_by_pop(neighbors)
         neighbors = neighbors[0:neighbor_limit]
         compare_list = [county_name_clean] + neighbors
-        data_clean_cases = data_clean["cases"]
-        clean_rules = data_index["cases"]["clean_rules"]
+        data_clean_cases = data_clean[data_type]
+        clean_rules = data_index[data_type]["clean_rules"]
         df_multi_county = compare_counties(
             data_clean_cases,
             clean_rules=clean_rules,

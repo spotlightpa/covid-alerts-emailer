@@ -1,5 +1,5 @@
 from src.modules.helper.formatters import format_commas
-from src.modules.helper.time import est_now_formatted_brief
+from src.modules.helper.time import est_now_formatted_brief, est_now_ap_brief
 from typing import List, Dict
 
 
@@ -18,7 +18,7 @@ def gen_jinja_vars(
         A dictionary of newsletter variables.
         
     """
-    brief_date = est_now_formatted_brief()
+    brief_date = est_now_ap_brief()
     payload = {
         "head": {
             "title": f"The latest COVID-19 statistics for {county_name} from Spotlight PA."
@@ -32,6 +32,10 @@ def gen_jinja_vars(
         "section_welcome": f"{brief_date}:  Over the past two weeks, {county_name} has had XXX new cases and XXX new "
         f"deaths. Read on for more information about how cases, deaths, and tests are trending in "
         f"{county_name.replace(' County','')} and the surrounding area.",
+        "section_donate": {
+            "blurb": "If you value this public service, <b>please donate now</b> at <a "
+            'href="https://www.spotlightpa.org/donate/">spotlightpa.org/donate</a>'
+        },
         "sections_data": county_payload,
         "section_dash": {
             "title": "Want more stats?",
@@ -40,14 +44,14 @@ def gen_jinja_vars(
             'class="dash__link" '
             'href="https://www.spotlightpa.org/news/2020/03/pa-coronavirus-updates-cases-map-live-tracker/" '
             'target="_blank">live coronavirus tracker</a>. For the best accountability reporting in Pennsylvania, '
-            'stay tuned to <a href="https://www.spotlightpa.org" target="_blank">Spotlight PA</a>.',
+            'sign up for our weekly <a href="https://www.spotlightpa.org/newsletters/" target="_blank">newsletter</a>.',
         },
         "section_footnote": {
             "footnote": "Cases include both lab-confirmed positive results and cases deemed probable based on "
             "federal criteria. Total test numbers are calculated by adding together positive and negative "
-            "lab results. ‘Total' and 'positive' numbers prior to July 13 include a small number of probable "
+            "lab results. ‘Total' and 'positive' numbers prior to July 13 may include a small number of probable "
             "cases in addition to lab-confirmed results.",
-            "sources": "Pa. Department of Health data collected daily by Spotlight PA/the Philadelphia "
+            "sources": "Pa. Department of Health data compiled by Spotlight PA and The Philadelphia "
             "Inquirer.",
         },
         "footer": {

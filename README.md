@@ -2,6 +2,8 @@
 
 An app that sends out emails to subscribers with updates on COVID-19 cases, deaths and other data in their county.
 
+[Click here](https://email-alerts.data.spotlightpa.org/form.html) to sign up for the mailing list.
+
 #### Install
 
 1. Open the terminal. Clone the project repo.

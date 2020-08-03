@@ -12,6 +12,7 @@ from definitions import (
 from src.modules.gen_html.gen_html import gen_html
 from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
 from src.modules.gen_payload.gen_county_payload import gen_county_payload
+from src.modules.helper.condense_whitespace import condense_whitespace
 from src.modules.init.init_program import init_program
 from src.modules.fetch.fetch import fetch_data
 from src.modules.process_data.merge_geo import merge_geo
@@ -23,11 +24,17 @@ from src.modules.process_data.process_stats import process_stats
 from src.modules.aws.copy_to_s3 import copy_to_s3
 from src.modules.send_email.count_subscribers import count_subscribers
 from src.modules.send_email.send_email_list import send_email_list
-from src.modules.helper.time import est_now_iso
+from src.modules.gen_html.minify import minify_email_html
+from src.modules.helper.time import est_now_iso, est_now_ap_brief
 from typing import List, Dict
 
 
-def main(counties: Dict[str, Dict], email_send: bool = True) -> None:
+def main(
+    counties: Dict[str, Dict],
+    email_send: bool = True,
+    custom_subject_line: str = None,
+    condense_email: bool = True,
+) -> None:
     """
     Generates a unique newsletter based on COVID-19 data and emails it to selected counties.
     
@@ -35,6 +42,10 @@ def main(counties: Dict[str, Dict], email_send: bool = True) -> None:
         counties (Dict[str, Dict]): Dict of dicts representing county names and sendgrid email ID,
         email_send (bool, optional): Whether to send emails. Defaults to True. Useful for testing program without
             sending emails.
+        custom_subject_line (str, optional): A custom subject line that overwrites the programmatically generated
+            subject line. Useful for testing purposes. Disabled by default.
+        condense_email (bool, optional): Condenses multiple white spaces in email HTML into single spaces before
+            sending. Defaults to True.
 
     Returns:
         None.
@@ -82,7 +93,6 @@ def main(counties: Dict[str, Dict], email_send: bool = True) -> None:
         )
 
         # Generate HTML
-        subject = f"COVID-19 Report: {county_name}"
         newsletter_filename = f"newsletter_{county_name_clean}_{est_now_iso()}.html"
         newsletter_local_path = DIR_OUTPUT / newsletter_filename
         newsletter_browser_link = (
@@ -104,7 +114,14 @@ def main(counties: Dict[str, Dict], email_send: bool = True) -> None:
 
         # Send email
         if email_send:
+            html = html if not condense_email else condense_whitespace(html)
+            subject = (
+                f"COVID-19 Update: {county_name} ({est_now_ap_brief()})"
+                if not custom_subject_line
+                else custom_subject_line
+            )
             logging.info(f"Sending email for {county_name}...")
+            logging.info(f"Subject line: {subject}")
             send_email_list(html, email_list_id, subject=subject)
             logging.info("...email sent")
         else:
