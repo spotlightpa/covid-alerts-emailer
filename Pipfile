@@ -25,6 +25,7 @@ palettable = "*"
 typing-extensions = "*"
 css-html-js-minify = "*"
 inflect = "*"
+importlib-metadata = "*"
 
 [requires]
 python_version = "3.6"

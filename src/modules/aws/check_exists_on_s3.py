@@ -25,7 +25,7 @@ def check_exists_on_s3(bucket_name: str, path: str,) -> bool:
 
     # GET ENV VARS
     keyID = os.environ.get("AWS_KEY_ID")
-    sKeyID = os.environ.get("AWS_SECRET_KEY_ID")
+    sKeyID = os.environ.get("AWS_KEY_ID")
 
     # CONNECT TO S3
     session = boto3.Session(aws_access_key_id=keyID, aws_secret_access_key=sKeyID,)
