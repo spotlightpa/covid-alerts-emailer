@@ -20,7 +20,8 @@ from src.modules.helper.get_neighbors import get_neighbors
 from src.modules.process_data.merge_geo import merge_geo
 from src.modules.process_data.process_geo import process_geo
 from src.modules.process_data.process_individual_county import process_individual_county
-
+from dotenv import load_dotenv
+import os
 
 def pytest_configure(config):
     """
@@ -30,6 +31,10 @@ def pytest_configure(config):
     """
     # Makes it easier to see pandas DFs when printing to console
     pandas_opts()
+    load_dotenv()
+    # attempt to fix bug with botocore/moto
+    os.environ['AWS_ACCESS_KEY_ID'] = os.environ.get("KEY_ID")
+    os.environ['AWS_SECRET_ACCESS_KEY'] = os.environ.get("SECRET_KEY_ID")
     # Enables Spotlight altair theme
     alt.themes.register("spotlight", spotlight)
     alt.themes.enable("spotlight")
