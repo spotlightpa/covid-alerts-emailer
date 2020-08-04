@@ -1,7 +1,7 @@
 import pandas as pd
 from typing import Dict
 import logging
-from definitions import DIR_OUTPUT
+from src.definitions import DIR_OUTPUT
 
 
 def process_clean(

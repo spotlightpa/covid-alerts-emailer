@@ -1,7 +1,6 @@
 import logging
 import boto3
 import os
-from definitions import DIR_OUTPUT
 from pathlib import Path
 
 

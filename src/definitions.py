@@ -3,9 +3,11 @@ This file contains important project variables.
 """
 import os
 from pathlib import Path
+from src.modules.helper.time import est_now_iso
+
 
 # This sets our root directory as the project directory
-ROOT_DIR = Path(os.path.dirname(os.path.abspath(__file__)))  # This is your Project Root
+ROOT_DIR = Path(os.path.dirname(os.path.abspath(__file__))) / ".."  # This is your Project Root
 
 # DIRECTORIES
 DIR_LOGS = ROOT_DIR / "logs"  # main dir for log-related files
@@ -37,4 +39,5 @@ FETCH_DIR_URL = (
 
 # AWS
 AWS_BUCKET = "interactives.data.spotlightpa.org"
+AWS_DIR = f"2020/covid-email-alerts/assets/{est_now_iso()}"
 AWS_DIR_TEST = "2020/covid-email-alerts/assets/tests"

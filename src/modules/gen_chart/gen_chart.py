@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 import geopandas
 from altair_saver import save
-from definitions import DIR_OUTPUT
+from src.definitions import DIR_OUTPUT
 from src.modules.gen_chart.custom_legend import CustomLegend
 from src.modules.gen_chart.daily_and_avg import daily_and_avg
 from src.modules.gen_chart.map_choropleth import map_choropleth

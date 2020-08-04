@@ -1,6 +1,4 @@
-import pytest
-
-from definitions import AWS_BUCKET
+from src.definitions import AWS_BUCKET
 from src.modules.aws.check_exists_on_s3 import check_exists_on_s3
 
 
