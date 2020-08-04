@@ -33,7 +33,7 @@ def main(
     custom_subject_line: str = None,
     condense_email: bool = True,
     aws_bucket: str = AWS_BUCKET,
-    aws_dir: str = AWS_DIR
+    aws_dir: str = AWS_DIR,
 ) -> None:
     """
     Generates a unique newsletter based on COVID-19 data and emails it to selected counties.
@@ -94,7 +94,7 @@ def main(
             county_data=county_data,
             gdf=gdf_processed,
             aws_bucket=aws_bucket,
-            aws_dir=aws_dir
+            aws_dir=aws_dir,
         )
 
         # Generate HTML
@@ -113,9 +113,7 @@ def main(
         # Upload copy of HTML to s3
         with open(newsletter_local_path, "w") as fout:
             fout.writelines(html)
-        copy_to_s3(
-            newsletter_local_path, aws_bucket, aws_dir, content_type="text/html"
-        )
+        copy_to_s3(newsletter_local_path, aws_bucket, aws_dir, content_type="text/html")
 
         # Send email
         if email_send:

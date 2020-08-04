@@ -7,7 +7,9 @@ from src.modules.helper.time import est_now_iso
 
 
 # This sets our root directory as the project directory
-ROOT_DIR = Path(os.path.dirname(os.path.abspath(__file__))) / ".."  # This is your Project Root
+ROOT_DIR = (
+    Path(os.path.dirname(os.path.abspath(__file__))) / ".."
+)  # This is your Project Root
 
 # DIRECTORIES
 DIR_LOGS = ROOT_DIR / "logs"  # main dir for log-related files

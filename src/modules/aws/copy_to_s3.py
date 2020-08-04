@@ -72,5 +72,4 @@ def copy_to_s3(
         logging.error(
             "Something went wrong when attempting to copy file" " to S3 bucket"
         )
-        logging.exception(e)
-        return
+        raise e

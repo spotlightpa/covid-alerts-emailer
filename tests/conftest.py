@@ -4,7 +4,8 @@ from src.definitions import (
     DIR_TEMPLATES,
     DIR_FIXTURES_PA_CLEAN,
     PATH_PA_GEOJSON,
-    AWS_DIR_TEST)
+    AWS_DIR_TEST,
+)
 import altair as alt
 from src.assets.data_index import DATA_INDEX
 from src.modules.gen_chart.themes import spotlight
@@ -23,6 +24,7 @@ from src.modules.process_data.process_individual_county import process_individua
 from dotenv import load_dotenv
 import os
 
+
 def pytest_configure(config):
     """
     Allows plugins and conftest files to perform initial configuration.
@@ -32,9 +34,9 @@ def pytest_configure(config):
     # Makes it easier to see pandas DFs when printing to console
     pandas_opts()
     load_dotenv()
-    # attempt to fix bug with botocore/moto
-    os.environ['AWS_ACCESS_KEY_ID'] = os.environ.get("KEY_ID")
-    os.environ['AWS_SECRET_ACCESS_KEY'] = os.environ.get("SECRET_KEY_ID")
+    # this fixes a strange bug with botocore/moto not recognizing AWS credentials: https://github.com/spulec/moto/issues/1941
+    os.environ["AWS_ACCESS_KEY_ID"] = os.environ.get("KEY_ID")
+    os.environ["AWS_SECRET_ACCESS_KEY"] = os.environ.get("SECRET_KEY_ID")
     # Enables Spotlight altair theme
     alt.themes.register("spotlight", spotlight)
     alt.themes.enable("spotlight")
@@ -121,7 +123,7 @@ def county_payload(
         data_clean=data_clean,
         county_data=county_data,
         gdf=gdf_processed,
-        aws_dir=AWS_DIR_TEST
+        aws_dir=AWS_DIR_TEST,
     )
 
 
@@ -147,7 +149,7 @@ def html(dauphin_county, county_payload):
     newsletter_vars = gen_jinja_vars(
         dauphin_county["name"],
         county_payload=county_payload,
-        newsletter_browser_link="", # not needed for testing purposes so we can leave empty
+        newsletter_browser_link="",  # not needed for testing purposes so we can leave empty
     )
     html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
     return html
