@@ -1,6 +1,6 @@
 import logging
 from dotenv import load_dotenv
-from definitions import DIR_OUTPUT
+from src.definitions import DIR_OUTPUT
 from logs.config.logging import logs_config
 from src.modules.gen_chart.themes import spotlight
 from src.modules.helper.misc import delete_dir_contents

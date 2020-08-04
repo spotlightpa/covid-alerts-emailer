@@ -1,10 +1,10 @@
 import pytest
 import geopandas
-from definitions import (
+from src.definitions import (
     DIR_TEMPLATES,
     DIR_FIXTURES_PA_CLEAN,
     PATH_PA_GEOJSON,
-)
+    AWS_DIR_TEST)
 import altair as alt
 from src.assets.data_index import DATA_INDEX
 from src.modules.gen_chart.themes import spotlight
@@ -114,11 +114,14 @@ def county_payload(
     Creates a list of dicts that represents important payload data for email newsletter.
     """
     county_name_clean = dauphin_county["name"].replace(" County", "")
+    # Note, we use AWS_TESTING_DIR so that assets are uploaded there rather than in the production
+    # directory of bucket
     return gen_county_payload(
         county_name_clean=county_name_clean,
         data_clean=data_clean,
         county_data=county_data,
         gdf=gdf_processed,
+        aws_dir=AWS_DIR_TEST
     )
 
 
@@ -144,7 +147,7 @@ def html(dauphin_county, county_payload):
     newsletter_vars = gen_jinja_vars(
         dauphin_county["name"],
         county_payload=county_payload,
-        newsletter_browser_link="",
+        newsletter_browser_link="", # not needed for testing purposes so we can leave empty
     )
     html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
     return html

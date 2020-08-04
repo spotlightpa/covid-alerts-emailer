@@ -4,7 +4,7 @@ from typing import List, Dict, Any
 from src.assets.chart_index import CHART_INDEX
 from src.assets.data_index import DATA_INDEX
 from src.modules.gen_chart.gen_chart import gen_chart
-from definitions import AWS_BUCKET, AWS_DIR_TEST
+from src.definitions import AWS_BUCKET, AWS_DIR
 
 
 def gen_county_payload(
@@ -14,7 +14,7 @@ def gen_county_payload(
     county_data,
     gdf,
     aws_bucket: str = AWS_BUCKET,
-    aws_dir: str = AWS_DIR_TEST,
+    aws_dir: str = AWS_DIR,
 ) -> List[Dict[str, Any]]:
     """
     A subassembly function that builds charts, uploads those charts to S3, and returns

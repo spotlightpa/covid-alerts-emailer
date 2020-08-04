@@ -1,9 +1,7 @@
 import pandas as pd
 import geopandas
 from pathlib import Path
-from definitions import PATH_PA_GEOJSON, PATH_OUTPUT_GEOJSON, PATH_PA_POP
-import logging
-from typing import Dict
+from src.definitions import PATH_OUTPUT_GEOJSON, PATH_PA_POP
 
 
 def process_geo(

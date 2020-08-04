@@ -1,11 +1,11 @@
 import json
 import logging
-from definitions import (
+from src.definitions import (
     DIR_TEMPLATES,
     PATH_COUNTY_LIST,
     PATH_PA_GEOJSON,
     AWS_BUCKET,
-    AWS_DIR_TEST,
+    AWS_DIR,
     FETCH_DIR_URL,
     DIR_OUTPUT,
 )
@@ -23,9 +23,8 @@ from src.modules.process_data.process_geo import process_geo
 from src.modules.aws.copy_to_s3 import copy_to_s3
 from src.modules.send_email.count_subscribers import count_subscribers
 from src.modules.send_email.send_email_list import send_email_list
-from src.modules.gen_html.minify import minify_email_html
 from src.modules.helper.time import est_now_iso, est_now_ap_brief
-from typing import List, Dict
+from typing import Dict
 
 
 def main(
@@ -33,6 +32,8 @@ def main(
     email_send: bool = True,
     custom_subject_line: str = None,
     condense_email: bool = True,
+    aws_bucket: str = AWS_BUCKET,
+    aws_dir: str = AWS_DIR
 ) -> None:
     """
     Generates a unique newsletter based on COVID-19 data and emails it to selected counties.
@@ -45,6 +46,10 @@ def main(
             subject line. Useful for testing purposes. Disabled by default.
         condense_email (bool, optional): Condenses multiple white spaces in email HTML into single spaces before
             sending. Defaults to True.
+        aws_bucket (optional, str): AWS bucket where charts will be uploaded to. Defaults to value stored in
+            definitions.py
+        aws_dir (optional, str): Directory within AWS bucket where charts will be uploaded. Defaults to value stored in
+            definitions.py
 
     Returns:
         None.
@@ -88,13 +93,15 @@ def main(
             data_clean=data_clean,
             county_data=county_data,
             gdf=gdf_processed,
+            aws_bucket=aws_bucket,
+            aws_dir=aws_dir
         )
 
         # Generate HTML
         newsletter_filename = f"newsletter_{county_name_clean}_{est_now_iso()}.html"
         newsletter_local_path = DIR_OUTPUT / newsletter_filename
         newsletter_browser_link = (
-            f"https://{AWS_BUCKET}/{AWS_DIR_TEST}/{newsletter_filename}"
+            f"https://{aws_bucket}/{aws_dir}/{newsletter_filename}"
         )
         newsletter_vars = gen_jinja_vars(
             county_name=county_name,
@@ -107,7 +114,7 @@ def main(
         with open(newsletter_local_path, "w") as fout:
             fout.writelines(html)
         copy_to_s3(
-            newsletter_local_path, AWS_BUCKET, AWS_DIR_TEST, content_type="text/html"
+            newsletter_local_path, aws_bucket, aws_dir, content_type="text/html"
         )
 
         # Send email

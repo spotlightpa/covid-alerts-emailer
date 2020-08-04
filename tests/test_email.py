@@ -1,7 +1,6 @@
-from definitions import (
+from src.definitions import (
     DIR_TEMPLATES,
     DIR_TESTS_OUTPUT,
-    DIR_FIXTURES,
 )
 from src.modules.gen_html.gen_html import gen_html
 from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
