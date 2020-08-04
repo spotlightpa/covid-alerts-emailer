@@ -1,10 +1,6 @@
 import geopandas
 import altair as alt
-from altair_saver import save
-from pathlib import Path
-import logging
-from typing import List
-from src.modules.process_data.helper.convert_gfp_to_alt import convert_gfp_to_alt
+from src.modules.helper.convert_gfp_to_alt import convert_gfp_to_alt
 from colour import Color
 
 

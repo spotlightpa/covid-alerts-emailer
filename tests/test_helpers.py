@@ -1,10 +1,8 @@
-import pytest
-
 from src.modules.helper.time import est_now_ap_brief, convert_iso_to_datetime
-from src.modules.init.pandas_opts import pandas_opts
-from src.modules.process_data.helper.get_county_pop import get_county_pop
-from src.modules.process_data.helper.get_neighbors import get_neighbors
-from src.modules.process_data.helper.sort_counties_by_pop import sort_counties_by_pop
+from src.modules.helper.get_county_pop import get_county_pop
+from src.modules.helper.get_neighbors import get_neighbors
+from src.modules.helper.rank_text import rank_text
+from src.modules.helper.sort_counties_by_pop import sort_counties_by_pop
 
 
 def test_get_neighbors(gdf_processed):
@@ -59,3 +57,19 @@ def test_est_ap_style():
     datetime_obj2 = convert_iso_to_datetime("2020-07-30")
     result2 = est_now_ap_brief(datetime_obj2)
     assert result2 == "July 30, 2020"
+
+
+def test_rank_text():
+    rank = rank_text(1, 67)
+    assert rank == "highest"
+    rank = rank_text(1, 2)
+    assert rank == "highest"
+    rank = rank_text(2, 1)
+    assert rank == "lowest"
+    rank = rank_text(3, 7)
+    assert rank == "3rd highest"
+    rank = rank_text(7, 2)
+    assert rank == "2nd lowest"
+    rank = rank_text(5, 5)
+    assert rank == "5th highest"
+

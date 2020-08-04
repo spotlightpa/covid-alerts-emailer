@@ -1,9 +1,7 @@
-import json
 import pytest
 import geopandas
 from definitions import (
     DIR_TEMPLATES,
-    PATH_COUNTY_LIST,
     DIR_FIXTURES_PA_CLEAN,
     PATH_PA_GEOJSON,
 )
@@ -18,7 +16,7 @@ from src.modules.gen_html.minify import minify_email_html
 from src.modules.gen_payload.gen_county_payload import gen_county_payload
 from src.modules.init.pandas_opts import pandas_opts
 from src.modules.process_data.compare_counties import compare_counties
-from src.modules.process_data.helper.get_neighbors import get_neighbors
+from src.modules.helper.get_neighbors import get_neighbors
 from src.modules.process_data.merge_geo import merge_geo
 from src.modules.process_data.process_geo import process_geo
 from src.modules.process_data.process_individual_county import process_individual_county
