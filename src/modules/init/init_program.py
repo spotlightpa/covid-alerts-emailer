@@ -7,6 +7,7 @@ from src.modules.helper.misc import delete_dir_contents
 from src.modules.helper.time import utc_now
 from src.modules.init.pandas_opts import pandas_opts
 import altair as alt
+import os
 
 
 def init_program():
@@ -29,6 +30,10 @@ def init_program():
 
     # Set pandas options
     pandas_opts()
+
+    # this fixes a strange bug with botocore/moto not recognizing AWS credentials: https://github.com/spulec/moto/issues/1941
+    os.environ["AWS_ACCESS_KEY_ID"] = os.environ.get("KEY_ID")
+    os.environ["AWS_SECRET_ACCESS_KEY"] = os.environ.get("SECRET_KEY_ID")
 
     # set Altair themes
     alt.themes.register("spotlight", spotlight)
