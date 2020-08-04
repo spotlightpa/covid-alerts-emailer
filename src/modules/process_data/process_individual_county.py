@@ -1,10 +1,10 @@
 import pandas as pd
 from typing import Dict, Union
 import logging
-from definitions import DIR_OUTPUT, PATH_PA_POP
+from definitions import DIR_OUTPUT
 from pathlib import Path
 
-from src.modules.process_data.helper.get_county_pop import get_county_pop
+from src.modules.helper.get_county_pop import get_county_pop
 
 
 def process_individual_county(

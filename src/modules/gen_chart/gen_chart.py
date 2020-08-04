@@ -3,20 +3,17 @@ import logging
 import pandas as pd
 import geopandas
 from altair_saver import save
-from definitions import DIR_OUTPUT, AWS_BUCKET, AWS_DIR_TEST
-from src.modules.gen_chart.CustomLegend import CustomLegend
+from definitions import DIR_OUTPUT
+from src.modules.gen_chart.custom_legend import CustomLegend
 from src.modules.gen_chart.daily_and_avg import daily_and_avg
 from src.modules.gen_chart.map_choropleth import map_choropleth
 from src.modules.gen_chart.multi_line import multi_line
 from src.modules.gen_chart.stacked_area import stacked_area
-from src.modules.gen_desc.desc_area_tests import desc_area_tests
-from src.modules.gen_desc.desc_choro import desc_choro
-from src.modules.gen_desc.desc_daily import desc_daily
-from src.modules.gen_desc.desc_neigbhors import desc_neighbors
+from src.modules.gen_desc.gen_desc import GenDesc
 from src.modules.process_data.compare_counties import compare_counties
-from src.modules.process_data.helper.get_neighbors import get_neighbors
-from src.modules.process_data.helper.sort_counties_by_pop import sort_counties_by_pop
-from src.modules.process_data.helper.stack_df import stack_df
+from src.modules.helper.get_neighbors import get_neighbors
+from src.modules.helper.sort_counties_by_pop import sort_counties_by_pop
+from src.modules.helper.stack_df import stack_df
 from src.modules.process_data.process_cumulative_tests import process_cumulative_tests
 from src.modules.aws.copy_to_s3 import copy_to_s3
 
@@ -44,7 +41,8 @@ def gen_chart(
         data_type (str): Type of data. Eg. "cases".
         data_index (Dict): Config settings for data.
         chart_dict (Dict): Config settings for chart.
-        data_clean (Dict[str, pd.DataFrame]): Dict of unprocessed cases, deaths, tests data for all counties.
+        data_clean (Dict[str, pd.DataFrame]): Dict of pandas dfs of cases, deaths, tests data for all Pa. counties
+            that has has some minimal cleaning.
         county_data (Dict[str, pd.DataFrame]: Processed cases, deaths, tests, etc data for a specific county.
         gdf (geopandas.GeoDataFrame): Pa geodataframe with cases, deaths, tests data merged on to it.
         primary_color (str): Hex code for color theme.
@@ -60,10 +58,10 @@ def gen_chart(
     """
 
     chart_type = chart_dict["type"]
-    chart_desc = ""
     custom_legend = None
     fmt = "png"
     content_type = "image/png"
+    gen_desc = GenDesc(county_name_clean, county_data=county_data, gdf=gdf)
 
     if "daily_and_avg" in chart_type:
         chart = daily_and_avg(
@@ -73,7 +71,7 @@ def gen_chart(
             bar_color=secondary_color,
         )
         custom_legend = chart_dict.get("custom_legend")
-        chart_desc = desc_daily(county_name=county_name_clean, data_type=data_type)
+        chart_desc = gen_desc.daily(data_type=data_type)
 
     elif "choropleth" in chart_type:
         chart = map_choropleth(
@@ -84,7 +82,7 @@ def gen_chart(
             max_color=primary_color,
             legend_title=chart_dict["legend_title"],
         )
-        chart_desc = desc_choro(county_name_clean, data_type=data_type)
+        chart_desc = gen_desc.choro(data_type=data_type)
 
     elif "neigbhors_per_capita" in chart_type:
         compare_field = chart_dict["compare_field"]
@@ -115,7 +113,7 @@ def gen_chart(
             range_=legend_obj.colors,
         )
         custom_legend = legend_obj.legend(title_case=True)
-        chart_desc = desc_neighbors(county_name_clean, data_type)
+        chart_desc = gen_desc.neighbors(data_type=data_type)
 
     elif "stacked_area" in chart_type:
         df = process_cumulative_tests(county_data["confirmed"], county_data["tests"])
@@ -128,9 +126,9 @@ def gen_chart(
             range_=[primary_color, secondary_color],
         )
         custom_legend = chart_dict.get("custom_legend")
-        chart_desc = desc_area_tests(county=county_name_clean)
+        chart_desc = gen_desc.area_tests()
     else:
-        raise Exception("Chart type not found")
+        raise Exception("Chart type not found. Did you provide a valid chart type in chart_index?")
 
     image_filename = f"{county_name_clean.lower()}_{data_type}_{chart_type}.{fmt}"
     image_path = DIR_OUTPUT / image_filename

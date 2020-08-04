@@ -20,7 +20,6 @@ from src.modules.process_data.process_clean import process_clean
 from src.modules.process_data.process_individual_county import process_individual_county
 from src.assets.data_index import DATA_INDEX
 from src.modules.process_data.process_geo import process_geo
-from src.modules.process_data.process_stats import process_stats
 from src.modules.aws.copy_to_s3 import copy_to_s3
 from src.modules.send_email.count_subscribers import count_subscribers
 from src.modules.send_email.send_email_list import send_email_list
@@ -60,7 +59,6 @@ def main(
     # clean, filter, process data
     data_clean = process_clean(data_raw)
     data_state = process_individual_county(data_clean, DATA_INDEX, county_name="Total")
-    state_stats = process_stats(data_state)
     gdf_raw = process_geo(PATH_PA_GEOJSON)
     gdf_processed = merge_geo(gdf_raw, data_clean)
 

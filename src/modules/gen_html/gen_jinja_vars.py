@@ -29,9 +29,8 @@ def gen_jinja_vars(
             "title": "Weekly Coronavirus Update".upper(),
             "tagline": county_name.upper(),
         },
-        "section_welcome": f"{brief_date}:  Over the past two weeks, {county_name} has had XXX new cases and XXX new "
-        f"deaths. Read on for more information about how cases, deaths, and tests are trending in "
-        f"{county_name.replace(' County','')} and the surrounding area.",
+        "section_welcome": f"{brief_date}: Read on for more information about how cases, deaths, and tests are trending "
+                           f"in {county_name} and the surrounding area.",
         "section_donate": {
             "blurb": "If you value this public service, <b>please donate now</b> at <a "
             'href="https://www.spotlightpa.org/donate/">spotlightpa.org/donate</a>'

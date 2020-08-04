@@ -24,6 +24,7 @@ colour = "*"
 palettable = "*"
 typing-extensions = "*"
 css-html-js-minify = "*"
+inflect = "*"
 
 [requires]
 python_version = "3.6"

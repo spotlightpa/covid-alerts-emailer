@@ -22,7 +22,8 @@ def gen_county_payload(
 
     Args:
         county_name_clean (str): Name of county without 'County' suffix. Eg. "Dauphin"
-        data_clean (Dict[str, pd.DataFrame]): Dict of unprocessed cases, deaths, tests data for all counties.
+        data_clean (Dict[str, pd.DataFrame]): Dict of pandas dfs of cases, deaths, tests data for all Pa. counties
+            that has has some minimal cleaning.
         county_data (Dict[str, pd.DataFrame]: Processed cases, deaths, tests, etc data for a specific county.
         gdf (geopandas.GeoDataFrame): Pa geodataframe with cases, deaths, tests data merged on to it.
         aws_bucket (optional, str): AWS bucket where charts will be uploaded to. Defaults to value stored in

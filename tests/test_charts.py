@@ -1,14 +1,13 @@
 import logging
 import pytest
 from definitions import DIR_TESTS_OUTPUT
-from src.modules.gen_chart.CustomLegend import CustomLegend
+from src.modules.gen_chart.custom_legend import CustomLegend
 from src.modules.gen_chart.multi_line import multi_line
 from src.modules.gen_chart.map_choropleth import map_choropleth
 from altair_saver import save
-from vega_datasets import data
-from palettable.colorbrewer.qualitative import Dark2_5
-from src.modules.init.pandas_opts import pandas_opts
-from src.modules.process_data.helper.stack_df import stack_df
+
+from src.modules.gen_desc.gen_desc import GenDesc
+from src.modules.helper.stack_df import stack_df
 
 
 def test_map_choropleth(gdf_processed):
@@ -89,3 +88,12 @@ def test_multi_line(cases_multi_county_moving_avg_per_cap, gdf_processed):
     )
     output_path = DIR_TESTS_OUTPUT / "multiline.png"
     save(chart, str(output_path))
+
+
+
+def test_gen_desc(data_clean, county_data, gdf_processed):
+    print("\n",gdf_processed)
+    gen_desc = GenDesc("Dauphin",county_data, gdf=gdf_processed)
+    result = gen_desc.area_tests()
+    print(result)
+

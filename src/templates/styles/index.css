@@ -517,3 +517,36 @@
       color: #757575;
       margin-bottom: 5px;
     }
+
+    .highlight-outer__cases {
+        background-color: #f9f1f2;
+        padding-top: 2px;
+    }
+
+    .highlight-inner__cases {
+        border-bottom: 2px solid #cc0000;
+        padding: 0 3px;
+    }
+
+
+   .highlight-outer__deaths {
+        background-color: #f6f6f7;
+        padding-top: 2px;
+    }
+
+    .highlight-inner__deaths {
+        border-bottom: 2px solid #1d204e;
+        padding: 0 3px;
+    }
+
+   .highlight-outer__tests {
+        background-color: #f0fafb;
+        padding-top: 2px;
+    }
+
+    .highlight-inner__tests {
+        border-bottom: 2px solid #009999;
+        padding: 0 3px;
+    }
+
+
