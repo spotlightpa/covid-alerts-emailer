@@ -24,7 +24,7 @@ cd /home/dansr/projects/covid_email_alerts || return
 # Run program
 # Note: Using abs path to pipenv binary due to problems with pyenv/pipenv PATH resolution in cron
 export PYTHONPATH="/home/dansr/projects/covid_email_alerts"
-~/.pyenv/versions/3.6.10/bin/pipenv run python src/covid_email_alerts.py
+~/.pyenv/versions/3.6.10/bin/pipenv run python covid_email_alerts/covid_email_alerts.py
 # Get env vars for debugging purposes
 echo "PROGRAM RUN COMPLETE"
 echo "More DEBUG INFO..."

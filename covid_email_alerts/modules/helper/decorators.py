@@ -1,5 +1,6 @@
 import functools
 
+
 def tag_dtype(
     _func=None, *, class_name_partial: str = None, open_tag="[b]", close_tag="[/b]"
 ):
@@ -25,7 +26,10 @@ def tag_dtype(
             _class_name_partial = class_name_partial or data_type
             class_name_outer = f"highlight-outer__{_class_name_partial}"
             class_name_inner = f"highlight-inner__{_class_name_partial}"
-            result = result.replace(open_tag, f'<span class="{class_name_outer}"><span class="{class_name_inner}">')
+            result = result.replace(
+                open_tag,
+                f'<span class="{class_name_outer}"><span class="{class_name_inner}">',
+            )
             result = result.replace(close_tag, "</span></span>")
             return result
 
@@ -61,7 +65,10 @@ def tag(
             _class_name_partial = class_name_partial
             class_name_outer = f"highlight-outer__{_class_name_partial}"
             class_name_inner = f"highlight-inner__{_class_name_partial}"
-            result = result.replace(open_tag, f'<span class="{class_name_outer}"><span class="{class_name_inner}">')
+            result = result.replace(
+                open_tag,
+                f'<span class="{class_name_outer}"><span class="{class_name_inner}">',
+            )
             result = result.replace(close_tag, "</span></span>")
             return result
 
