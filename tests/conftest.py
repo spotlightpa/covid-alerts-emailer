@@ -25,6 +25,12 @@ from dotenv import load_dotenv
 import os
 
 
+# PYTEST IGNORE
+collect_ignore_glob = [
+    "*test_prod_email.py",
+]
+
+
 def pytest_configure(config):
     """
     Allows plugins and conftest files to perform initial configuration.
