@@ -1,6 +1,6 @@
 import geopandas
 import altair as alt
-from src.modules.helper.convert_gfp_to_alt import convert_gfp_to_alt
+from covid_email_alerts.modules.helper.convert_gfp_to_alt import convert_gfp_to_alt
 from colour import Color
 
 

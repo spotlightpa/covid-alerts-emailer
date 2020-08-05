@@ -3,7 +3,7 @@ This file contains important project variables.
 """
 import os
 from pathlib import Path
-from src.modules.helper.time import est_now_iso
+from covid_email_alerts.modules.helper.time import est_now_iso
 
 
 # This sets our root directory as the project directory
@@ -15,7 +15,7 @@ ROOT_DIR = (
 DIR_LOGS = ROOT_DIR / "logs"  # main dir for log-related files
 DIR_LOGS_OUTPUT = DIR_LOGS / "output"
 DIR_LOGS_CONFIG = DIR_LOGS / "config"
-DIR_SRC = ROOT_DIR / "src"
+DIR_SRC = ROOT_DIR / "covid_email_alerts"
 DIR_TESTS = ROOT_DIR / "tests"
 DIR_ASSETS = DIR_SRC / "assets"
 DIR_OUTPUT = DIR_SRC / "output"

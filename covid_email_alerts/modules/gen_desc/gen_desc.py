@@ -1,11 +1,12 @@
 from typing import Any
 import inflect
 
-from src.modules.helper.decorators import tag_dtype, tag
-from src.modules.helper.get_neighbors import get_neighbors
-from src.modules.helper.rank_text import rank_text
+from covid_email_alerts.modules.helper.decorators import tag_dtype, tag
+from covid_email_alerts.modules.helper.get_neighbors import get_neighbors
+from covid_email_alerts.modules.helper.rank_text import rank_text
 
 p = inflect.engine()
+
 
 class GenDesc:
     """ Generates chatter for charts """
@@ -15,9 +16,7 @@ class GenDesc:
         self.county_data = county_data
         self.gdf = gdf
 
-    def __gdf_cell_accessor(
-        self, col_name: str, _round=True
-    ) -> Any:
+    def __gdf_cell_accessor(self, col_name: str, _round=True) -> Any:
         """
         Gets a value from self.gdf based on the intersection of county's name and
         specified column. Args are concatenated to get the full column name.
@@ -37,17 +36,15 @@ class GenDesc:
             return round(value)
         return value
 
-
     def gdf_get_ranking(self, gdf, sort_col):
         """ Ranks a given df by given field """
         gdf = gdf.sort_values(sort_col, ascending=False)
-        gdf["rank_from_top"] = gdf[sort_col].rank(method='max', ascending=False)
-        gdf["rank_from_bottom"] = gdf[sort_col].rank(method='max', ascending=True)
+        gdf["rank_from_top"] = gdf[sort_col].rank(method="max", ascending=False)
+        gdf["rank_from_bottom"] = gdf[sort_col].rank(method="max", ascending=True)
         gdf = gdf.set_index("NAME")
         rank_from_top = round(gdf.at[self.county_name_clean, "rank_from_top"])
         rank_from_bottom = round(gdf.at[self.county_name_clean, "rank_from_bottom"])
         return rank_from_top, rank_from_bottom
-
 
     @tag_dtype
     def daily(self, *, data_type: str) -> str:
@@ -66,7 +63,7 @@ class GenDesc:
 
     @tag_dtype
     def choro(self, *, data_type: str) -> str:
-        target_col =  f"{data_type}_added_past_two_weeks_per_capita"
+        target_col = f"{data_type}_added_past_two_weeks_per_capita"
         two_week_per_capita_avg = self.__gdf_cell_accessor(target_col)
         rank_from_top, rank_from_bottom = self.gdf_get_ranking(self.gdf, target_col)
         per_capita_rank = rank_text(rank_from_top, rank_from_bottom)
@@ -84,8 +81,10 @@ class GenDesc:
         neighbor_list = get_neighbors(self.county_name_clean, self.gdf)
         neighbor_count = len(neighbor_list)
         region_list = [self.county_name_clean] + neighbor_list
-        region_gdf = self.gdf[self.gdf['NAME'].isin(region_list)]
-        rank_from_top, rank_from_bottom = self.gdf_get_ranking(region_gdf, f"{data_type}_added_past_two_weeks_per_capita")
+        region_gdf = self.gdf[self.gdf["NAME"].isin(region_list)]
+        rank_from_top, rank_from_bottom = self.gdf_get_ranking(
+            region_gdf, f"{data_type}_added_past_two_weeks_per_capita"
+        )
         per_capita_rank_among_neighbors = rank_text(rank_from_top, rank_from_bottom)
         neighbors_text_frag = "four most populous" if neighbor_count > 4 else ""
         return (
@@ -97,9 +96,15 @@ class GenDesc:
 
     @tag(class_name_partial="tests")
     def area_tests(self) -> str:
-        tests_added_past_two_weeks = self.__gdf_cell_accessor("tests_added_past_two_weeks")
-        confirmed_added_past_two_weeks = self.__gdf_cell_accessor("confirmed_added_past_two_weeks")
-        percent_confirmed = round(((confirmed_added_past_two_weeks / tests_added_past_two_weeks ) * 100),1)
+        tests_added_past_two_weeks = self.__gdf_cell_accessor(
+            "tests_added_past_two_weeks"
+        )
+        confirmed_added_past_two_weeks = self.__gdf_cell_accessor(
+            "confirmed_added_past_two_weeks"
+        )
+        percent_confirmed = round(
+            ((confirmed_added_past_two_weeks / tests_added_past_two_weeks) * 100), 1
+        )
         return (
             f"Of the [b]{tests_added_past_two_weeks:,}[/b] new test results reported for {self.county_name_clean} "
             f"County over the past two weeks, [b]{confirmed_added_past_two_weeks:,}[/b] ({percent_confirmed}%) were "

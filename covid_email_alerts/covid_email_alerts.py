@@ -1,6 +1,6 @@
 import json
 import logging
-from src.definitions import (
+from covid_email_alerts.definitions import (
     DIR_TEMPLATES,
     PATH_COUNTY_LIST,
     PATH_PA_GEOJSON,
@@ -9,21 +9,23 @@ from src.definitions import (
     FETCH_DIR_URL,
     DIR_OUTPUT,
 )
-from src.modules.gen_html.gen_html import gen_html
-from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
-from src.modules.gen_payload.gen_county_payload import gen_county_payload
-from src.modules.helper.condense_whitespace import condense_whitespace
-from src.modules.init.init_program import init_program
-from src.modules.fetch.fetch import fetch_data
-from src.modules.process_data.merge_geo import merge_geo
-from src.modules.process_data.process_clean import process_clean
-from src.modules.process_data.process_individual_county import process_individual_county
-from src.assets.data_index import DATA_INDEX
-from src.modules.process_data.process_geo import process_geo
-from src.modules.aws.copy_to_s3 import copy_to_s3
-from src.modules.send_email.count_subscribers import count_subscribers
-from src.modules.send_email.send_email_list import send_email_list
-from src.modules.helper.time import est_now_iso, est_now_ap_brief
+from covid_email_alerts.modules.gen_html.gen_html import gen_html
+from covid_email_alerts.modules.gen_html.gen_jinja_vars import gen_jinja_vars
+from covid_email_alerts.modules.gen_payload.gen_county_payload import gen_county_payload
+from covid_email_alerts.modules.helper.condense_whitespace import condense_whitespace
+from covid_email_alerts.modules.init.init_program import init_program
+from covid_email_alerts.modules.fetch.fetch import fetch_data
+from covid_email_alerts.modules.process_data.merge_geo import merge_geo
+from covid_email_alerts.modules.process_data.process_clean import process_clean
+from covid_email_alerts.modules.process_data.process_individual_county import (
+    process_individual_county,
+)
+from covid_email_alerts.assets.data_index import DATA_INDEX
+from covid_email_alerts.modules.process_data.process_geo import process_geo
+from covid_email_alerts.modules.aws.copy_to_s3 import copy_to_s3
+from covid_email_alerts.modules.send_email.count_subscribers import count_subscribers
+from covid_email_alerts.modules.send_email.send_email_list import send_email_list
+from covid_email_alerts.modules.helper.time import est_now_iso, est_now_ap_brief
 from typing import Dict
 
 

@@ -1,12 +1,12 @@
-from src.modules.helper.get_county_pop import get_county_pop
+from covid_email_alerts.modules.helper.get_county_pop import get_county_pop
 from typing import Union
 
 
 def calc_county_per_capita_rate(
-        county_name_clean: str,
-        total_over_period: Union[int, float],
-        _round=True,
-        num_of_people:int=100000
+    county_name_clean: str,
+    total_over_period: Union[int, float],
+    _round=True,
+    num_of_people: int = 100000,
 ):
     """ Calculates a rate per 100,000 people for a specific county
 

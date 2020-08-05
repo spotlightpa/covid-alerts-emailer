@@ -1,4 +1,4 @@
-from src.definitions import PATH_PA_POP
+from covid_email_alerts.definitions import PATH_PA_POP
 import pandas as pd
 
 

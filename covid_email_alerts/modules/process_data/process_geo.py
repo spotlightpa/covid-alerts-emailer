@@ -1,7 +1,7 @@
 import pandas as pd
 import geopandas
 from pathlib import Path
-from src.definitions import PATH_OUTPUT_GEOJSON, PATH_PA_POP
+from covid_email_alerts.definitions import PATH_OUTPUT_GEOJSON, PATH_PA_POP
 
 
 def process_geo(

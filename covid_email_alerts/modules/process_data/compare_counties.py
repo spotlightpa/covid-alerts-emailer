@@ -1,6 +1,8 @@
 import pandas as pd
 from typing import List, Dict, Union
-from src.modules.process_data.process_individual_county import process_datatype
+from covid_email_alerts.modules.process_data.process_individual_county import (
+    process_datatype,
+)
 
 
 def compare_counties(

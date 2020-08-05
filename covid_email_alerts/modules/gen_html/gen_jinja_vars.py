@@ -1,5 +1,8 @@
-from src.modules.helper.formatters import format_commas
-from src.modules.helper.time import est_now_formatted_brief, est_now_ap_brief
+from covid_email_alerts.modules.helper.formatters import format_commas
+from covid_email_alerts.modules.helper.time import (
+    est_now_formatted_brief,
+    est_now_ap_brief,
+)
 from typing import List, Dict
 
 
@@ -30,7 +33,7 @@ def gen_jinja_vars(
             "tagline": county_name.upper(),
         },
         "section_welcome": f"{brief_date}: Read on for more information about how cases, deaths, and tests are trending "
-                           f"in {county_name} and the surrounding area.",
+        f"in {county_name} and the surrounding area.",
         "section_donate": {
             "blurb": "If you value this public service, <b>please donate now</b> at <a "
             'href="https://www.spotlightpa.org/donate/">spotlightpa.org/donate</a>'

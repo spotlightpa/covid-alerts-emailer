@@ -3,19 +3,21 @@ import logging
 import pandas as pd
 import geopandas
 from altair_saver import save
-from src.definitions import DIR_OUTPUT
-from src.modules.gen_chart.custom_legend import CustomLegend
-from src.modules.gen_chart.daily_and_avg import daily_and_avg
-from src.modules.gen_chart.map_choropleth import map_choropleth
-from src.modules.gen_chart.multi_line import multi_line
-from src.modules.gen_chart.stacked_area import stacked_area
-from src.modules.gen_desc.gen_desc import GenDesc
-from src.modules.process_data.compare_counties import compare_counties
-from src.modules.helper.get_neighbors import get_neighbors
-from src.modules.helper.sort_counties_by_pop import sort_counties_by_pop
-from src.modules.helper.stack_df import stack_df
-from src.modules.process_data.process_cumulative_tests import process_cumulative_tests
-from src.modules.aws.copy_to_s3 import copy_to_s3
+from covid_email_alerts.definitions import DIR_OUTPUT
+from covid_email_alerts.modules.gen_chart.custom_legend import CustomLegend
+from covid_email_alerts.modules.gen_chart.daily_and_avg import daily_and_avg
+from covid_email_alerts.modules.gen_chart.map_choropleth import map_choropleth
+from covid_email_alerts.modules.gen_chart.multi_line import multi_line
+from covid_email_alerts.modules.gen_chart.stacked_area import stacked_area
+from covid_email_alerts.modules.gen_desc.gen_desc import GenDesc
+from covid_email_alerts.modules.process_data.compare_counties import compare_counties
+from covid_email_alerts.modules.helper.get_neighbors import get_neighbors
+from covid_email_alerts.modules.helper.sort_counties_by_pop import sort_counties_by_pop
+from covid_email_alerts.modules.helper.stack_df import stack_df
+from covid_email_alerts.modules.process_data.process_cumulative_tests import (
+    process_cumulative_tests,
+)
+from covid_email_alerts.modules.aws.copy_to_s3 import copy_to_s3
 
 
 def gen_chart(
@@ -128,7 +130,9 @@ def gen_chart(
         custom_legend = chart_dict.get("custom_legend")
         chart_desc = gen_desc.area_tests()
     else:
-        raise Exception("Chart type not found. Did you provide a valid chart type in chart_index?")
+        raise Exception(
+            "Chart type not found. Did you provide a valid chart type in chart_index?"
+        )
 
     image_filename = f"{county_name_clean.lower()}_{data_type}_{chart_type}.{fmt}"
     image_path = DIR_OUTPUT / image_filename

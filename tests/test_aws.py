@@ -1,5 +1,5 @@
-from src.definitions import AWS_BUCKET
-from src.modules.aws.check_exists_on_s3 import check_exists_on_s3
+from covid_email_alerts.definitions import AWS_BUCKET
+from covid_email_alerts.modules.aws.check_exists_on_s3 import check_exists_on_s3
 
 
 def test_check_exists_on_s3():

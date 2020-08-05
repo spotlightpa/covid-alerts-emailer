@@ -1,5 +1,5 @@
 from typing import List
-from src.modules.helper.get_county_pop import get_county_pop
+from covid_email_alerts.modules.helper.get_county_pop import get_county_pop
 
 
 def sort_counties_by_pop(county_list: List[str]) -> List:
