@@ -1,4 +1,4 @@
-from covid_email_alerts.modules.helper.stack_df import stack_df
+from src.modules.helper.stack_df import stack_df
 from pandas import DataFrame
 
 

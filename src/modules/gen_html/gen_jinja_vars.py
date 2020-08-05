@@ -1,5 +1,5 @@
-from covid_email_alerts.modules.helper.formatters import format_commas
-from covid_email_alerts.modules.helper.time import (
+from src.modules.helper.formatters import format_commas
+from src.modules.helper.time import (
     est_now_formatted_brief,
     est_now_ap_brief,
 )

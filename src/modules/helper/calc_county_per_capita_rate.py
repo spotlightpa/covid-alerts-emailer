@@ -1,4 +1,4 @@
-from covid_email_alerts.modules.helper.get_county_pop import get_county_pop
+from src.modules.helper.get_county_pop import get_county_pop
 from typing import Union
 
 
