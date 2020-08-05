@@ -1,7 +1,7 @@
 import pandas as pd
 from typing import Dict
 import logging
-from covid_email_alerts.definitions import DIR_OUTPUT
+from src.definitions import DIR_OUTPUT
 
 
 def process_clean(

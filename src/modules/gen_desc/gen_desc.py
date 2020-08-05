@@ -1,9 +1,9 @@
 from typing import Any
 import inflect
 
-from covid_email_alerts.modules.helper.decorators import tag_dtype, tag
-from covid_email_alerts.modules.helper.get_neighbors import get_neighbors
-from covid_email_alerts.modules.helper.rank_text import rank_text
+from src.modules.helper.decorators import tag_dtype, tag
+from src.modules.helper.get_neighbors import get_neighbors
+from src.modules.helper.rank_text import rank_text
 
 p = inflect.engine()
 

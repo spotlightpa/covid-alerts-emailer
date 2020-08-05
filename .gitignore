@@ -1,5 +1,5 @@
 ### Project specific ignore files
-covid_email_alerts/output/
+src/output/
 .idea/
 logs/output/
 .vscode

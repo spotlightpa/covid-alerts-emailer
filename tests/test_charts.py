@@ -1,13 +1,13 @@
 import logging
 import pytest
-from covid_email_alerts.definitions import DIR_TESTS_OUTPUT
-from covid_email_alerts.modules.gen_chart.custom_legend import CustomLegend
-from covid_email_alerts.modules.gen_chart.multi_line import multi_line
-from covid_email_alerts.modules.gen_chart.map_choropleth import map_choropleth
+from src.definitions import DIR_TESTS_OUTPUT
+from src.modules.gen_chart.custom_legend import CustomLegend
+from src.modules.gen_chart.multi_line import multi_line
+from src.modules.gen_chart.map_choropleth import map_choropleth
 from altair_saver import save
 
-from covid_email_alerts.modules.gen_desc.gen_desc import GenDesc
-from covid_email_alerts.modules.helper.stack_df import stack_df
+from src.modules.gen_desc.gen_desc import GenDesc
+from src.modules.helper.stack_df import stack_df
 
 
 def test_map_choropleth(gdf_processed):

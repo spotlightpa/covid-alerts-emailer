@@ -1,10 +1,10 @@
 import logging
 from typing import List, Dict, Any
 
-from covid_email_alerts.assets.chart_index import CHART_INDEX
-from covid_email_alerts.assets.data_index import DATA_INDEX
-from covid_email_alerts.modules.gen_chart.gen_chart import gen_chart
-from covid_email_alerts.definitions import AWS_BUCKET, AWS_DIR
+from src.assets.chart_index import CHART_INDEX
+from src.assets.data_index import DATA_INDEX
+from src.modules.gen_chart.gen_chart import gen_chart
+from src.definitions import AWS_BUCKET, AWS_DIR
 
 
 def gen_county_payload(
