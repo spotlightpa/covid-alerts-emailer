@@ -1,12 +1,12 @@
-from src.definitions import (
+from covid_email_alerts.definitions import (
     DIR_TEMPLATES,
     DIR_TESTS_OUTPUT,
 )
-from src.modules.gen_html.gen_html import gen_html
-from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
-from src.modules.gen_html.minify import minify_email_html
-from src.modules.helper.condense_whitespace import condense_whitespace
-from src.modules.send_email.send_email_list import send_email_list
+from covid_email_alerts.modules.gen_html.gen_html import gen_html
+from covid_email_alerts.modules.gen_html.gen_jinja_vars import gen_jinja_vars
+from covid_email_alerts.modules.gen_html.minify import minify_email_html
+from covid_email_alerts.modules.helper.condense_whitespace import condense_whitespace
+from covid_email_alerts.modules.send_email.send_email_list import send_email_list
 import random
 
 

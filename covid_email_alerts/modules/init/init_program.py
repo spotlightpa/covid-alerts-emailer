@@ -1,11 +1,11 @@
 import logging
 from dotenv import load_dotenv
-from src.definitions import DIR_OUTPUT
+from covid_email_alerts.definitions import DIR_OUTPUT
 from logs.config.logging import logs_config
-from src.modules.gen_chart.themes import spotlight
-from src.modules.helper.misc import delete_dir_contents
-from src.modules.helper.time import utc_now
-from src.modules.init.pandas_opts import pandas_opts
+from covid_email_alerts.modules.gen_chart.themes import spotlight
+from covid_email_alerts.modules.helper.misc import delete_dir_contents
+from covid_email_alerts.modules.helper.time import utc_now
+from covid_email_alerts.modules.init.pandas_opts import pandas_opts
 import altair as alt
 import os
 

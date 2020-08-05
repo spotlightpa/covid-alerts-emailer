@@ -1,26 +1,28 @@
 import pytest
 import geopandas
-from src.definitions import (
+from covid_email_alerts.definitions import (
     DIR_TEMPLATES,
     DIR_FIXTURES_PA_CLEAN,
     PATH_PA_GEOJSON,
     AWS_DIR_TEST,
 )
 import altair as alt
-from src.assets.data_index import DATA_INDEX
-from src.modules.gen_chart.themes import spotlight
-from src.modules.gen_html.gen_html import gen_html
+from covid_email_alerts.assets.data_index import DATA_INDEX
+from covid_email_alerts.modules.gen_chart.themes import spotlight
+from covid_email_alerts.modules.gen_html.gen_html import gen_html
 from typing import Dict, List, Any
 import pandas as pd
-from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
-from src.modules.gen_html.minify import minify_email_html
-from src.modules.gen_payload.gen_county_payload import gen_county_payload
-from src.modules.init.pandas_opts import pandas_opts
-from src.modules.process_data.compare_counties import compare_counties
-from src.modules.helper.get_neighbors import get_neighbors
-from src.modules.process_data.merge_geo import merge_geo
-from src.modules.process_data.process_geo import process_geo
-from src.modules.process_data.process_individual_county import process_individual_county
+from covid_email_alerts.modules.gen_html.gen_jinja_vars import gen_jinja_vars
+from covid_email_alerts.modules.gen_html.minify import minify_email_html
+from covid_email_alerts.modules.gen_payload.gen_county_payload import gen_county_payload
+from covid_email_alerts.modules.init.pandas_opts import pandas_opts
+from covid_email_alerts.modules.process_data.compare_counties import compare_counties
+from covid_email_alerts.modules.helper.get_neighbors import get_neighbors
+from covid_email_alerts.modules.process_data.merge_geo import merge_geo
+from covid_email_alerts.modules.process_data.process_geo import process_geo
+from covid_email_alerts.modules.process_data.process_individual_county import (
+    process_individual_county,
+)
 from dotenv import load_dotenv
 import os
 

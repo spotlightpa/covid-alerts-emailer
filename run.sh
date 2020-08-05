@@ -6,23 +6,29 @@
 
 # Start
 echo "##############################"
-echo $(date '+%Y-%m-%d %H:%M:%S')
-echo "Script start - COVID EMAIL ALERTS"
+date '+%Y-%m-%d %H:%M:%S'
+echo "*** Script start - COVID EMAIL ALERTS ***"
+# Get env vars for debugging purposes
+echo "DEBUG INFO..."
 echo "ENV VARS:"
 printenv
+echo "PYTHON LOCATION:"
+which python
+echo "PYTHON VERSION:"
+python -V
+echo "NAVIGATE TO PROJ DIRECTORY AND EXECUTE PROJECT..."
 # This tells pipenv to use this .env file
 export PIPENV_DOTENV_LOCATION="/home/dansr/projects/covid_email_alerts/.env"
 # Navigate to scraper project directory
-cd /home/dansr/projects/covid_email_alerts
+cd /home/dansr/projects/covid_email_alerts || return
 # Run program
-# Note: In this case executing path to binary due to problems with pyenv working in cron
+# Note: Using abs path to pipenv binary due to problems with pyenv/pipenv PATH resolution in cron
 export PYTHONPATH="/home/dansr/projects/covid_email_alerts"
 ~/.pyenv/versions/3.6.10/bin/pipenv run python src/covid_email_alerts.py
+# Get env vars for debugging purposes
+echo "PROGRAM RUN COMPLETE"
+echo "More DEBUG INFO..."
 echo "ENV VARS:"
 printenv
-echo "DEFAULT PYTHON LOCATION:"
-which python
-echo "PYTHON VERSION"
-python -V
-echo "Script end"
+echo "*** Script end ***"
 echo ""

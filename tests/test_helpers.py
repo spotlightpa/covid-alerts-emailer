@@ -1,8 +1,11 @@
-from src.modules.helper.time import est_now_ap_brief, convert_iso_to_datetime
-from src.modules.helper.get_county_pop import get_county_pop
-from src.modules.helper.get_neighbors import get_neighbors
-from src.modules.helper.rank_text import rank_text
-from src.modules.helper.sort_counties_by_pop import sort_counties_by_pop
+from covid_email_alerts.modules.helper.time import (
+    est_now_ap_brief,
+    convert_iso_to_datetime,
+)
+from covid_email_alerts.modules.helper.get_county_pop import get_county_pop
+from covid_email_alerts.modules.helper.get_neighbors import get_neighbors
+from covid_email_alerts.modules.helper.rank_text import rank_text
+from covid_email_alerts.modules.helper.sort_counties_by_pop import sort_counties_by_pop
 
 
 def test_get_neighbors(gdf_processed):
@@ -72,4 +75,3 @@ def test_rank_text():
     assert rank == "2nd lowest"
     rank = rank_text(5, 5)
     assert rank == "5th highest"
-

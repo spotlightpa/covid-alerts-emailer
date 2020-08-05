@@ -1,7 +1,7 @@
-from src.covid_email_alerts import main
+from covid_email_alerts.covid_email_alerts import main
 import random
 
-from src.definitions import AWS_DIR_TEST
+from covid_email_alerts.definitions import AWS_DIR_TEST
 
 
 def test_full_single_county(dauphin_county_dict, dauphin_county):
