@@ -1,4 +1,6 @@
-{% extends 'body_section.html' %} {% block content %}
+{% extends 'body_section.html' %}
+
+{% block content %}
 <table
   align="left"
   border="0"
@@ -63,9 +65,8 @@
                   line-height: 150%;
                 "
               >
-                <div class="section-donate__container-inner" >
-                  {{ section_donate.blurb }}
-                </div>
+                {% block yellow_box %}
+                {% endblock yellow_box %}
               </td>
             </tr>
           </tbody>

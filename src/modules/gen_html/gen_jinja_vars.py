@@ -41,12 +41,12 @@ def gen_jinja_vars(
         "sections_data": county_payload,
         "section_dash": {
             "title": "Want more stats?",
-            "color": "#9E036E",
             "blurb": "For the latest COVID-19 statistics on Pennsylvania and surrounding states, check out our <a "
             'class="dash__link" '
             'href="https://www.spotlightpa.org/news/2020/03/pa-coronavirus-updates-cases-map-live-tracker/" '
-            'target="_blank">live coronavirus tracker</a>. For the best accountability reporting in Pennsylvania, '
-            'sign up for our weekly <a href="https://www.spotlightpa.org/newsletters/" target="_blank">newsletter</a>.',
+            'target="_blank">live coronavirus tracker</a>. For a round-up of the best accountability reporting in '
+            'Pennsylvania, sign up for our weekly <a href="https://www.spotlightpa.org/newsletters/" target="_blank">'
+            "newsletter</a>.",
         },
         "section_footnote": {
             "footnote": "Cases include both lab-confirmed positive results and cases deemed probable based on "
