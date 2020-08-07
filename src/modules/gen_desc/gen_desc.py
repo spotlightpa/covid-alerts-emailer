@@ -86,12 +86,11 @@ class GenDesc:
             region_gdf, f"{data_type}_added_past_two_weeks_per_capita"
         )
         per_capita_rank_among_neighbors = rank_text(rank_from_top, rank_from_bottom)
-        neighbors_text_frag = "four most populous" if neighbor_count > 4 else ""
         return (
             f"Compared to its {p.number_to_words(neighbor_count)} neighboring counties, {self.county_name_clean} "
             f"County had the [b]{per_capita_rank_among_neighbors}[/b] number of {data_type} per 100,000 people over "
-            f"the past two weeks. Here's how {self.county_name_clean}'s per capita 7-day moving average compares to its"
-            f" {neighbors_text_frag} neighbors:"
+            f"the past two weeks. Here's how {self.county_name_clean}'s per capita 7-day moving average compares to "
+            f"its neighbors:"
         )
 
     @tag(class_name_partial="tests")

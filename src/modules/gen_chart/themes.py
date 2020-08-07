@@ -5,7 +5,7 @@ def spotlight():
     # la times typography
     font = "Helvetica"
     titleFont = font
-    titleFontSize = 22
+    titleFontSize = 16
     titleFontWeight = "normal"
     labelFont = font
     labelFontSize = 11.5

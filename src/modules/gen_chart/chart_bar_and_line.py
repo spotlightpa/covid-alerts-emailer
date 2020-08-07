@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 
 
-def daily_and_avg(
+def chart_bar_and_line(
     data_type: str,
     df: pd.DataFrame,
     *,

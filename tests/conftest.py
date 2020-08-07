@@ -51,7 +51,7 @@ def pytest_configure(config):
 @pytest.fixture(scope="session")
 def dauphin_county_dict() -> Dict[str, Dict]:
     """
-    Returns a dict with a single dict containing county and a special testing mailing ID so that mail is not sent to
+    Returns a dict with a single dict containing county and a special testing mailing ID so that mail is NOT sent to
     actual subscribers.
 
     """
@@ -59,6 +59,36 @@ def dauphin_county_dict() -> Dict[str, Dict]:
         "42043": {
             "id": "5a839eb5-d3bc-4f65-9fbe-283c02762a95",
             "name": "Dauphin County",
+        },
+    }
+
+
+@pytest.fixture(scope="session")
+def phila_county_dict() -> Dict[str, Dict]:
+    """
+    Returns a dict with a single dict containing county and a special testing mailing ID so that mail is NOT sent to
+    actual subscribers.
+
+    """
+    return {
+        "42101": {
+            "id": "5a839eb5-d3bc-4f65-9fbe-283c02762a95",
+            "name": "Philadelphia County",
+        },
+    }
+
+
+@pytest.fixture(scope="session")
+def greene_county_dict() -> Dict[str, Dict]:
+    """
+    Returns a dict with a single dict containing county and a special testing mailing ID so that mail is NOT sent to
+    actual subscribers.
+
+    """
+    return {
+        "42059": {
+            "id": "5a839eb5-d3bc-4f65-9fbe-283c02762a95",
+            "name": "Greene County",
         },
     }
 

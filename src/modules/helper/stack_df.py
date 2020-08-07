@@ -14,6 +14,8 @@ def stack_df(
     Takes a pandas Dataframe and returns a new dataframe with specified columns stacked on top of each
     other. This is useful for creating multi-series charts with Altair.
 
+    Note: This same functionality can be achieved with pd.melt()
+
     Eg. Data like this:
 
                   date  total_cases  total_tests
