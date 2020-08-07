@@ -1,13 +1,33 @@
 import logging
 import pytest
 from src.definitions import DIR_TESTS_OUTPUT
+from src.modules.gen_chart.chart_faceted import chart_faceted
 from src.modules.gen_chart.custom_legend import CustomLegend
-from src.modules.gen_chart.multi_line import multi_line
+from src.modules.gen_chart.chart_multi_line import chart_multi_line
 from src.modules.gen_chart.map_choropleth import map_choropleth
 from altair_saver import save
 
 from src.modules.gen_desc.gen_desc import GenDesc
 from src.modules.helper.stack_df import stack_df
+
+
+def test_chart_faceted(cases_multi_county_moving_avg_per_cap):
+    county_cols = list(cases_multi_county_moving_avg_per_cap.columns)
+    county_cols.remove("date")
+    df = cases_multi_county_moving_avg_per_cap.melt(
+        id_vars=["date"],
+        var_name="county",
+        value_vars=county_cols,
+        value_name="cases_per_capita_moving_avg",
+    )
+    output_path = DIR_TESTS_OUTPUT / "chart_faceted.png"
+    chart = chart_faceted(
+        df,
+        category_col="county",
+        x_axis_col="date",
+        y_axis_col="cases_per_capita_moving_avg",
+    )
+    save(chart, str(output_path))
 
 
 def test_map_choropleth(gdf_processed):
@@ -69,7 +89,7 @@ def test_gen_custom_legend_title_case():
     print(legend_obj.labels)
 
 
-def test_multi_line(cases_multi_county_moving_avg_per_cap, gdf_processed):
+def test_multi_line(cases_multi_county_moving_avg_per_cap):
     counties = [
         col for col in cases_multi_county_moving_avg_per_cap.columns if col != "date"
     ]
@@ -78,7 +98,7 @@ def test_multi_line(cases_multi_county_moving_avg_per_cap, gdf_processed):
         cases_multi_county_moving_avg_per_cap, stack_cols=counties, x_axis_col="date"
     )
     legend_obj = CustomLegend(counties)
-    chart = multi_line(
+    chart = chart_multi_line(
         df,
         x_axis_col="date",
         y_axis_col="value",

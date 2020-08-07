@@ -5,11 +5,11 @@ import pandas as pd
 from typing import List
 
 
-def stacked_area(
+def chart_multi_line(
     df: pd.DataFrame,
     x_axis_col,
     y_axis_col,
-    category_col=None,
+    category_col,
     domain: List = None,
     range_: List = None,
 ) -> str:
@@ -20,7 +20,7 @@ def stacked_area(
         df (pd.DataFrame): Data for chart.
         x_axis_col (str): Column to use for x axis.
         y_axis_col (str): Column to use for y axis.
-        category_col (str): Column that describes the categories of stacked data. Eg. 'data_types'. Defaults to None.
+        category_col (str): Column that describes the categories of stacked data. Eg. 'data_types'.
         domain (list) :  List of all the categories of data that will be displayed. Defaults to None.
         range_ (list) :  List of color values for each category. Maps to domain. Defaults to None.
 
@@ -30,10 +30,11 @@ def stacked_area(
     """
     chart = (
         alt.Chart(df)
-        .mark_area()
+        .mark_line()
         .encode(
             x=x_axis_col,
-            y=alt.Y(y_axis_col, stack=True),
+            y=alt.Y(y_axis_col),
+            # color=category_col
             color=alt.Color(
                 category_col, scale=alt.Scale(domain=domain, range=range_), legend=None
             ),

@@ -4,11 +4,12 @@ import pandas as pd
 import geopandas
 from altair_saver import save
 from src.definitions import DIR_OUTPUT
+from src.modules.gen_chart.chart_faceted import chart_faceted
 from src.modules.gen_chart.custom_legend import CustomLegend
-from src.modules.gen_chart.daily_and_avg import daily_and_avg
+from src.modules.gen_chart.chart_bar_and_line import chart_bar_and_line
 from src.modules.gen_chart.map_choropleth import map_choropleth
-from src.modules.gen_chart.multi_line import multi_line
-from src.modules.gen_chart.stacked_area import stacked_area
+from src.modules.gen_chart.chart_multi_line import chart_multi_line
+from src.modules.gen_chart.chart_stacked_area import chart_stacked_area
 from src.modules.gen_desc.gen_desc import GenDesc
 from src.modules.process_data.compare_counties import compare_counties
 from src.modules.helper.get_neighbors import get_neighbors
@@ -64,7 +65,7 @@ def gen_chart(
     gen_desc = GenDesc(county_name_clean, county_data=county_data, gdf=gdf)
 
     if "daily_and_avg" in chart_type:
-        chart = daily_and_avg(
+        chart = chart_bar_and_line(
             data_type=data_type,
             df=county_data[data_type],
             line_color=primary_color,
@@ -86,38 +87,35 @@ def gen_chart(
 
     elif "neigbhors_per_capita" in chart_type:
         compare_field = chart_dict["compare_field"]
-        neighbor_limit = chart_dict["neighbor_limit"]
         neighbors = get_neighbors(county_name_clean, gdf)
         neighbors = sort_counties_by_pop(neighbors)
-        neighbors = neighbors[0:neighbor_limit]
         compare_list = [county_name_clean] + neighbors
-        data_clean_cases = data_clean[data_type]
+        df_data_type = data_clean[data_type]
         clean_rules = data_index[data_type]["clean_rules"]
         df_multi_county = compare_counties(
-            data_clean_cases,
+            df_data_type,
             clean_rules=clean_rules,
             compare_field=compare_field,
             counties=compare_list,
         )
-        county_list = [col for col in df_multi_county.columns if col != "date"]
+        county_cols = list(df_multi_county.columns)
+        county_cols.remove("date")
         df_multi_county = stack_df(
-            df_multi_county, stack_cols=county_list, x_axis_col="date"
+            df_multi_county, stack_cols=county_cols, x_axis_col="date"
         )
-        legend_obj = CustomLegend(county_list)
-        chart = multi_line(
+        chart = chart_faceted(
             df_multi_county,
+            category_col="category",
             x_axis_col="date",
             y_axis_col="value",
-            category_col="category",
-            domain=legend_obj.labels,
-            range_=legend_obj.colors,
+            line_color=primary_color,
         )
-        custom_legend = legend_obj.legend(title_case=True)
+        custom_legend = None
         chart_desc = gen_desc.neighbors(data_type=data_type)
 
     elif "stacked_area" in chart_type:
         df = process_cumulative_tests(county_data["confirmed"], county_data["tests"])
-        chart = stacked_area(
+        chart = chart_stacked_area(
             df,
             x_axis_col="date",
             y_axis_col="count",
