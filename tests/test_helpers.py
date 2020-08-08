@@ -74,4 +74,11 @@ def test_rank_text():
     rank = rank_text(7, 2)
     assert rank == "2nd lowest"
     rank = rank_text(5, 5)
-    assert rank == "5th highest"
+    assert rank == "same"
+
+
+def test_rank_equal():
+    """Tests situations where all items are equally ranked"""
+    rank = rank_text(1, 1)
+    assert rank == "same"
+    print(rank)

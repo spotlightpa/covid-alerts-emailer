@@ -1,6 +1,8 @@
 from src.assets.data_index import DATA_INDEX
+from src.definitions import PATH_PA_GEOJSON
 from src.modules.helper.get_neighbors import get_neighbors
 from src.modules.process_data.merge_geo import merge_geo
+from src.modules.process_data.process_geo import process_geo
 from src.modules.process_data.process_individual_county import process_individual_county
 from src.modules.process_data.compare_counties import compare_counties
 
@@ -14,7 +16,7 @@ def test_process_individual_county_total(data_clean):
     cases_total_july_27 = df_cases.at["2020-07-27", "total"]
     cases_moving_avg_july_27 = df_cases.at["2020-07-27", "moving_avg"]
     assert cases_total_july_27 == 108264
-    assert cases_moving_avg_july_27 == 932
+    assert int(cases_moving_avg_july_27) == 932
 
 
 def test_process_individual_county_dauphin(data_clean):
@@ -31,11 +33,37 @@ def test_process_individual_county_dauphin(data_clean):
     assert int(round(cases_total_per_capita_july_27)) == 920
 
 
+def test_process_individual_county_greene(data_clean):
+    county_data = process_individual_county(
+        data_clean, DATA_INDEX, county_name="Greene"
+    )
+
+    df_deaths = county_data["deaths"]
+    print("\n", df_deaths)
+
+
+def test_process_individual_county_washington(data_clean):
+    county_data = process_individual_county(
+        data_clean, DATA_INDEX, county_name="Washington"
+    )
+
+    df_deaths = county_data["deaths"]
+    print("\n", df_deaths)
+
+
+def test_process_geo():
+    df = process_geo(PATH_PA_GEOJSON)
+    print("\n", df)
+
+
 def test_merge_geo(gdf_raw, data_clean):
     df_merged = merge_geo(gdf_raw, data_clean, add_per_capita=True)
-    print("\n", df_merged)
+    # print("\n", df_merged)
     # should have 67 rows, one for each county
     assert len(df_merged.index) == 67
+    # df_merged = df_merged.set_index("NAME")
+    wash = df_merged.loc[df_merged["NAME"] == "Washington"]
+    print(wash)
 
 
 def test_process_neighbors_total(data_clean, gdf_processed):
@@ -69,3 +97,17 @@ def test_process_neighbors_per_capita(data_clean, gdf_processed):
     )
     df = df.set_index("date")
     print(df)
+
+
+def test_compare_counties(data_clean, gdf_processed):
+    neighbors = get_neighbors("Greene", gdf_processed)
+    compare_list = ["Greene"] + neighbors
+    data_clean_deaths = data_clean["deaths"]
+    clean_rules = DATA_INDEX["deaths"]["clean_rules"]
+    result = compare_counties(
+        data_clean_deaths,
+        clean_rules=clean_rules,
+        compare_field="moving_avg_per_capita",
+        counties=compare_list,
+    )
+    print("\n", result)
