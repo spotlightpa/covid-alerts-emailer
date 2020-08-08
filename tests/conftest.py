@@ -49,6 +49,42 @@ def pytest_configure(config):
 
 
 @pytest.fixture(scope="session")
+def multi_county_dict() -> Dict[str, Dict]:
+    """
+    Returns a dict with multiples dict each containing county name and a special testing mailing ID so that mail is NOT
+    sent to actual newsletter subscribers.
+
+    """
+    return {
+        "42003": {
+            "id": "5a839eb5-d3bc-4f65-9fbe-283c02762a95",
+            "name": "Allegheny County",
+        },
+        "42053": {
+            "id": "5a839eb5-d3bc-4f65-9fbe-283c02762a95",
+            "name": "Forest County",
+        },
+        "42049": {"id": "5a839eb5-d3bc-4f65-9fbe-283c02762a95", "name": "Erie County",},
+        "42055": {
+            "id": "5a839eb5-d3bc-4f65-9fbe-283c02762a95",
+            "name": "Franklin County",
+        },
+        "42063": {
+            "id": "5a839eb5-d3bc-4f65-9fbe-283c02762a95",
+            "name": "Indiana County",
+        },
+        "42069": {
+            "id": "5a839eb5-d3bc-4f65-9fbe-283c02762a95",
+            "name": "Lackawanna County",
+        },
+        "42083": {
+            "id": "5a839eb5-d3bc-4f65-9fbe-283c02762a95",
+            "name": "McKean County",
+        },
+    }
+
+
+@pytest.fixture(scope="session")
 def dauphin_county_dict() -> Dict[str, Dict]:
     """
     Returns a dict with a single dict containing county and a special testing mailing ID so that mail is NOT sent to
@@ -94,7 +130,7 @@ def greene_county_dict() -> Dict[str, Dict]:
 
 
 @pytest.fixture(scope="session")
-def dauphin_county(dauphin_county_dict) -> Dict[str, str]:
+def dauphin_info(dauphin_county_dict) -> Dict[str, str]:
     """
     Returns a dict with basic info for Dauphin County, including its name and mailing list ID.
     """
@@ -114,12 +150,12 @@ def data_clean() -> Dict[str, pd.DataFrame]:
 
 
 @pytest.fixture(scope="session")
-def county_data(dauphin_county, data_clean) -> Dict[str, pd.DataFrame]:
+def dauphin_county_data(dauphin_info, data_clean) -> Dict[str, pd.DataFrame]:
     """
     Creates county_data, ie. a dict of pandas Dataframes with processed cases, deaths, test
-    data for a specific county
+    data for Dauphin county
     """
-    county_name = dauphin_county["name"]
+    county_name = dauphin_info["name"]
     county_name_clean = county_name.replace(" County", "")
     return process_individual_county(
         data_clean, DATA_INDEX, county_name=county_name_clean
@@ -127,40 +163,70 @@ def county_data(dauphin_county, data_clean) -> Dict[str, pd.DataFrame]:
 
 
 @pytest.fixture(scope="session")
-def cases_multi_county_moving_avg_per_cap(data_clean, gdf_processed) -> pd.DataFrame:
+def greene_county_data(greene_county_dict, data_clean) -> Dict[str, pd.DataFrame]:
     """
-    A DataFrame representing a day-by-day comparison of moving avg number of new daily cases, per capita,
-    for multiple counties.
+    Creates county_data, ie. a dict of pandas Dataframes with processed cases, deaths, test
+    data for Greene county
     """
-    neighbors = get_neighbors("Dauphin", gdf_processed)
-    compare_list = ["Dauphin"] + neighbors
-    data_clean_cases = data_clean["cases"]
-    clean_rules = DATA_INDEX["cases"]["clean_rules"]
-    return compare_counties(
-        data_clean_cases,
-        clean_rules=clean_rules,
-        compare_field="moving_avg_per_capita",
-        counties=compare_list,
+    county_name_clean = greene_county_dict["42059"]["name"].replace(" County", "")
+    return process_individual_county(
+        data_clean, DATA_INDEX, county_name=county_name_clean
     )
 
 
 @pytest.fixture(scope="session")
-def county_payload(
-    dauphin_county, data_clean, county_data, gdf_processed
+def greene_payload(
+    greene_county_dict, data_clean, greene_county_data, gdf_processed
 ) -> List[Dict[str, Any]]:
     """
     Creates a list of dicts that represents important payload data for email newsletter.
     """
-    county_name_clean = dauphin_county["name"].replace(" County", "")
+    county_name_clean = greene_county_dict["42059"]["name"].replace(" County", "")
     # Note, we use AWS_TESTING_DIR so that assets are uploaded there rather than in the production
     # directory of bucket
     return gen_county_payload(
         county_name_clean=county_name_clean,
         data_clean=data_clean,
-        county_data=county_data,
+        county_data=greene_county_data,
         gdf=gdf_processed,
         aws_dir=AWS_DIR_TEST,
     )
+
+
+@pytest.fixture(scope="session")
+def dauphin_payload(
+    dauphin_info, data_clean, dauphin_county_data, gdf_processed
+) -> List[Dict[str, Any]]:
+    """
+    Creates a list of dicts that represents important payload data for email newsletter.
+    """
+    county_name_clean = dauphin_info["name"].replace(" County", "")
+    # Note, we use AWS_TESTING_DIR so that assets are uploaded there rather than in the production
+    # directory of bucket
+    return gen_county_payload(
+        county_name_clean=county_name_clean,
+        data_clean=data_clean,
+        county_data=dauphin_county_data,
+        gdf=gdf_processed,
+        aws_dir=AWS_DIR_TEST,
+    )
+
+
+@pytest.fixture(scope="session")
+def dauphin_html(dauphin_info, dauphin_payload):
+    newsletter_vars = gen_jinja_vars(
+        dauphin_info["name"],
+        county_payload=dauphin_payload,
+        newsletter_browser_link="",  # not needed for testing purposes so we can leave empty
+    )
+    html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
+    return html
+
+
+@pytest.fixture(scope="session")
+def dauphin_minif_html(dauphin_html) -> str:
+    """ Returns minified HTML"""
+    return minify_email_html(dauphin_html, include_comments=True)
 
 
 @pytest.fixture(scope="session")
@@ -181,17 +247,36 @@ def gdf_processed(gdf_raw, data_clean) -> geopandas.GeoDataFrame:
 
 
 @pytest.fixture(scope="session")
-def html(dauphin_county, county_payload):
-    newsletter_vars = gen_jinja_vars(
-        dauphin_county["name"],
-        county_payload=county_payload,
-        newsletter_browser_link="",  # not needed for testing purposes so we can leave empty
+def dauphin_region_cases_moving_avg_per_cap(data_clean, gdf_processed) -> pd.DataFrame:
+    """
+    A DataFrame representing a day-by-day comparison of moving avg number of new daily cases, per capita,
+    for Dauphin and neighboring counties.
+    """
+    neighbors = get_neighbors("Dauphin", gdf_processed)
+    compare_list = ["Dauphin"] + neighbors
+    data_clean_cases = data_clean["cases"]
+    clean_rules = DATA_INDEX["cases"]["clean_rules"]
+    return compare_counties(
+        data_clean_cases,
+        clean_rules=clean_rules,
+        compare_field="moving_avg_per_capita",
+        counties=compare_list,
     )
-    html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
-    return html
 
 
 @pytest.fixture(scope="session")
-def minified_html(html: str) -> str:
-    """ Returns minified HTML"""
-    return minify_email_html(html, include_comments=True)
+def greene_region_deaths_moving_avg_per_cap(data_clean, gdf_processed) -> pd.DataFrame:
+    """
+    A DataFrame representing a day-by-day comparison of moving avg number of new daily cases, per capita,
+    for Dauphin and neighboring counties.
+    """
+    neighbors = get_neighbors("Greene", gdf_processed)
+    compare_list = ["Greene"] + neighbors
+    data_clean_deaths = data_clean["deaths"]
+    clean_rules = DATA_INDEX["deaths"]["clean_rules"]
+    return compare_counties(
+        data_clean_deaths,
+        clean_rules=clean_rules,
+        compare_field="moving_avg_per_capita",
+        counties=compare_list,
+    )

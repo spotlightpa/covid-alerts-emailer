@@ -6,15 +6,13 @@ from src.modules.gen_chart.custom_legend import CustomLegend
 from src.modules.gen_chart.chart_multi_line import chart_multi_line
 from src.modules.gen_chart.map_choropleth import map_choropleth
 from altair_saver import save
-
-from src.modules.gen_desc.gen_desc import GenDesc
 from src.modules.helper.stack_df import stack_df
 
 
-def test_chart_faceted(cases_multi_county_moving_avg_per_cap):
-    county_cols = list(cases_multi_county_moving_avg_per_cap.columns)
+def test_chart_faceted_dauphin(dauphin_region_cases_moving_avg_per_cap):
+    county_cols = list(dauphin_region_cases_moving_avg_per_cap.columns)
     county_cols.remove("date")
-    df = cases_multi_county_moving_avg_per_cap.melt(
+    df = dauphin_region_cases_moving_avg_per_cap.melt(
         id_vars=["date"],
         var_name="county",
         value_vars=county_cols,
@@ -26,6 +24,26 @@ def test_chart_faceted(cases_multi_county_moving_avg_per_cap):
         category_col="county",
         x_axis_col="date",
         y_axis_col="cases_per_capita_moving_avg",
+    )
+    save(chart, str(output_path))
+
+
+def test_chart_faceted_greene(greene_region_deaths_moving_avg_per_cap):
+    print(greene_region_deaths_moving_avg_per_cap)
+    county_cols = list(greene_region_deaths_moving_avg_per_cap.columns)
+    county_cols.remove("date")
+    df = greene_region_deaths_moving_avg_per_cap.melt(
+        id_vars=["date"],
+        var_name="county",
+        value_vars=county_cols,
+        value_name="deaths_per_capita_moving_avg",
+    )
+    output_path = DIR_TESTS_OUTPUT / "chart_faceted.png"
+    chart = chart_faceted(
+        df,
+        category_col="county",
+        x_axis_col="date",
+        y_axis_col="deaths_per_capita_moving_avg",
     )
     save(chart, str(output_path))
 
@@ -89,13 +107,13 @@ def test_gen_custom_legend_title_case():
     print(legend_obj.labels)
 
 
-def test_multi_line(cases_multi_county_moving_avg_per_cap):
+def test_multi_line(dauphin_region_cases_moving_avg_per_cap):
     counties = [
-        col for col in cases_multi_county_moving_avg_per_cap.columns if col != "date"
+        col for col in dauphin_region_cases_moving_avg_per_cap.columns if col != "date"
     ]
     counties = counties[0:5]
     df = stack_df(
-        cases_multi_county_moving_avg_per_cap, stack_cols=counties, x_axis_col="date"
+        dauphin_region_cases_moving_avg_per_cap, stack_cols=counties, x_axis_col="date"
     )
     legend_obj = CustomLegend(counties)
     chart = chart_multi_line(
@@ -108,10 +126,3 @@ def test_multi_line(cases_multi_county_moving_avg_per_cap):
     )
     output_path = DIR_TESTS_OUTPUT / "multiline.png"
     save(chart, str(output_path))
-
-
-def test_gen_desc(data_clean, county_data, gdf_processed):
-    print("\n", gdf_processed)
-    gen_desc = GenDesc("Dauphin", county_data, gdf=gdf_processed)
-    result = gen_desc.area_tests()
-    print(result)

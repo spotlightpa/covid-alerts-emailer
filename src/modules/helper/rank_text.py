@@ -13,7 +13,9 @@ def rank_text(rank_from_top: int, rank_from_bottom: int,) -> str:
         str: Text fragment
     """
     p = inflect.engine()
-    if rank_from_top <= rank_from_bottom:
+    if rank_from_top == rank_from_bottom:
+        return "same"
+    elif rank_from_top <= rank_from_bottom:
         if rank_from_top == 1:
             return "highest"
         else:
