@@ -51,12 +51,12 @@ def gen_jinja_vars(
         "section_footnote": {
             "footnote": "Cases include both lab-confirmed positive results and cases deemed probable based on "
             "federal criteria. Total test numbers are calculated by adding together positive and negative "
-            "lab results. ‘Total' and 'positive' numbers prior to July 13 may include a small number of probable "
-            "cases in addition to lab-confirmed results. Also note that each rank in county rankings is incremented by "
-            "only one regardless of how many counties share the same rank. Eg. if three "
-            "counties have the same per capita number of cases and share the highest rank compared to other counties, "
-            "the next ranked county or group of counties will be considered as "
-            "'second highest'.",
+            "lab results. Total and positive test numbers prior to July 13 may include a small number of probable "
+            "cases in addition to lab-confirmed results. Also note that county rankings of per capita "
+            "cases and deaths use dense ranking. Ranks are incremented by only one regardless of how many counties "
+            "share the same rank. For instance, if three counties are ranked as having the highest number of new cases "
+            "per capita, the next highest ranking county or group of counties will be "
+            'considered the "second highest".',
             "sources": "Pa. Department of Health data compiled by Spotlight PA and The Philadelphia "
             "Inquirer.",
         },
