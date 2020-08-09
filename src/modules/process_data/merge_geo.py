@@ -27,28 +27,27 @@ def merge_geo(
     for data_type, df in data.items():
         df = df.drop("Total", axis=1)
 
-        # creates a new df with four rows: date, total, total_two_weeks_ago, added_past_two_weeks
-        col_two_weeks_ago = f"{data_type}_total_two_weeks_ago"
+        # creates a new df with four rows: date, total, total_15_days_ago, added_past_two_weeks
+        # we subtract current total from value 15 days ago in order to get all new values added over past 14 days.
+        col_15_days_ago = f"{data_type}_total_15_days_ago"
         col_total = f"{data_type}_total"
         col_added_past_two_weeks = f"{data_type}_added_past_two_weeks"
 
-        df_test = df.iloc[[-14, -1]]
-        df_test = df_test.set_index("date")
-        df_test = df_test.transpose()
-        df_test.rename(columns={df_test.columns[0]: col_two_weeks_ago}, inplace=True)
-        df_test.rename(columns={df_test.columns[1]: col_total}, inplace=True)
-        df_test[col_added_past_two_weeks] = (
-            df_test[col_total] - df_test[col_two_weeks_ago]
+        df_truncated = df.iloc[[-15, -1]]  # to get t
+        df_truncated = df_truncated.set_index("date")
+        df_truncated = df_truncated.transpose()
+        df_truncated.rename(
+            columns={df_truncated.columns[0]: col_15_days_ago}, inplace=True
+        )
+        df_truncated.rename(columns={df_truncated.columns[1]: col_total}, inplace=True)
+        df_truncated[col_added_past_two_weeks] = (
+            df_truncated[col_total] - df_truncated[col_15_days_ago]
         )
 
         # merge data with gdf
-        gdf = gdf.merge(df_test, how="left", left_on="NAME", right_index=True)
+        gdf = gdf.merge(df_truncated, how="left", left_on="NAME", right_index=True)
         gdf = gdf.astype(
-            {
-                col_two_weeks_ago: "int",
-                col_total: "int",
-                col_added_past_two_weeks: "int",
-            }
+            {col_15_days_ago: "int", col_total: "int", col_added_past_two_weeks: "int",}
         )
 
         if add_per_capita:
