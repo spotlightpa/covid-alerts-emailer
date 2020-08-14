@@ -5,6 +5,7 @@ from src.definitions import (
     DIR_FIXTURES_PA_CLEAN,
     PATH_PA_GEOJSON,
     AWS_DIR_TEST,
+    PATH_FIXTURE_STORIES,
 )
 import altair as alt
 from src.assets.data_index import DATA_INDEX
@@ -23,9 +24,11 @@ from src.modules.process_data.process_geo import process_geo
 from src.modules.process_data.process_individual_county import process_individual_county
 from dotenv import load_dotenv
 import os
-
+import json
 
 # PYTEST IGNORE
+from src.modules.process_data.process_stories import process_stories
+
 collect_ignore_glob = [
     "*test_prod_email.py",
 ]
@@ -213,11 +216,12 @@ def dauphin_payload(
 
 
 @pytest.fixture(scope="session")
-def dauphin_html(dauphin_info, dauphin_payload):
+def dauphin_html(dauphin_info, dauphin_payload, stories_clean):
     newsletter_vars = gen_jinja_vars(
         dauphin_info["name"],
         county_payload=dauphin_payload,
         newsletter_browser_link="",  # not needed for testing purposes so we can leave empty
+        story_promo=stories_clean,
     )
     html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
     return html
@@ -280,3 +284,17 @@ def greene_region_deaths_moving_avg_per_cap(data_clean, gdf_processed) -> pd.Dat
         compare_field="moving_avg_per_capita",
         counties=compare_list,
     )
+
+
+@pytest.fixture(scope="session")
+def stories_raw() -> List[Dict[str, str]]:
+    """ Spotlight PA stories copied from summary feed"""
+    with open(PATH_FIXTURE_STORIES, "r") as fin:
+        stories = fin.read()
+    return json.loads(stories)
+
+
+@pytest.fixture(scope="session")
+def stories_clean(stories_raw) -> List[Dict[str, str]]:
+    """ Spotlight PA stories cleaned and filtered """
+    return process_stories(stories_raw)

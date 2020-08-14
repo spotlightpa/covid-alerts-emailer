@@ -7,7 +7,11 @@ from typing import List, Dict
 
 
 def gen_jinja_vars(
-    county_name: str, *, county_payload=List[Dict], newsletter_browser_link: str,
+    county_name: str,
+    *,
+    county_payload: List[Dict],
+    newsletter_browser_link: str,
+    story_promo: List[Dict[str, str]],
 ) -> Dict:
     """
     Creates a dict of variables for jinja HTML templates.
@@ -16,6 +20,7 @@ def gen_jinja_vars(
         county_name (str): Name of county
         county_payload (List[Dict]): List of dictionaries containing county info, like links to chart images.
         newsletter_browser_link (str): Hyperlink to HTML of final newsletter.
+        story_promo (List[Dict[str,str]]): Spotlight stories to promo
 
     Returns:
         A dictionary of newsletter variables.
@@ -32,8 +37,17 @@ def gen_jinja_vars(
             "title": "Weekly Coronavirus Update".upper(),
             "tagline": county_name.upper(),
         },
+        "promos": {
+            1: {
+                "image_path": "https://interactives.data.spotlightpa.org/assets/promos/newsletter-promo__investigator"
+                ".png",
+                "url": "https://www.spotlightpa.org/newsletters/",
+                "tagline": "Sign up for a weekly round-up of Pennsylvania's best accountability reporting.",
+            }
+        },
         "section_welcome": f"{brief_date}: Read on for more information about how cases, deaths, and tests are trending "
         f"in {county_name} and the surrounding area.",
+        "section_stories": story_promo,
         "section_donate": {
             "blurb": "If you value this public service, <b>please donate now</b> at <a "
             'href="https://www.spotlightpa.org/donate/">spotlightpa.org/donate</a>'

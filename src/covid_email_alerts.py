@@ -9,18 +9,20 @@ from src.definitions import (
     FETCH_DIR_URL,
     DIR_OUTPUT,
 )
+from src.modules.fetch.fetch_stories import fetch_stories
 from src.modules.gen_html.gen_html import gen_html
 from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
 from src.modules.gen_payload.gen_county_payload import gen_county_payload
 from src.modules.helper.condense_whitespace import condense_whitespace
 from src.modules.init.init_program import init_program
-from src.modules.fetch.fetch import fetch_data
+from src.modules.fetch.fetch_data import fetch_data
 from src.modules.process_data.merge_geo import merge_geo
 from src.modules.process_data.process_clean import process_clean
 from src.modules.process_data.process_individual_county import process_individual_county
 from src.assets.data_index import DATA_INDEX
 from src.modules.process_data.process_geo import process_geo
 from src.modules.aws.copy_to_s3 import copy_to_s3
+from src.modules.process_data.process_stories import process_stories
 from src.modules.send_email.count_subscribers import count_subscribers
 from src.modules.send_email.send_email_list import send_email_list
 from src.modules.helper.time import est_now_iso, est_now_ap_brief
@@ -58,12 +60,13 @@ def main(
     # set up basic settings
     init_program()
 
-    # fetch COVID-19 data
+    # fetch COVID-19 data + Spotlight stories for promo purposes
     data_raw = fetch_data(FETCH_DIR_URL, DATA_INDEX)
+    stories_raw = fetch_stories(3)
 
     # clean, filter, process data
+    stories_clean = process_stories(stories_raw)
     data_clean = process_clean(data_raw)
-    data_state = process_individual_county(data_clean, DATA_INDEX, county_name="Total")
     gdf_raw = process_geo(PATH_PA_GEOJSON)
     gdf_processed = merge_geo(gdf_raw, data_clean)
 
@@ -107,6 +110,7 @@ def main(
             county_name=county_name,
             county_payload=county_payload,
             newsletter_browser_link=newsletter_browser_link,
+            story_promo=stories_clean,
         )
         html = gen_html(templates_path=DIR_TEMPLATES, template_vars=newsletter_vars)
 

@@ -453,6 +453,13 @@
       margin-bottom: 5px;
     }
 
+    .section-stories__title {
+      font-family: Helvetica-Bold;
+      font-size: 16px;
+      color: #0f0f0f;
+      line-height: 32px;
+    }
+
     .section-donate__container {
         margin-bottom: 5px;
     }
@@ -460,6 +467,35 @@
     .section-donate__container-inner {
         text-align: center;
         font-size: 16px;
+    }
+
+    .promo__container {
+        text-align: center;
+    }
+
+    .promo__divider-top {
+        width: 95%;
+        margin-bottom: 20px;
+        border: 0.5px solid #e0e0e0;
+    }
+
+     .promo__divider-bottom {
+        width: 95%;
+        margin-top: 20px;
+        border: 0.5px solid #e0e0e0;
+    }
+
+
+    .promo1__tagline {
+        font-size: 14px;
+    }
+
+    @media only screen and (max-width: 480px){
+        .promo1__img{
+            height:auto !important;
+            max-width:300px !important;
+            width: 100% !important;
+        }
     }
 
 
