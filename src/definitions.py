@@ -33,6 +33,7 @@ PATH_PA_GEOJSON = DIR_ASSETS / "pa-county.geojson"
 PATH_PA_POP = DIR_ASSETS / "pa-county-pop.csv"
 PATH_OUTPUT_GEOJSON = DIR_OUTPUT / "pa-county.json"
 PATH_FIXTURE_HTML = DIR_FIXTURES / "html/newsletter_dauphin.html"
+PATH_FIXTURE_STORIES = DIR_FIXTURES / "stories/stories.json"
 
 # FETCH DATA
 FETCH_DIR_URL = (

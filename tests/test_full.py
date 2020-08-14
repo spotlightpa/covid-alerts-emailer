@@ -28,7 +28,7 @@ def test_full_phila_county(phila_county_dict):
         phila_county_dict,
         custom_subject_line=subject,
         aws_dir=AWS_DIR_TEST,
-        email_send=False,
+        email_send=True,
     )
 
 

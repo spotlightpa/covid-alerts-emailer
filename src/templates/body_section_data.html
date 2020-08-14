@@ -12,4 +12,7 @@
     {% endfor %}
   </div>
   {% include 'body_divider.html' %}
+  {% if section.title == "CASES" %}
+    {% include 'body_section_promo1.html' %}
+  {% endif %}
 {% endblock %}

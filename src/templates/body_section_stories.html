@@ -1,0 +1,12 @@
+{% extends 'body_section.html' %}
+
+{% block content %}
+<div >
+    <div class="section-stories__title">
+        THE LATEST FROM SPOTLIGHT PA:
+    </div>
+    {% for item in section_stories %}
+      {% include 'body_section_stories_item.html' %}
+    {% endfor %}
+</div>
+{% endblock %}

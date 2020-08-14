@@ -5,6 +5,7 @@ from src.modules.process_data.merge_geo import merge_geo
 from src.modules.process_data.process_geo import process_geo
 from src.modules.process_data.process_individual_county import process_individual_county
 from src.modules.process_data.compare_counties import compare_counties
+from src.modules.process_data.process_stories import process_stories
 
 
 def test_process_individual_county_total(data_clean):
@@ -111,3 +112,8 @@ def test_compare_counties(data_clean, gdf_processed):
         counties=compare_list,
     )
     print("\n", result)
+
+
+def test_process_stories(stories_raw):
+    clean_stories = process_stories(stories_raw)
+    print(clean_stories)
