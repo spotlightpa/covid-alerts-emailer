@@ -471,6 +471,7 @@
 
     .promo__container {
         text-align: center;
+        padding-bottom: 6px;
     }
 
     .promo__divider-top {
