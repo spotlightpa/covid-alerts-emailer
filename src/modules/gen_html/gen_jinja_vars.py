@@ -77,7 +77,10 @@ def gen_jinja_vars(
         "footer": {
             "about": "Spotlight PA is an independent, non-partisan newsroom powered by The Philadelphia Inquirer, the PennLive/The Patriot-News and other media partners."
         },
-        "unsubscribe_preferences_link": "{{{unsubscribe_preferences}}}",
-        "unsubscribe_link": "{{{unsubscribe}}}",
+        # Note that SendGrid will automatically try to include unsubscribe links in final email HTML if either its
+        # default preferences or unsubscribe magic links are not included in the email.
+        "sg_unsubscribe_preferences_link": "{{{unsubscribe_preferences}}}",
+        "sg_unsubscribe_link": "{{{unsubscribe}}}",
+        "spotlight_unsubscribe_link": "https://www.spotlightpa.org/newsletters/covid-alerts-manage",
     }
     return payload
