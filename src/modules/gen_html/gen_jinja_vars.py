@@ -33,6 +33,7 @@ def gen_jinja_vars(
         },
         "preview_text": f"Here are the latest stats on cases, deaths, and testing in {county_name}",
         "newsletter_browser_link": newsletter_browser_link,
+        "subscribe_link": "https://www.spotlightpa.org/newsletters/covid",
         "hero": {
             "title": "Weekly Coronavirus Update".upper(),
             "tagline": county_name.upper(),

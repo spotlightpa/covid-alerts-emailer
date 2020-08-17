@@ -135,14 +135,11 @@
                               text-align: left;
                             "
                           >
-                            <div style="text-align: center;">
-                              <span
-                                style="
-                                  font-family: lato, helvetica neue, helvetica,
-                                    arial, sans-serif;
-                                "
-                                ><span style="font-size: 12px;"
-                                  ><a
+                            <div class="hero__top-container" style="text-align: center;">
+                              <span style="font-family: lato, helvetica neue, helvetica,
+                                    arial, sans-serif;">
+                                <span class="hero__top-container__item-container">
+                                  <span style="font-size: 12px;"><a
                                     href="{{ newsletter_browser_link }}"
                                     target="_blank"
                                     style="
@@ -153,10 +150,26 @@
                                       font-weight: normal;
                                       text-decoration: underline;
                                     "
-                                    >View this email in your browser</a
-                                  >&nbsp;</span
-                                ></span
-                              >
+                                    >View this email in your browser</a>&nbsp;
+                                </span>
+                                </span>
+                                <span class="hero__top-container__item-container">
+                                  <span style="font-size: 12px;"><a
+                                    href="{{ subscribe_link }}"
+                                    target="_blank"
+                                    style="
+                                      mso-line-height-rule: exactly;
+                                      -ms-text-size-adjust: 100%;
+                                      -webkit-text-size-adjust: 100%;
+                                      color: #009edb;
+                                      font-weight: normal;
+                                      text-decoration: underline;
+                                    "
+                                    >Forwarded this email? Subscribe here</a>&nbsp;
+                                </span>
+                                </span>
+
+                              </span>
                             </div>
                           </td>
                         </tr>
