@@ -586,4 +586,22 @@
         padding: 0 3px;
     }
 
+.hero__top-container {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 
+.hero__top-container__item-container {
+    display: block;
+    font-size: 12px;
+    padding-bottom: 16px;
+    line-height: 150%;
+}
+
+ @media only screen and (max-width: 480px) {
+    .hero__top-container__item-container {
+        padding-bottom: 5px;
+        line-height: 170%;
+     }
+  }
