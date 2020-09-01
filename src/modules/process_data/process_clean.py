@@ -1,18 +1,21 @@
 import pandas as pd
-from typing import Dict
+from typing import Dict, List
 import logging
 from src.definitions import DIR_OUTPUT
+import numpy as np
 
 
 def process_clean(
-    data: Dict[str, Dict], *, save_pickle=False
+    data: Dict[str, List[Dict[str, str]]], *, save_pickle=False
 ) -> Dict[str, pd.DataFrame]:
     """
-    Takes a dict of ordered dictionaries of county data, converts each one into a pandas DataFrame and formats column
-    names and sets datatypes.
+    Takes a dict with values representing types of data (cases, deaths, tests...). Each value is a list of ordered
+    dictionaries county-by-county data for that data type.
+
+    This func converts each list of ordered dicts into a pandasDataFrame and formats columnnames and sets datatypes. E
 
     Args:
-        data (Dict[str, Dict]): A dict of ordered dictionaries.
+        data (Dict[List[Dict[str, str]]]): A dict of lists of ordered dicts.
         save_pickle (bool): Save each dataframe as a pickel in the root directory
 
     Return:
@@ -30,8 +33,13 @@ def process_clean(
             if "date" in col:
                 df["date"] = pd.to_datetime(df["date"])
             else:
+                # replace empty cells with 0s
                 df[col] = df[col].replace(r"^\s*$", 0, regex=True)
-                df[col] = df[col].astype("int")
+                # coerce any cells that include non-numeric numbers into NaN, datatype is now float
+                df[col] = pd.to_numeric(df[col], errors="coerce")
+                df = df.replace(np.nan, 0, regex=True)  # replace NaNs with 0s
+                # now we've handled potentially invalid input, convert dtype to int
+                df[col] = df[col].astype(int)
 
         # add to payload dict
         clean_data[data_type] = df

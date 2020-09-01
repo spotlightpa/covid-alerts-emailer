@@ -2,10 +2,13 @@ from src.assets.data_index import DATA_INDEX
 from src.definitions import PATH_PA_GEOJSON
 from src.modules.helper.get_neighbors import get_neighbors
 from src.modules.process_data.merge_geo import merge_geo
+from src.modules.process_data.process_clean import process_clean
 from src.modules.process_data.process_geo import process_geo
 from src.modules.process_data.process_individual_county import process_individual_county
 from src.modules.process_data.compare_counties import compare_counties
 from src.modules.process_data.process_stories import process_stories
+import pandas as pd
+from dateutil.parser import isoparse
 
 
 def test_process_individual_county_total(data_clean):
@@ -117,3 +120,15 @@ def test_compare_counties(data_clean, gdf_processed):
 def test_process_stories(stories_raw):
     clean_stories = process_stories(stories_raw)
     print(clean_stories)
+
+
+def test_process_clean_bad_death_data(raw_pa_deaths_with_strings):
+    """ Test that data_clean can clean a CSV that includes strings without crashing"""
+    data_raw = {"deaths": raw_pa_deaths_with_strings}
+    data_clean = process_clean(data_raw)
+    df = data_clean["deaths"]
+    assert isinstance(df, pd.DataFrame)
+    df = df.set_index("date")
+    # check string values are now set to 0
+    assert df.at["2020-08-25", "Sullivan"] == 0
+    assert df.at["2020-08-25", "Forest"] == 0
