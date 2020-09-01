@@ -1,3 +1,4 @@
+from src.modules.helper.stack_df import stack_df
 from src.modules.helper.time import (
     est_now_ap_brief,
     convert_iso_to_datetime,
@@ -82,3 +83,21 @@ def test_rank_equal():
     rank = rank_text(1, 1)
     assert rank == "same"
     print(rank)
+
+
+def test_stack_df(dauphin_county_data):
+    df = dauphin_county_data["cases"]
+    df = stack_df(
+        df,
+        x_axis_col="date",
+        stack_cols=[
+            "added_since_prev_day",
+            "total_per_capita",
+            "moving_avg",
+            "moving_avg_per_capita",
+        ],
+    )
+    df_total_per_capita = df.loc[df["category"].str.contains("total_per_capita")]
+    df_total_per_capita = df_total_per_capita.set_index("date")
+    total_per_capita_june_20 = df_total_per_capita.loc["2020-06-20", "value"]
+    assert round(total_per_capita_june_20) == 627

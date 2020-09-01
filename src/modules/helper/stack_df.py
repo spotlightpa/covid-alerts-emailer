@@ -45,6 +45,8 @@ def stack_df(
     for col in stack_cols:
         df_stack = df[[x_axis_col, col]]
         df_stack.columns = [x_axis_col, y_axis_label]
-        df_stack[category_label] = col
+        # df_stack[category_label] = col
+        df_stack.insert(2, category_label, col, allow_duplicates=True)
         new_df = new_df.append(df_stack)
+    new_df.reset_index(inplace=True, drop=True)
     return new_df
