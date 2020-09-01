@@ -26,6 +26,7 @@ typing-extensions = "*"
 css-html-js-minify = "*"
 inflect = "*"
 importlib-metadata = "*"
+sentry-sdk = "*"
 
 [requires]
 python_version = "3.6"
