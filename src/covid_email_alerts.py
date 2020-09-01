@@ -1,5 +1,8 @@
 import json
 import logging
+
+# import sentry_sdk
+from typing import Dict
 from src.definitions import (
     DIR_TEMPLATES,
     PATH_COUNTY_LIST,
@@ -14,6 +17,7 @@ from src.modules.gen_html.gen_html import gen_html
 from src.modules.gen_html.gen_jinja_vars import gen_jinja_vars
 from src.modules.gen_payload.gen_county_payload import gen_county_payload
 from src.modules.helper.condense_whitespace import condense_whitespace
+from src.modules.helper.decorators import sentry
 from src.modules.init.init_program import init_program
 from src.modules.fetch.fetch_data import fetch_data
 from src.modules.process_data.merge_geo import merge_geo
@@ -26,9 +30,9 @@ from src.modules.process_data.process_stories import process_stories
 from src.modules.send_email.count_subscribers import count_subscribers
 from src.modules.send_email.send_email_list import send_email_list
 from src.modules.helper.time import est_now_iso, est_now_ap_brief
-from typing import Dict
 
 
+# @sentry
 def main(
     counties: Dict[str, Dict],
     email_send: bool = True,

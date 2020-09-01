@@ -8,7 +8,6 @@ from src.modules.process_data.process_individual_county import process_individua
 from src.modules.process_data.compare_counties import compare_counties
 from src.modules.process_data.process_stories import process_stories
 import pandas as pd
-from dateutil.parser import isoparse
 
 
 def test_process_individual_county_total(data_clean):

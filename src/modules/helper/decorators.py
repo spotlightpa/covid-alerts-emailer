@@ -1,4 +1,27 @@
 import functools
+import sentry_sdk
+from os import getenv
+
+
+def sentry(func):
+    """ Wraps function with Sentry so that error reporting will work in pytest as well as in production """
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        environment = getenv("ENVIRONMENT", default="development")
+        sentry_sdk.init(
+            "https://a20cc578312643c7ac874588037f098c@o361657.ingest.sentry.io/5413698",
+            traces_sample_rate=1.0,
+            environment=environment,
+        )
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            # Alternatively the argument can be omitted
+            sentry_sdk.capture_exception(e)
+            raise e
+
+    return wrapper
 
 
 def tag_dtype(
