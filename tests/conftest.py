@@ -6,6 +6,7 @@ from src.definitions import (
     PATH_PA_GEOJSON,
     AWS_DIR_TEST,
     PATH_FIXTURE_STORIES,
+    PATH_FIXTURE_CSV_DEATHS_BAD,
 )
 import altair as alt
 from src.assets.data_index import DATA_INDEX
@@ -25,6 +26,8 @@ from src.modules.process_data.process_individual_county import process_individua
 from dotenv import load_dotenv
 import os
 import json
+from typing import Dict
+import csv
 
 # PYTEST IGNORE
 from src.modules.process_data.process_stories import process_stories
@@ -49,6 +52,28 @@ def pytest_configure(config):
     # Enables Spotlight altair theme
     alt.themes.register("spotlight", spotlight)
     alt.themes.enable("spotlight")
+
+
+@pytest.fixture(scope="session")
+def raw_pa_deaths() -> List[Dict[str, str]]:
+    """ Loads a CSV of Pa death data that includes random strings. Returns an ordered dict ready to be cleaned/parsed """
+    with open(PATH_FIXTURE_CSV_DEATHS_BAD, "r") as fin:
+        reader = csv.DictReader(fin)
+        csv_data = [x for x in reader]
+    return csv_data
+
+
+@pytest.fixture(scope="session")
+def raw_pa_deaths_with_strings() -> List[Dict[str, str]]:
+    """ Loads a CSV of Pa death data that includes random strings. Returns an ordered dict ready to be cleaned/parsed """
+    with open(PATH_FIXTURE_CSV_DEATHS_BAD, "r") as fin:
+        reader = csv.DictReader(fin)
+        csv_data = [x for x in reader]
+    return csv_data
+
+
+# @pytest.fixture(scope="session")
+# def fetch_live_data() ->
 
 
 @pytest.fixture(scope="session")
