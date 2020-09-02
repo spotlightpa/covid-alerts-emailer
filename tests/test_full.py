@@ -14,7 +14,7 @@ def test_full_dauphin_county(dauphin_county_dict):
         dauphin_county_dict,
         custom_subject_line=subject,
         aws_dir=AWS_DIR_TEST,
-        email_send=True,
+        email_send=False,
     )
 
 
@@ -28,7 +28,7 @@ def test_full_phila_county(phila_county_dict):
         phila_county_dict,
         custom_subject_line=subject,
         aws_dir=AWS_DIR_TEST,
-        email_send=True,
+        email_send=False,
     )
 
 
@@ -42,7 +42,7 @@ def test_full_greene_county(greene_county_dict):
         greene_county_dict,
         custom_subject_line=subject,
         aws_dir=AWS_DIR_TEST,
-        email_send=True,
+        email_send=False,
     )
 
 
@@ -52,5 +52,5 @@ def test_full_multi_county(multi_county_dict):
         multi_county_dict,
         custom_subject_line=subject,
         aws_dir=AWS_DIR_TEST,
-        email_send=True,
+        email_send=False,
     )

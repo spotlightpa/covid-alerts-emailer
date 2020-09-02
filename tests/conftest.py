@@ -32,9 +32,8 @@ import csv
 # PYTEST IGNORE
 from src.modules.process_data.process_stories import process_stories
 
-collect_ignore_glob = [
-    "*test_prod_email.py",
-]
+# don't send emails during full testing suite runs
+collect_ignore_glob = ["*test_prod_email.py", "*test_email.py"]
 
 
 def pytest_configure(config):
