@@ -72,8 +72,6 @@ def main(
     gdf_raw = process_geo(PATH_PA_GEOJSON)
     gdf_processed = merge_geo(gdf_raw, data_clean)
 
-    testing_sentry_with_another_error = 5 / 0
-    exit()
     # loop over dict of counties and generate charts and chatter
     for fips, county_dict in counties.items():
         # skip county if there are no subscribers to email list
