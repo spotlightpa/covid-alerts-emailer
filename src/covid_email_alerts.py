@@ -1,7 +1,5 @@
 import json
 import logging
-
-# import sentry_sdk
 from typing import Dict
 from src.definitions import (
     DIR_TEMPLATES,
@@ -32,7 +30,7 @@ from src.modules.send_email.send_email_list import send_email_list
 from src.modules.helper.time import est_now_iso, est_now_ap_brief
 
 
-# @sentry
+@sentry
 def main(
     counties: Dict[str, Dict],
     email_send: bool = True,
@@ -74,6 +72,8 @@ def main(
     gdf_raw = process_geo(PATH_PA_GEOJSON)
     gdf_processed = merge_geo(gdf_raw, data_clean)
 
+    testing_sentry_with_another_error = 5 / 0
+    exit()
     # loop over dict of counties and generate charts and chatter
     for fips, county_dict in counties.items():
         # skip county if there are no subscribers to email list

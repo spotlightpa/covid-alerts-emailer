@@ -7,11 +7,11 @@ An app that sends out emails to subscribers with updates on COVID-19 cases, deat
 #### Requirements
 
 - Python >3.6
-- This project uses [selenium](https://www.selenium.dev/selenium/docs/api/py/), which requires
- [chromedriver](https://chromedriver.chromium.org/) or [geckodriver](https://firefox-source-docs.mozilla.org/testing/geckodriver/) 
- to be installed. Here's a chromedriver install guide for [Ubuntu 16.04 and 18.04](https://tecadmin.net/setup-selenium-chromedriver-on-ubuntu/) 
+- This project uses [Selenium](https://www.selenium.dev/selenium/docs/api/py/), which requires Chrome and
+ [chromedriver](https://chromedriver.chromium.org/) to be installed. Here's a chromedriver install guide for [Ubuntu 16.04 and 18.04](https://tecadmin.net/setup-selenium-chromedriver-on-ubuntu/) 
  and for [Mac](http://jonathansoma.com/lede/foundations-2017/classes/more-scraping/selenium/).
-- This project uses geopandas, which may require certain [additional dependencies](https://geopandas.org/install.html) depending on your OS.
+- This project uses geopandas, which may require certain [additional dependencies](https://geopandas.org/install.html
+) depending on your OS.
 
 #### Install
 
@@ -29,3 +29,7 @@ dependencies. Run:
     `pipenv install`
 
 5. Create a .env file in the project root and add API keys and associated variables. Use .env.example as a template.
+
+#### Run
+
+`pipenv run python src/covid_email_alerts.py`
