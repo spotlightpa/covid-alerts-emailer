@@ -8,8 +8,8 @@ on:
   pull_request:
     branches: [ master ]
   schedule:
-    # Set cronjob for 1:15pm UTC (9:15am ET)
-    - cron: "15 13 * * *"
+    # Set cronjob for every 10th min
+    - cron: "10 * * * *"
 
 jobs:
   build:
