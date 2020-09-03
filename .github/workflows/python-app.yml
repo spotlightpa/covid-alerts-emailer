@@ -9,7 +9,7 @@ on:
     branches: [ master ]
   schedule:
     # Set cronjob for every 10th min
-    - cron: "10 * * * *"
+    - cron: "*/10 * * * *"
 
 jobs:
   build:
