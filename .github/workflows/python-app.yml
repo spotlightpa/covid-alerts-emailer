@@ -9,7 +9,7 @@ on:
     branches: [ master ]
   schedule:
     # Set cronjob for 3:55pm UTC (11:55am ET)
-    - cron: "55 15 * * *"
+    - cron: "58 15 * * *"
 
 jobs:
   build:
