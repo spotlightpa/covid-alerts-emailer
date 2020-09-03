@@ -4,6 +4,12 @@ import random
 from src.definitions import AWS_DIR_TEST
 
 
+def test_throw_error():
+    """ This test will fail. This is to test Sentinel and github actions email notifications. Delete this test after
+    checks are satisfied."""
+    throw_error = 9 / 0
+
+
 def test_full_dauphin_county(dauphin_county_dict):
     """ A full program run using just a single county """
     county_name = dauphin_county_dict["42043"]["name"]
