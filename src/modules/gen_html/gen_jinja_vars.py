@@ -49,7 +49,7 @@ def gen_jinja_vars(
         },
         "promos": {
             1: {
-                "image_path": "https://interactives.data.spotlightpa.org/assets/promos/pa2020_300x250.png",
+                "image_path": "https://interactives.data.spotlightpa.org/assets/promos/newsletter-promo__pa2020.png",
                 "url": promo_1_url,
                 "tagline": promo_1_tagline,
             }
