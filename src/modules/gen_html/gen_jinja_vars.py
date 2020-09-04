@@ -1,8 +1,5 @@
 from src.modules.helper.formatters import format_commas
-from src.modules.helper.time import (
-    est_now_formatted_brief,
-    est_now_ap_brief,
-)
+from src.modules.helper.time import est_now_ap_brief
 from typing import List, Dict
 
 
@@ -27,6 +24,18 @@ def gen_jinja_vars(
         
     """
     brief_date = est_now_ap_brief()
+    promo_1_url = (
+        "https://www.inquirer.com/newsletters/election/sign-up/?utm_source=email&utm_campaign=mktg_pa2020_"
+        "leadgen&utm_medium=referral&utm_content=spotlightpa&utm_term=&int_promo="
+    )
+    promo_1_tagline = (
+        "<strong>Pennsylvania is a critical state in determining who wins the White House this "
+        "year</strong>. The "
+        "Philadelphia Inquirer just launched a weekly newsletter with exclusive reporting covering "
+        "the entire state on issues that impact you, plus fact-checks, guides to voting, and more. "
+        f'Sign up to follow along at <a href="{promo_1_url}" target="_blank">Inquirer.com/PA2020</a>.'
+    )
+
     payload = {
         "head": {
             "title": f"The latest COVID-19 statistics for {county_name} from Spotlight PA."
@@ -40,10 +49,9 @@ def gen_jinja_vars(
         },
         "promos": {
             1: {
-                "image_path": "https://interactives.data.spotlightpa.org/assets/promos/newsletter-promo__investigator"
-                ".png",
-                "url": "https://www.spotlightpa.org/newsletters/",
-                "tagline": "Sign up for a weekly round-up of Pennsylvania's best accountability reporting.",
+                "image_path": "https://interactives.data.spotlightpa.org/assets/promos/pa2020_300x250.png",
+                "url": promo_1_url,
+                "tagline": promo_1_tagline,
             }
         },
         "section_welcome": f"{brief_date}: Read on for more information about how cases, deaths, and tests are trending "

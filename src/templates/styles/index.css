@@ -470,7 +470,6 @@
     }
 
     .promo__container {
-        text-align: center;
         padding-bottom: 6px;
     }
 
@@ -488,7 +487,9 @@
 
 
     .promo1__tagline {
+        margin-top: 6px;
         font-size: 14px;
+        text-align: left;
     }
 
     @media only screen and (max-width: 480px){
