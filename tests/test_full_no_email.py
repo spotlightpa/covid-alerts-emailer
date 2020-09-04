@@ -4,7 +4,7 @@ from src.definitions import AWS_DIR_TEST
 
 
 def test_full_dauphin_county(dauphin_county_dict):
-    """ A full program run using just a single county """
+    """ A full program run using just a single county BUT no email will be sent at end. """
     county_name = dauphin_county_dict["42043"]["name"]
     subject = (
         f"COVID-19 Report FULL-RUN TEST: {county_name}, {random.randint(0,999999)}"
@@ -18,7 +18,7 @@ def test_full_dauphin_county(dauphin_county_dict):
 
 
 def test_full_phila_county(phila_county_dict):
-    """ A full program run using just a single county """
+    """ A full program run using just a single county BUT no email will be sent at end. """
     county_name = phila_county_dict["42101"]["name"]
     subject = (
         f"COVID-19 Report FULL-RUN TEST: {county_name}, {random.randint(0,999999)}"
@@ -32,7 +32,7 @@ def test_full_phila_county(phila_county_dict):
 
 
 def test_full_greene_county(greene_county_dict):
-    """ A full program run using just a single county """
+    """ A full program run using just a single county BUT no email will be sent at end. """
     county_name = greene_county_dict["42059"]["name"]
     subject = (
         f"COVID-19 Report FULL-RUN TEST: {county_name}, {random.randint(0,999999)}"
@@ -46,6 +46,7 @@ def test_full_greene_county(greene_county_dict):
 
 
 def test_full_multi_county(multi_county_dict):
+    """ A full program run using multiple counties BUT no emails will be sent at end. """
     subject = f"COVID-19 Report FULL-RUN MULTI-COUNTY TEST: {random.randint(0,999999)}"
     main(
         multi_county_dict,
