@@ -132,7 +132,6 @@ def main(
             logging.info(f"Sending email for {county_name}...")
             logging.info(f"Subject line: {subject}")
             send_email_list(html, email_list_id, subject=subject)
-            logging.info("...email sent")
         else:
             logging.info("No email has been sent because 'email_send' option is False")
 
