@@ -1,6 +1,22 @@
 import os
 import requests
-import logging
+from retry import retry
+
+
+@retry(requests.HTTPError, tries=3, delay=3)
+def create_campaign(headers, data):
+    url = "https://api.sendgrid.com/v3/marketing/singlesends"
+    resp = requests.post(url, headers=headers, json=data)
+    resp.raise_for_status()
+    return resp
+
+
+@retry(requests.HTTPError, tries=3, delay=3)
+def send_campaign(headers, ssid):
+    send_url = f"https://api.sendgrid.com/v3/marketing/singlesends/{ssid}/schedule"
+    resp = requests.put(send_url, headers=headers, json={"send_at": "now"})
+    resp.raise_for_status()
+    return resp
 
 
 def send_email_list(html_content: str, list_id: str, *, subject: str) -> None:
@@ -21,10 +37,6 @@ def send_email_list(html_content: str, list_id: str, *, subject: str) -> None:
             "sender_id": sender_id,
         },
     }
-    url = "https://api.sendgrid.com/v3/marketing/singlesends"
-    resp = requests.post(url, headers=headers, json=data)
-    resp.raise_for_status()
+    resp = create_campaign(headers, data)
     ssid = resp.json()["id"]
-    send_url = f"https://api.sendgrid.com/v3/marketing/singlesends/{ssid}/schedule"
-    resp = requests.put(send_url, headers=headers, json={"send_at": "now"})
-    resp.raise_for_status()
+    send_campaign(headers, ssid)
