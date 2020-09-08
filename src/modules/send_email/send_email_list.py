@@ -1,21 +1,26 @@
 import os
 import requests
 from retry import retry
+import logging
 
 
 @retry(requests.HTTPError, tries=3, delay=3)
 def create_campaign(headers, data):
     url = "https://api.sendgrid.com/v3/marketing/singlesends"
+    logging.info("Creating email campaign using SendGrid...")
     resp = requests.post(url, headers=headers, json=data)
     resp.raise_for_status()
+    logging.info("...campaign created")
     return resp
 
 
 @retry(requests.HTTPError, tries=3, delay=3)
 def send_campaign(headers, ssid):
     send_url = f"https://api.sendgrid.com/v3/marketing/singlesends/{ssid}/schedule"
+    logging.info("Sending email campaign using SendGrid...")
     resp = requests.put(send_url, headers=headers, json={"send_at": "now"})
     resp.raise_for_status()
+    logging.info("...campaign sent")
     return resp
 
 
