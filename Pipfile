@@ -27,6 +27,7 @@ css-html-js-minify = "*"
 inflect = "*"
 importlib-metadata = "*"
 sentry-sdk = "*"
+retry = "*"
 
 [requires]
 python_version = "3.6"
