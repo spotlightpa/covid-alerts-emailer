@@ -35,6 +35,11 @@ def gen_jinja_vars(
         "the entire state on issues that impact you, plus fact-checks, guides to voting, and more. "
         f'Sign up to follow along at <a href="{promo_1_url}" target="_blank">Inquirer.com/PA2020</a>.'
     )
+    footer_about = (
+        '<a href="https://www.spotlightpa.org" target="_blank">Spotlight PA</a> is an independent, non-partisan '
+        "newsroom powered by The Philadelphia Inquirer in partnership with PennLive/The Patriot-News, "
+        "TribLIVE/Pittsburgh Tribune-Review and WITF Public Media."
+    )
 
     payload = {
         "head": {
@@ -83,9 +88,7 @@ def gen_jinja_vars(
             "sources": "Pa. Department of Health data compiled by Spotlight PA and The Philadelphia "
             "Inquirer.",
         },
-        "footer": {
-            "about": "Spotlight PA is an independent, non-partisan newsroom powered by The Philadelphia Inquirer, the PennLive/The Patriot-News and other media partners."
-        },
+        "footer": {"about": footer_about},
         # Note that SendGrid will automatically try to include unsubscribe links in final email HTML if either its
         # default preferences or unsubscribe magic links are not included in the email.
         "sg_unsubscribe_preferences_link": "{{{unsubscribe_preferences}}}",
