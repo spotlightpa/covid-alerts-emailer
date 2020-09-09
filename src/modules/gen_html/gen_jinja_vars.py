@@ -40,7 +40,7 @@ def gen_jinja_vars(
         "https://www.spotlightpa.org/newsletters/covid-alerts-manage"
     )
     donate_url = add_utm_params("https://www.spotlightpa.org/donate/")
-
+    newsletter_browser_url = add_utm_params(newsletter_browser_link)
     # large text blocks
     promo_1_tagline = (
         "<strong>Pennsylvania is a critical state in determining who wins the White House this "
@@ -62,7 +62,7 @@ def gen_jinja_vars(
             "title": f"The latest COVID-19 statistics for {county_name} from Spotlight PA."
         },
         "preview_text": f"Here are the latest stats on cases, deaths, and testing in {county_name}",
-        "newsletter_browser_link": newsletter_browser_link,
+        "newsletter_browser_link": newsletter_browser_url,
         "subscribe_link": subscribe_url,
         "hero": {
             "title": "Weekly Coronavirus Update".upper(),
