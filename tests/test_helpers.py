@@ -1,7 +1,9 @@
+from src.modules.helper.add_utm_params import add_utm_params
 from src.modules.helper.stack_df import stack_df
 from src.modules.helper.time import (
     est_now_ap_brief,
     convert_iso_to_datetime,
+    est_now_iso,
 )
 from src.modules.helper.get_county_pop import get_county_pop
 from src.modules.helper.get_neighbors import get_neighbors
@@ -101,3 +103,29 @@ def test_stack_df(dauphin_county_data):
     df_total_per_capita = df_total_per_capita.set_index("date")
     total_per_capita_june_20 = df_total_per_capita.loc["2020-06-20", "value"]
     assert round(total_per_capita_june_20) == 627
+
+
+def test_add_utm_params_to_simple_url():
+    url = "https://www.spotlightpa.org"
+    new_url = add_utm_params(url)
+    expected_url = f"https://www.spotlightpa.org?utm_source=covid_alerts&utm_medium=email&utm_campaign={est_now_iso()}"
+    assert new_url == expected_url
+    print(new_url)
+
+
+def test_add_utm_params_to_url_with_existing_params():
+    url = "https://www.spotlightpa.org?test=yes&fake=yes"
+    new_url = add_utm_params(url)
+    expected_url = (
+        f"https://www.spotlightpa.org?test=yes&fake=yes&utm_source=covid_alerts&utm_medium=email"
+        f"&utm_campaign={est_now_iso()}"
+    )
+    assert new_url == expected_url
+
+
+def test_add_utm_params_to_url_and_encode_spaces():
+    url = "https://www.spotlightpa.org?test=yes&fake=yes"
+    new_url = add_utm_params(url, source="brand new campaign")
+    expected_url = f"https://www.spotlightpa.org?test=yes&fake=yes&utm_source=brand+new+campaign&utm_medium=email&utm_campaign={est_now_iso()}"
+    print(new_url)
+    assert new_url == expected_url
