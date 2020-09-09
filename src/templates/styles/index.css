@@ -109,7 +109,7 @@
     }
     h1 {
       color: #222222;
-      font-family: Helvetica;
+      font-family: Helvetica, Arial, sans-serif;
       font-size: 40px;
       font-style: normal;
       font-weight: bold;
@@ -119,7 +119,7 @@
     }
     h2 {
       color: #222222;
-      font-family: Helvetica;
+      font-family: Helvetica, Arial, sans-serif;
       font-size: 34px;
       font-style: normal;
       font-weight: bold;
@@ -129,7 +129,7 @@
     }
     h3 {
       color: #444444;
-      font-family: Helvetica;
+      font-family: Helvetica, Arial, sans-serif;
       font-size: 22px;
       font-style: normal;
       font-weight: bold;
@@ -172,7 +172,7 @@
     .headerContainer .mcnTextContent,
     .headerContainer .mcnTextContent p {
       color: #757575;
-      font-family: Helvetica;
+      font-family: Helvetica, Arial, sans-serif;
       font-size: 16px;
       line-height: 200%;
       text-align: left;
@@ -208,7 +208,7 @@
     .bodyContainer .mcnTextContent,
     .bodyContainer .mcnTextContent p {
       color: #444444;
-      font-family: Helvetica;
+      font-family: Helvetica, Arial, sans-serif;
       font-size: 16px;
       line-height: 150%;
       text-align: left;
@@ -244,7 +244,7 @@
     .footerContainer .mcnTextContent,
     .footerContainer .mcnTextContent p {
       color: #ffffff;
-      font-family: Helvetica;
+      font-family: Helvetica, Arial, sans-serif;
       font-size: 12px;
       line-height: 150%;
       text-align: center;
@@ -422,17 +422,18 @@
     }
 
     .hero__title {
-      font-family: Helvetica;
+      font-family: Helvetica, Arial, sans-serif;
       font-size: 16px;
       color: #757575;
       text-align: center;
       line-height: 32px;
-      font-family: Helvetica;
+      font-family: Helvetica, Arial, sans-serif;
       margin-bottom: 8px;
     }
 
     .hero__tagline {
-      font-family: Helvetica-Bold;
+      font-family: Helvetica-Bold, Helvetica, Arial, sans-serif;
+      font-weight: 700;
       font-size: 32px;
       color: #0F0F0F;
       letter-spacing: 1px;
@@ -442,7 +443,8 @@
     }
 
     .section-dash__title, .section-data__title {
-      font-family: Helvetica-Bold;
+      font-family: Helvetica-Bold, Helvetica, Arial, sans-serif;
+      font-weight: 700;
       font-size: 22px;
       color: #0F0F0F;
       text-align: center;
@@ -454,7 +456,8 @@
     }
 
     .section-stories__title {
-      font-family: Helvetica-Bold;
+      font-family: Helvetica-Bold, Helvetica, Arial, sans-serif;
+      font-weight: 700;
       font-size: 16px;
       color: #0f0f0f;
       line-height: 32px;
@@ -518,7 +521,8 @@
     }
 
     .chart__title {
-      font-family: Helvetica-Bold;
+      font-family: Helvetica-Bold, Helvetica, Arial, sans-serif;
+      font-weight: 700;
       font-size: 16px;
       color: #0f0f0f;
       line-height: 32px;
@@ -550,7 +554,8 @@
     }
 
     .section-footnote__text {
-      font-family: Helvetica-Oblique;
+      font-family: Helvetica-Oblique, Helvetica, Arial, sans-serif;
+      font-style: oblique;
       font-size: 16px;
       color: #757575;
       margin-bottom: 5px;
