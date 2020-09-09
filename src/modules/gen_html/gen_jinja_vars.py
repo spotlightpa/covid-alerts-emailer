@@ -1,3 +1,4 @@
+from src.modules.helper.add_utm_params import add_utm_params
 from src.modules.helper.formatters import format_commas
 from src.modules.helper.time import est_now_ap_brief
 from typing import List, Dict
@@ -23,11 +24,24 @@ def gen_jinja_vars(
         A dictionary of newsletter variables.
         
     """
+    # constants
     brief_date = est_now_ap_brief()
     promo_1_url = (
         "https://www.inquirer.com/newsletters/election/sign-up/?utm_source=email&utm_campaign=mktg_pa2020_"
         "leadgen&utm_medium=referral&utm_content=spotlightpa&utm_term=&int_promo="
     )
+    spotlight_url = add_utm_params("https://www.spotlightpa.org")
+    subscribe_url = add_utm_params("https://www.spotlightpa.org/newsletters/covid")
+    dashboard_url = add_utm_params(
+        "https://www.spotlightpa.org/news/2020/03/pa-coronavirus-updates-cases-map-live-tracker/"
+    )
+    newsletter_url = add_utm_params("https://www.spotlightpa.org/newsletters/")
+    unsubscribe_url = add_utm_params(
+        "https://www.spotlightpa.org/newsletters/covid-alerts-manage"
+    )
+    donate_url = add_utm_params("https://www.spotlightpa.org/donate/")
+
+    # large text blocks
     promo_1_tagline = (
         "<strong>Pennsylvania is a critical state in determining who wins the White House this "
         "year</strong>. The "
@@ -36,18 +50,20 @@ def gen_jinja_vars(
         f'Sign up to follow along at <a href="{promo_1_url}" target="_blank">Inquirer.com/PA2020</a>.'
     )
     footer_about = (
-        '<a href="https://www.spotlightpa.org" target="_blank">Spotlight PA</a> is an independent, non-partisan '
+        f'<a href="{spotlight_url}" target="_blank">Spotlight PA</a> is an independent, '
+        f"non-partisan "
         "newsroom powered by The Philadelphia Inquirer in partnership with PennLive/The Patriot-News, "
         "TribLIVE/Pittsburgh Tribune-Review and WITF Public Media."
     )
 
+    # final payload dict
     payload = {
         "head": {
             "title": f"The latest COVID-19 statistics for {county_name} from Spotlight PA."
         },
         "preview_text": f"Here are the latest stats on cases, deaths, and testing in {county_name}",
         "newsletter_browser_link": newsletter_browser_link,
-        "subscribe_link": "https://www.spotlightpa.org/newsletters/covid",
+        "subscribe_link": subscribe_url,
         "hero": {
             "title": "Weekly Coronavirus Update".upper(),
             "tagline": county_name.upper(),
@@ -64,16 +80,16 @@ def gen_jinja_vars(
         "section_stories": story_promo,
         "section_donate": {
             "blurb": "If you value this public service, <b>please donate now</b> at <a "
-            'href="https://www.spotlightpa.org/donate/">spotlightpa.org/donate</a>'
+            f'href="{donate_url}">spotlightpa.org/donate</a>'
         },
         "sections_data": county_payload,
         "section_dash": {
             "title": "Want more stats?",
             "blurb": "For the latest COVID-19 statistics on Pennsylvania and surrounding states, check out our <a "
             'class="dash__link" '
-            'href="https://www.spotlightpa.org/news/2020/03/pa-coronavirus-updates-cases-map-live-tracker/" '
+            f'href="{dashboard_url}" '
             'target="_blank">live coronavirus tracker</a>. For a round-up of the best accountability reporting in '
-            'Pennsylvania, sign up for our weekly <a href="https://www.spotlightpa.org/newsletters/" target="_blank">'
+            f'Pennsylvania, sign up for our weekly <a href="{newsletter_url}" target="_blank">'
             "newsletter</a>.",
         },
         "section_footnote": {
@@ -93,6 +109,6 @@ def gen_jinja_vars(
         # default preferences or unsubscribe magic links are not included in the email.
         "sg_unsubscribe_preferences_link": "{{{unsubscribe_preferences}}}",
         "sg_unsubscribe_link": "{{{unsubscribe}}}",
-        "spotlight_unsubscribe_link": "https://www.spotlightpa.org/newsletters/covid-alerts-manage",
+        "spotlight_unsubscribe_link": unsubscribe_url,
     }
     return payload
