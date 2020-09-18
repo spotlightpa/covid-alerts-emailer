@@ -477,13 +477,13 @@
     }
 
     .promo__divider-top {
-        width: 95%;
+        width: 100%;
         margin-bottom: 20px;
         border: 0.5px solid #e0e0e0;
     }
 
      .promo__divider-bottom {
-        width: 95%;
+        width: 100%;
         margin-top: 20px;
         border: 0.5px solid #e0e0e0;
     }
@@ -498,7 +498,7 @@
     @media only screen and (max-width: 480px){
         .promo1__img{
             height:auto !important;
-            max-width:300px !important;
+            max-width: 600px !important;
             width: 100% !important;
         }
     }
