@@ -4,10 +4,11 @@
         <a href="{{ promos.1.url }}" target="_blank">
              <img alt="promo1" src="{{ promos.1.image_path }}" class="promo1__img"/>
         </a>
-
+        {% if promos.1.tagline %}
         <div class="promo1__tagline">
             <span>{{ promos.1.tagline }}</span>
         </div>
+        {% endif %}
         <hr class="promo__divider-bottom">
     </div>
 
