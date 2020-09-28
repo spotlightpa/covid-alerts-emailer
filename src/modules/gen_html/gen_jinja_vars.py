@@ -22,11 +22,10 @@ def gen_jinja_vars(
 
     Returns:
         A dictionary of newsletter variables.
-        
+
     """
     # constants
     brief_date = est_now_ap_brief()
-    promo_1_url = "https://checkout.fundjournalism.org/memberform?org_id=spotlightpa&utm_source=covid_newsletter&utm_medium=email&utm_campaign=sept_tote_promo"
     spotlight_url = add_utm_params("https://www.spotlightpa.org")
     subscribe_url = add_utm_params("https://www.spotlightpa.org/newsletters/covid")
     dashboard_url = add_utm_params(
@@ -39,6 +38,7 @@ def gen_jinja_vars(
     donate_url = add_utm_params("https://www.spotlightpa.org/donate/")
     newsletter_browser_url = add_utm_params(newsletter_browser_link)
     # large text blocks
+    promo_1_tagline = f'<a href="{newsletter_url}" target="_blank">Sign up for a weekly round-up of Pennsylvania&#39;s best accountability reporting.</a>'
     footer_about = (
         f'<a href="{spotlight_url}" target="_blank">Spotlight PA</a> is an independent, '
         f"non-partisan "
@@ -60,9 +60,10 @@ def gen_jinja_vars(
         },
         "promos": {
             1: {
-                "image_path": "https://interactives.data.spotlightpa.org/assets/promos/newsletter-promo__tote.gif",
-                "url": promo_1_url,
-                "tagline": None,
+                "image_path": "https://interactives.data.spotlightpa.org/assets/promos/newsletter-promo__investigator"
+                ".png",
+                "url": newsletter_url,
+                "tagline": promo_1_tagline,
             }
         },
         "section_welcome": f"{brief_date}: Read on for more information about how cases, deaths, and tests are trending "
