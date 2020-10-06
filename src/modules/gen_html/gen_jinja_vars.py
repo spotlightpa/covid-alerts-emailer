@@ -37,8 +37,10 @@ def gen_jinja_vars(
     )
     donate_url = add_utm_params("https://www.spotlightpa.org/donate/")
     newsletter_browser_url = add_utm_params(newsletter_browser_link)
+    promo_1_url = "https://inquirer.zoom.us/webinar/register/4316016638337/WN_0gMPlgNcQRSLPwefsqJLIQ"
+
     # large text blocks
-    promo_1_tagline = f'<a href="{newsletter_url}" target="_blank">Sign up for a weekly round-up of Pennsylvania&#39;s best accountability reporting.</a>'
+    # promo_1_tagline = f'<a href="{newsletter_url}" target="_blank">Sign up for a weekly round-up of Pennsylvania&#39;s best accountability reporting.</a>'
     footer_about = (
         f'<a href="{spotlight_url}" target="_blank">Spotlight PA</a> is an independent, '
         f"non-partisan "
@@ -60,10 +62,11 @@ def gen_jinja_vars(
         },
         "promos": {
             1: {
-                "image_path": "https://interactives.data.spotlightpa.org/assets/promos/newsletter-promo__investigator"
+                "image_path": "https://interactives.data.spotlightpa.org/assets/promos/newsletter-promo__elec-chat"
                 ".png",
-                "url": newsletter_url,
-                "tagline": promo_1_tagline,
+                "image_width": "600px",
+                "url": promo_1_url,
+                "tagline": None,
             }
         },
         "section_welcome": f"{brief_date}: Read on for more information about how cases, deaths, and tests are trending "
