@@ -37,7 +37,7 @@ def gen_jinja_vars(
     )
     donate_url = add_utm_params("https://www.spotlightpa.org/donate/")
     newsletter_browser_url = add_utm_params(newsletter_browser_link)
-    promo_1_url = "https://inquirer.zoom.us/webinar/register/4316016638337/WN_0gMPlgNcQRSLPwefsqJLIQ"
+    promo_1_url = "https://spotlightpa.org/donate"
 
     # large text blocks
     # promo_1_tagline = f'<a href="{newsletter_url}" target="_blank">Sign up for a weekly round-up of Pennsylvania&#39;s best accountability reporting.</a>'
@@ -62,9 +62,8 @@ def gen_jinja_vars(
         },
         "promos": {
             1: {
-                "image_path": "https://interactives.data.spotlightpa.org/assets/promos/newsletter-promo__elec-chat"
-                ".png",
-                "image_width": "600px",
+                "image_path": "https://interactives.data.spotlightpa.org/assets/promos/newsletter-promo__donate-democracy.png",
+                "image_width": "500px",
                 "url": promo_1_url,
                 "tagline": None,
             }
