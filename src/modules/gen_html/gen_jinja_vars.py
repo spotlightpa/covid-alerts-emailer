@@ -37,7 +37,7 @@ def gen_jinja_vars(
     )
     donate_url = add_utm_params("https://www.spotlightpa.org/donate/")
     newsletter_browser_url = add_utm_params(newsletter_browser_link)
-    promo_1_url = "https://spotlightpa.org/donate"
+    promo_1_url = "http://checkout.fundjournalism.org/memberform?org_id=spotlightpa&campaign=7015G0000003ZVJQA2"
 
     # large text blocks
     # promo_1_tagline = f'<a href="{newsletter_url}" target="_blank">Sign up for a weekly round-up of Pennsylvania&#39;s best accountability reporting.</a>'
