@@ -1,4 +1,5 @@
 from src.definitions import DIR_TESTS_OUTPUT
+from src.modules.gen_stats.gen_stats import GenStats
 
 from src.modules.helper.condense_whitespace import condense_whitespace
 from src.modules.send_email.send_email_list import send_email_list
@@ -8,8 +9,8 @@ import requests
 
 
 def test_send_email_dauphin_no_white_space(dauphin_html, dauphin_info):
-    """ Test send_email_list with HTML that has condensed white space. Check your inbox to see that HTML looks as
-    expected  """
+    """Test send_email_list with HTML that has condensed white space. Check your inbox to see that HTML looks as
+    expected"""
     dauphin_html = condense_whitespace(
         dauphin_html, save_path=DIR_TESTS_OUTPUT / "newsletter-no-white.html"
     )
