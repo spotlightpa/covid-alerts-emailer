@@ -4,19 +4,25 @@ import inflect
 from src.modules.helper.decorators import tag_dtype, tag
 from src.modules.helper.get_neighbors import get_neighbors
 from src.modules.helper.rank_text import rank_text
+from geopandas import GeoDataFrame
 
 p = inflect.engine()
 
 
-class GenDesc:
-    """ Generates chatter for charts """
+class GenStats:
+    """Extracts key statistics from a GDF of county-by-county covid data and outputs chatter
+    about those stats"""
 
-    def __init__(self, county_name_clean, county_data, gdf):
+    def __init__(self, county_name_clean: str, gdf: GeoDataFrame) -> None:
+        """
+        Args:
+            county_name_clean (str): Name of county, first letter capitalized no " County". Eg. "Dauphin"
+            gdf (GeoDataFrame): Compilation of county-by-county COVID data and geo data.
+        """
         self.county_name_clean = county_name_clean
-        self.county_data = county_data
         self.gdf = gdf
 
-    def __gdf_cell_accessor(self, col_name: str, _round=False) -> Any:
+    def gdf_cell_accessor(self, col_name: str, _round=False) -> Any:
         """
         Gets a value from self.gdf based on the intersection of county's name and
         specified column. Args are concatenated to get the full column name.
@@ -57,9 +63,9 @@ class GenDesc:
         return rank_from_top, rank_from_bottom, others_with_same_rank
 
     @tag_dtype
-    def daily(self, *, data_type: str) -> str:
-        total = self.__gdf_cell_accessor(f"{data_type}_total")
-        total_past_two_weeks = self.__gdf_cell_accessor(
+    def gen_desc_daily(self, *, data_type: str) -> str:
+        total = self.gdf_cell_accessor(f"{data_type}_total")
+        total_past_two_weeks = self.gdf_cell_accessor(
             f"{data_type}_added_past_two_weeks"
         )
         return (
@@ -72,9 +78,9 @@ class GenDesc:
         )
 
     @tag_dtype
-    def choro(self, *, data_type: str) -> str:
+    def gen_desc_choro(self, *, data_type: str) -> str:
         target_col = f"{data_type}_added_past_two_weeks_per_capita"
-        two_week_per_capita_avg = self.__gdf_cell_accessor(target_col)
+        two_week_per_capita_avg = self.gdf_cell_accessor(target_col)
         rank_from_top, rank_from_bottom, others_with_same_rank = self.gdf_get_ranking(
             self.gdf, target_col
         )
@@ -100,7 +106,7 @@ class GenDesc:
         )
 
     @tag_dtype
-    def neighbors(self, *, data_type: str) -> str:
+    def gen_desc_neighbors(self, *, data_type: str) -> str:
         neighbor_list = get_neighbors(self.county_name_clean, self.gdf)
         neighbor_count = len(neighbor_list)
         region_list = [self.county_name_clean] + neighbor_list
@@ -126,11 +132,11 @@ class GenDesc:
         )
 
     @tag(class_name_partial="tests")
-    def area_tests(self) -> str:
-        tests_added_past_two_weeks = self.__gdf_cell_accessor(
+    def gen_desc_area_tests(self) -> str:
+        tests_added_past_two_weeks = self.gdf_cell_accessor(
             "tests_added_past_two_weeks"
         )
-        confirmed_added_past_two_weeks = self.__gdf_cell_accessor(
+        confirmed_added_past_two_weeks = self.gdf_cell_accessor(
             "confirmed_added_past_two_weeks"
         )
         percent_confirmed = round(

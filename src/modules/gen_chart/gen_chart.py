@@ -10,7 +10,7 @@ from src.modules.gen_chart.chart_bar_and_line import chart_bar_and_line
 from src.modules.gen_chart.map_choropleth import map_choropleth
 from src.modules.gen_chart.chart_multi_line import chart_multi_line
 from src.modules.gen_chart.chart_stacked_area import chart_stacked_area
-from src.modules.gen_desc.gen_desc import GenDesc
+from src.modules.gen_stats.gen_stats import GenStats
 from src.modules.process_data.compare_counties import compare_counties
 from src.modules.helper.get_neighbors import get_neighbors
 from src.modules.helper.sort_counties_by_pop import sort_counties_by_pop
@@ -62,7 +62,7 @@ def gen_chart(
     custom_legend = None
     fmt = "png"
     content_type = "image/png"
-    gen_desc = GenDesc(county_name_clean, county_data=county_data, gdf=gdf)
+    gen_desc = GenStats(county_name_clean, gdf=gdf)
 
     if "daily_and_avg" in chart_type:
         chart = chart_bar_and_line(
@@ -72,7 +72,7 @@ def gen_chart(
             bar_color=secondary_color,
         )
         custom_legend = chart_dict.get("custom_legend")
-        chart_desc = gen_desc.daily(data_type=data_type)
+        chart_desc = gen_desc.gen_desc_daily(data_type=data_type)
 
     elif "choropleth" in chart_type:
         chart = map_choropleth(
@@ -83,7 +83,7 @@ def gen_chart(
             max_color=primary_color,
             legend_title=chart_dict["legend_title"],
         )
-        chart_desc = gen_desc.choro(data_type=data_type)
+        chart_desc = gen_desc.gen_desc_choro(data_type=data_type)
 
     elif "neigbhors_per_capita" in chart_type:
         compare_field = chart_dict["compare_field"]
@@ -111,7 +111,7 @@ def gen_chart(
             line_color=primary_color,
         )
         custom_legend = None
-        chart_desc = gen_desc.neighbors(data_type=data_type)
+        chart_desc = gen_desc.gen_desc_neighbors(data_type=data_type)
 
     elif "stacked_area" in chart_type:
         df = process_cumulative_tests(county_data["confirmed"], county_data["tests"])
@@ -124,7 +124,7 @@ def gen_chart(
             range_=[primary_color, secondary_color],
         )
         custom_legend = chart_dict.get("custom_legend")
-        chart_desc = gen_desc.area_tests()
+        chart_desc = gen_desc.gen_desc_area_tests()
     else:
         raise Exception(
             "Chart type not found. Did you provide a valid chart type in chart_index?"
