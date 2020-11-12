@@ -21,7 +21,7 @@ class GenDesc:
         Gets a value from self.gdf based on the intersection of county's name and
         specified column. Args are concatenated to get the full column name.
         Eg. datatype of "cases" and column_suffix of "total_two_weeks_ago" becomes
-        "cases_total_two_weeks_Ago".
+        "cases_total_two_weeks_ago".
 
         Args:
             col_name (str): Suffix of column. eg "total_two_weeks_ago"
