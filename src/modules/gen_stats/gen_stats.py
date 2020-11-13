@@ -1,10 +1,11 @@
-from typing import Any
+from typing import Any, Union
 import inflect
 
 from src.modules.helper.decorators import tag_dtype, tag
 from src.modules.helper.get_neighbors import get_neighbors
 from src.modules.helper.rank_text import rank_text
 from geopandas import GeoDataFrame
+import random
 
 p = inflect.engine()
 
@@ -22,15 +23,25 @@ class GenStats:
         self.county_name_clean = county_name_clean
         self.gdf = gdf
 
+    def view_gdf(self, sample=None) -> None:
+        """Convenience method, prints GDF to console for debugging
+
+        Args:
+            sample (int, optional): If provided, a random sample of this number of rows will be printed
+
+        """
+        gdf = self.gdf
+        if sample:
+            gdf = self.gdf.sample(sample)
+        print(f"\n", gdf)
+
     def gdf_cell_accessor(self, col_name: str, _round=False) -> Any:
         """
         Gets a value from self.gdf based on the intersection of county's name and
-        specified column. Args are concatenated to get the full column name.
-        Eg. datatype of "cases" and column_suffix of "total_two_weeks_ago" becomes
-        "cases_total_two_weeks_ago".
+        specified column.
 
         Args:
-            col_name (str): Suffix of column. eg "total_two_weeks_ago"
+            col_name (str): Column that contains desired return value. eg "cases_added_past_two_weeks"
             _round (bool, optional) Rounds final number if it's a float. Defaults to true.
 
         Returns:
