@@ -9,6 +9,7 @@ from src.modules.helper.get_county_pop import get_county_pop
 from src.modules.helper.get_neighbors import get_neighbors
 from src.modules.helper.rank_text import rank_text
 from src.modules.helper.sort_counties_by_pop import sort_counties_by_pop
+from typing import Union
 
 
 def test_get_neighbors(gdf_processed):
@@ -129,3 +130,23 @@ def test_add_utm_params_to_url_and_encode_spaces():
     expected_url = f"https://www.spotlightpa.org?test=yes&fake=yes&utm_source=brand+new+campaign&utm_medium=email&utm_campaign={est_now_iso()}"
     print(new_url)
     assert new_url == expected_url
+
+
+def __calc_perc_change(
+    val_1: Union[int, float], val_2: Union[int, float], dp: int = 0
+) -> Union[int, float]:
+    """Calculates percentage increase/decrease between two values
+
+    Args:
+        val_1 (int, float): First value. eg. 100
+        val_2 (int, float): Second value. eg. 120
+        dp (int, optional): Number of decimal places to round to. Defaults to 0.
+
+    Returns
+        int, float: Returns int by default, or float if dp optional is provided.
+
+    """
+    diff = ((val_2 - val_1) / val_1) * 100
+    if dp == 0:
+        return int(round(diff, dp))
+    return round(diff, dp)
