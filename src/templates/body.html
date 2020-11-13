@@ -65,7 +65,9 @@
             <!-- BODY CONTAINER -->
             {% include 'body_section_welcome.html' %}
             {% include 'body_section_stories.html' %}
-            {% include 'body_section_yellow_donate.html' %}
+            {% with promo = promos.1 %}
+              {% include 'body_section_promo_wrapped.html' %}
+            {% endwith %}
             {% for section in sections_data %}
               {% include 'body_section_data.html' %}
             {% endfor %}

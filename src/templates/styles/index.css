@@ -490,7 +490,7 @@
     }
 
 
-    .promo1__tagline {
+    .promo__tagline {
         margin-top: 6px;
         font-size: 16px;
         text-align: center;
@@ -500,10 +500,22 @@
         max-width: 653px;
     }
 
-    @media only screen and (max-width: 480px){
-        .promo1__img{
+      @media only screen and (max-width: 480px){
+        .promo1__img {
             height:auto !important;
-            max-width: {{ promos.1.image_width }} !important;
+            max-width: {{ promos.1.image_width if promos.1 else '600px' }} !important;
+            width: 100% !important;
+        }
+
+        .promo2__img {
+            height:auto !important;
+            max-width: {{ promos.2.image_width if promos.2 else '600px' }} !important;
+            width: 100% !important;
+        }
+
+        .promo3__img {
+            height:auto !important;
+            max-width: {{ promos.3.image_width if promos.3 else '600px' }} !important;
             width: 100% !important;
         }
     }
