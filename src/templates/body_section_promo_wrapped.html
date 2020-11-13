@@ -1,0 +1,9 @@
+<!-- This is similar to body_section_promo but is wrapped with body_section so that it can insert directly
+ into body.html and will include appropriate styles. -->
+
+{% extends 'body_section.html' %}
+
+{% block content %}
+    {% include 'body_section_promo.html' %}
+{% endblock %}
+

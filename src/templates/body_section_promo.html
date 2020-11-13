@@ -1,0 +1,14 @@
+
+<div class="promo__container">
+    <hr class="promo__divider-top">
+    <a href="{{ promo.url }}" target="_blank">
+         <img alt="promo" src="{{ promo.image_path }}" class="promo__img {{ "promo" ~ promo.id ~ "__img" }}"/>
+    </a>
+    {% if promo.tagline %}
+    <div class="promo__tagline">
+        <span>{{ promo.tagline }}</span>
+    </div>
+    {% endif %}
+    <hr class="promo__divider-bottom">
+</div>
+

@@ -38,6 +38,7 @@ def gen_jinja_vars(
     donate_url = add_utm_params("https://www.spotlightpa.org/donate/")
     newsletter_browser_url = add_utm_params(newsletter_browser_link)
     promo_1_url = "http://checkout.fundjournalism.org/memberform?org_id=spotlightpa&campaign=7015G0000003ZVJQA2"
+    promo_2_url = "https://www.spotlightpa.org/newsletters/"
 
     # large text blocks
     # promo_1_tagline = f'<a href="{newsletter_url}" target="_blank">Sign up for a weekly round-up of Pennsylvania&#39;s best accountability reporting.</a>'
@@ -62,11 +63,21 @@ def gen_jinja_vars(
         },
         "promos": {
             1: {
-                "image_path": "https://interactives.data.spotlightpa.org/assets/promos/newsletter-promo__donate-democracy.png",
+                "id": 1,
+                "image_path": "https://interactives.data.spotlightpa.org/assets/promos/newsletter-promo__donate"
+                "-democracy-doubled.png",
                 "image_width": "500px",
                 "url": promo_1_url,
                 "tagline": None,
-            }
+            },
+            2: {
+                "id": 2,
+                "image_path": "https://interactives.data.spotlightpa.org/assets/promos/newsletter-promo__pa-post__all"
+                "-the-news.png",
+                "image_width": "600px",
+                "url": promo_2_url,
+                "tagline": None,
+            },
         },
         "section_welcome": f"{brief_date}: Read on for more information about how cases, deaths, and tests are trending "
         f"in {county_name} and the surrounding area.",
