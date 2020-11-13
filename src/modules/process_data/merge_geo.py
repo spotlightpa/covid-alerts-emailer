@@ -27,19 +27,29 @@ def merge_geo(
     for data_type, df in data.items():
         df = df.drop("Total", axis=1)
 
-        # creates a new df with four rows: date, total, total_15_days_ago, added_past_two_weeks
-        # we subtract current total from value 15 days ago in order to get all new values added over past 14 days.
+        # creates a new df with new columns: date, total, total_8_days_ago, added_past_week, total_15_days_ago,
+        # added_past_two_weeks
+        # we subtract current total from values 8 and 15 days ago in order to get all new values added over past week
+        # and past two weeks.
         col_15_days_ago = f"{data_type}_total_15_days_ago"
+        col_8_days_ago = f"{data_type}_total_8_days_ago"
         col_total = f"{data_type}_total"
+        col_added_past_week = f"{data_type}_added_past_week"
         col_added_past_two_weeks = f"{data_type}_added_past_two_weeks"
 
-        df_truncated = df.iloc[[-15, -1]]  # to get t
+        df_truncated = df.iloc[[-15, -8, -1]]
         df_truncated = df_truncated.set_index("date")
         df_truncated = df_truncated.transpose()
         df_truncated.rename(
             columns={df_truncated.columns[0]: col_15_days_ago}, inplace=True
         )
-        df_truncated.rename(columns={df_truncated.columns[1]: col_total}, inplace=True)
+        df_truncated.rename(
+            columns={df_truncated.columns[1]: col_8_days_ago}, inplace=True
+        )
+        df_truncated.rename(columns={df_truncated.columns[2]: col_total}, inplace=True)
+        df_truncated[col_added_past_week] = (
+            df_truncated[col_total] - df_truncated[col_8_days_ago]
+        )
         df_truncated[col_added_past_two_weeks] = (
             df_truncated[col_total] - df_truncated[col_15_days_ago]
         )
@@ -47,7 +57,11 @@ def merge_geo(
         # merge data with gdf
         gdf = gdf.merge(df_truncated, how="left", left_on="NAME", right_index=True)
         gdf = gdf.astype(
-            {col_15_days_ago: "int", col_total: "int", col_added_past_two_weeks: "int",}
+            {
+                col_15_days_ago: "int",
+                col_total: "int",
+                col_added_past_two_weeks: "int",
+            }
         )
 
         if add_per_capita:
@@ -55,8 +69,12 @@ def merge_geo(
             col_added_past_two_weeks_per_capita = (
                 f"{data_type}_added_past_two_weeks_per_capita"
             )
+            col_added_past_week_per_capita = f"{data_type}_added_past_week_per_capita"
             gdf[col_total_per_capita] = (
                 gdf[col_total] / gdf["population"]
+            ) * 100000  # calculate rate per 100k people
+            gdf[col_added_past_week_per_capita] = (
+                gdf[col_added_past_week] / gdf["population"]
             ) * 100000  # calculate rate per 100k people
             gdf[col_added_past_two_weeks_per_capita] = (
                 gdf[col_added_past_two_weeks] / gdf["population"]
