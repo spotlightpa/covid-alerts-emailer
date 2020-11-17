@@ -65,7 +65,7 @@ def gen_jinja_vars(
             1: {
                 "id": 1,
                 "image_path": "https://interactives.data.spotlightpa.org/assets/promos/newsletter-promo__donate"
-                "-democracy-doubled.png",
+                "-democracy-generic.png",
                 "image_width": "500px",
                 "url": promo_1_url,
                 "tagline": None,
