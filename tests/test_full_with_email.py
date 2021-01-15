@@ -2,6 +2,9 @@ from src.covid_email_alerts import main
 import random
 from src.definitions import AWS_DIR_TEST
 
+# NOTE: The following tests are safe to run and will only be sent to a special email list of people
+# who have agreed to receive testing/demo emails. This will not send emails to Spotlight PA's full email list.
+
 
 def test_full_dauphin_county(dauphin_county_dict):
     """ A full program run using just a single county """
