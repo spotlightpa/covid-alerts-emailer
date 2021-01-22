@@ -64,7 +64,9 @@
           >
             <!-- BODY CONTAINER -->
             {% include 'body_section_welcome.html' %}
-            {% include 'body_section_yellow_feedback.html' %}
+            {% if callout %}
+              {% include 'body_section_yellow_callout.html' %}
+            {% endif %}
             {% include 'body_section_stories.html' %}
             {% if promos.1 %}
               {% with promo = promos.1 %}
