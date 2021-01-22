@@ -37,7 +37,10 @@ def gen_jinja_vars(
     )
     donate_url = add_utm_params("https://www.spotlightpa.org/donate/")
     newsletter_browser_url = add_utm_params(newsletter_browser_link)
-    promo_2_url = add_utm_params("https://www.spotlightpa.org/newsletters/")
+    promo_1_url = add_utm_params("https://www.spotlightpa.org/newsletters/")
+    vax_provider_map_url = add_utm_params(
+        "https://www.spotlightpa.org/news/2021/01/pa-covid-vaccine-locations-availability-where-to-get-who-can-get-latest-updates/"
+    )
 
     # large text blocks
     # promo_1_tagline = f'<a href="{newsletter_url}" target="_blank">Sign up for a weekly round-up of Pennsylvania&#39;s best accountability reporting.</a>'
@@ -60,13 +63,19 @@ def gen_jinja_vars(
             "title": "Weekly Coronavirus Update".upper(),
             "tagline": county_name.upper(),
         },
+        "callout": {
+            "tagline": "GET VACCINATED:",
+            "blurb": f"Want to know where you can get the COVID-19 vaccine in Pennsylvania? Check out our <a "
+            f"href='{vax_provider_map_url}' target='_blank'>provider "
+            f"map</a>.",
+        },
         "promos": {
             1: {
                 "id": 1,
                 "image_path": "https://interactives.data.spotlightpa.org/assets/promos/newsletter-promo__pa-post__all"
                 "-the-news.png",
                 "image_width": "600px",
-                "url": promo_2_url,
+                "url": promo_1_url,
                 "tagline": None,
             },
         },

@@ -470,6 +470,7 @@
     .section-donate__container-inner {
         text-align: center;
         font-size: 16px;
+        line-height: 150%;
     }
 
     .promo__container {
