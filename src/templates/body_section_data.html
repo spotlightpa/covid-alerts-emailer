@@ -13,8 +13,10 @@
   </div>
   {% include 'body_divider.html' %}
   {% if section.title == "CASES" %}
-    {% with promo = promos.2 %}
-      {% include 'body_section_promo.html' %}
-    {% endwith %}
+    {% if promos.2 %}
+      {% with promo = promos.2 %}
+        {% include 'body_section_promo.html' %}
+      {% endwith %}
+    {% endif %}
   {% endif %}
 {% endblock %}
