@@ -66,9 +66,11 @@
             {% include 'body_section_welcome.html' %}
             {% include 'body_section_yellow_feedback.html' %}
             {% include 'body_section_stories.html' %}
-            {% with promo = promos.1 %}
-              {% include 'body_section_promo_wrapped.html' %}
-            {% endwith %}
+            {% if promos.1 %}
+              {% with promo = promos.1 %}
+                {% include 'body_section_promo_wrapped.html' %}
+              {% endwith %}
+            {% endif %}
             {% for section in sections_data %}
               {% include 'body_section_data.html' %}
             {% endfor %}
