@@ -2,6 +2,8 @@
 
 An app that sends out emails to subscribers with updates on COVID-19 cases, deaths and other data in their county.
 
+View an example email [here](https://interactives.data.spotlightpa.org/2020/covid-email-alerts/assets/2020-11-09/newsletter_Dauphin_2020-11-09.html).
+
 [Click here](https://email-alerts.data.spotlightpa.org/form.html) to sign up for the mailing list.
 
 #### Requirements
