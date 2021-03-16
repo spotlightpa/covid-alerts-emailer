@@ -2,18 +2,15 @@ import functools
 import sentry_sdk
 from os import getenv
 
+ENV = getenv("ENVIRONMENT", "development")
+DSN = getenv("SENTRY_DSN", "")
 
 def sentry(func):
     """ Wraps function with Sentry so that error reporting will work in pytest as well as in production """
 
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        environment = getenv("ENVIRONMENT", default="development")
-        sentry_sdk.init(
-            "https://a20cc578312643c7ac874588037f098c@o361657.ingest.sentry.io/5413698",
-            traces_sample_rate=1.0,
-            environment=environment,
-        )
+        sentry_sdk.init(DSN, traces_sample_rate=1.0, environment=ENV)
         try:
             return func(*args, **kwargs)
         except Exception as e:
