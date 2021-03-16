@@ -2,7 +2,7 @@ import logging
 import logging.config
 import os
 import yaml
-from src.definitions import DIR_LOGS_OUTPUT, PATH_LOGS_CONFIG
+from definitions import DIR_LOGS_OUTPUT, PATH_LOGS_CONFIG
 
 
 def logs_config(
@@ -14,28 +14,8 @@ def logs_config(
     @default_level: default level that logs are logged at.
     @env_key: If env_key is detected among env variables, this will be used as path to config file
     """
-
-    path = default_path
-
-    # if file path is set using LOG_CFG env as path to config file
-    value = os.getenv(env_key, None)
-    if value:
-        path = value
-
-    # load config
-    if os.path.exists(path):
-        with open(path, "rt") as f:
-            config = yaml.safe_load(f.read())  # convert yaml to dict
-            # we get the path in config file then append it to our log directory
-            for handler in config["handlers"]:
-                if "FileHandler" in config["handlers"][handler]["class"]:
-                    config["handlers"][handler]["filename"] = (
-                        DIR_LOGS_OUTPUT / config["handlers"][handler]["filename"]
-                    )
-                    config["handlers"][handler]["filename"].parent.mkdir(
-                        exist_ok=True, parents=True
-                    )  # create parent
-                    # directories of path if they don't exist
-        logging.config.dictConfig(config)
-    else:
-        logging.basicConfig(level=default_level)
+    logging.basicConfig(
+        level=logging.INFO,
+        format="[%(asctime)s] %(levelname)s (%(filename)s:%(lineno)s): %(message)s",
+        datefmt='%b %-d, %Y %-H:%M:%S %p'
+    )
