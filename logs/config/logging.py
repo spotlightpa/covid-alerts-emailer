@@ -2,7 +2,7 @@ import logging
 import logging.config
 import os
 import yaml
-from definitions import DIR_LOGS_OUTPUT, PATH_LOGS_CONFIG
+from src.definitions import DIR_LOGS_OUTPUT, PATH_LOGS_CONFIG
 
 
 def logs_config(
