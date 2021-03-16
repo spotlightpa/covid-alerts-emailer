@@ -1,32 +1,19 @@
-# This workflow will install python 3.6, pipenv, python dependencies, and run tests with pytest
+# This workflow will install python 3.6, dependencies, and run tests with pytest
 
 name: Python application
-
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-  schedule:
-    # Set cronjob for 7:30pm UTC (3:30pm ET)
-    - cron: "30 19 * * *"
-
+on: [push, pull_request]
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.6
       uses: actions/setup-python@v2
       with:
         python-version: 3.6
-    - name: Install pipenv
-      uses: dschep/install-pipenv-action@v1
     - name: Install dependencies
       run: |
-        pipenv install
+        ./setup.sh
     - name: Test with pytest
       env:
         KEY_ID: ${{ secrets.KEY_ID }}
@@ -34,4 +21,4 @@ jobs:
         SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
         ENVIRONMENT: github_actions
       run: |
-        pipenv run pytest
+        venv/bin/pytest
