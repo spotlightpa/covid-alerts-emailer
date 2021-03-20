@@ -38,7 +38,7 @@ PATH_FIXTURE_CSV_DEATHS_BAD = DIR_FIXTURES / "csvs/pa-deaths__with-strings.csv"
 
 # FETCH DATA
 FETCH_DIR_URL = (
-    "http://interactives.data.spotlightpa.org/2020/coronavirus/data/inquirer"
+    "https://interactives.data.spotlightpa.org/2020/coronavirus/data/inquirer"
 )
 
 # AWS
