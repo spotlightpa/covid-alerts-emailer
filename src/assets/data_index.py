@@ -2,7 +2,7 @@
 
 DATA_INDEX = {
     "cases": {
-        "filename": "pa-cases.csv",
+        "filename": "pa-nyt-cases.csv",
         "clean_rules": {
             "added_since_prev_day": True,
             "total_per_capita": True,
@@ -20,7 +20,7 @@ DATA_INDEX = {
         },
     },
     "deaths": {
-        "filename": "pa-deaths.csv",
+        "filename": "pa-nyt-deaths.csv",
         "clean_rules": {
             "added_since_prev_day": True,
             "total_per_capita": True,
