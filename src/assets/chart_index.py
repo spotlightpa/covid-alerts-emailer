@@ -39,36 +39,9 @@ CHART_INDEX = {
                 ],
             },
             {
-                "type": "choropleth",
-                "title": "Per capita rate",
-                "color_field": "deaths_added_past_two_weeks_per_capita",
-                "legend_title": "Deaths per 100,000",
-            },
-            {
                 "type": "neigbhors_per_capita",
                 "title": "Regional comparison",
                 "compare_field": "moving_avg_per_capita",
-            },
-        ],
-    },
-    "tests": {
-        "theme": {"colors": {"primary": "#009999", "secondary": "#CBECEC"}},
-        "charts": [
-            {
-                "type": "daily_and_avg",
-                "title": "Daily trend",
-                "custom_legend": [
-                    {"label": "Daily tests", "color": "#CBECEC"},
-                    {"label": "7 day avg", "color": "#009999"},
-                ],
-            },
-            {
-                "type": "stacked_area",
-                "title": "Running totals",
-                "custom_legend": [
-                    {"label": "Total tests", "color": "#CBECEC"},
-                    {"label": "Positive", "color": "#009999"},
-                ],
             },
         ],
     },

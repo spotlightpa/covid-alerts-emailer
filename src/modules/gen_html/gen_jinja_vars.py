@@ -56,18 +56,12 @@ def gen_jinja_vars(
         "head": {
             "title": f"The latest COVID-19 statistics for {county_name} from Spotlight PA."
         },
-        "preview_text": f"Here are the latest stats on cases, deaths, and testing in {county_name}",
+        "preview_text": f"Here are the latest stats on case and deaths in {county_name}",
         "newsletter_browser_link": newsletter_browser_url,
         "subscribe_link": subscribe_url,
         "hero": {
             "title": "Weekly Coronavirus Update".upper(),
             "tagline": county_name.upper(),
-        },
-        "callout": {
-            "tagline": "GET VACCINATED:",
-            "blurb": f"Want to know where you can get the COVID-19 vaccine in Pennsylvania? Check out our <a "
-            f"href='{vax_provider_map_url}' target='_blank'>provider "
-            f"map</a>.",
         },
         "promos": {
             1: {
@@ -79,7 +73,7 @@ def gen_jinja_vars(
                 "tagline": None,
             },
         },
-        "section_welcome": f"{brief_date}: Read on for more information about how cases, deaths, and tests are trending "
+        "section_welcome": f"{brief_date}: Read on for more information about how cases and deaths are trending "
         f"in {county_name} and the surrounding area.",
         "section_stories": story_promo,
         "section_donate": {
